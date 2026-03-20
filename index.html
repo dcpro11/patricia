@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dra. Patrícia Gouveia — Psicóloga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-pale:   #eef3f9;
+      --blue-light:  #c8d9ee;
+      --blue-mid:    #7aa3c8;
+      --blue-dark:   #3a6591;
+      --gold:        #c9a84c;
+      --gold-light:  #e8d49a;
+      --gold-pale:   #faf6ec;
+      --white:       #ffffff;
+      --charcoal:    #252830;
+      --mid-gray:    #6b7280;
+      --border:      #dde5ef;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 400; letter-spacing: 0.04em;
+      color: var(--charcoal); text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--mid-gray); text-decoration: none; font-weight: 400;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue-dark); }
+    .nav-cta {
+      background: var(--blue-dark); color: #fff;
+      padding: 0.6rem 1.4rem; border-radius: 2rem;
+      font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none; font-weight: 500;
+      transition: background 0.2s, transform 0.15s;
+      border: 2px solid var(--blue-dark);
+    }
+    .nav-cta:hover { background: transparent; color: var(--blue-dark); transform: translateY(-1px); }
+
+    /* HERO */
+    #inicio {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+    .hero-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem 4rem 6rem 6rem;
+      animation: fadeUp 0.9s ease both;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 300; line-height: 1.1;
+      color: var(--charcoal); margin-bottom: 1rem;
+    }
+    .hero-title em { font-style: italic; color: var(--blue-dark); }
+    .hero-subtitle {
+      font-size: 1rem; color: var(--mid-gray); line-height: 1.7;
+      max-width: 440px; margin-bottom: 2.5rem; font-weight: 300;
+    }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--blue-dark); color: #fff;
+      padding: 0.85rem 2rem; border-radius: 3rem;
+      font-size: 0.88rem; font-weight: 500; letter-spacing: 0.04em;
+      text-decoration: none; transition: all 0.2s;
+      border: 2px solid var(--blue-dark);
+    }
+    .btn-primary:hover { background: transparent; color: var(--blue-dark); }
+    .btn-secondary {
+      background: transparent; color: var(--charcoal);
+      padding: 0.85rem 2rem; border-radius: 3rem;
+      font-size: 0.88rem; font-weight: 500; letter-spacing: 0.04em;
+      text-decoration: none; border: 2px solid var(--border);
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-image {
+      position: relative; overflow: hidden;
+      background: var(--blue-pale);
+      animation: fadeIn 1.2s ease both 0.3s;
+    }
+    .hero-image::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--blue-light) 0%, var(--blue-pale) 55%, var(--gold-pale) 100%);
+      opacity: 0.7;
+    }
+    .hero-image::after {
+      content: ''; position: absolute;
+      width: 420px; height: 420px; border-radius: 50%;
+      border: 2px solid var(--gold-light);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      opacity: 0.4;
+    }
+    .hero-image-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .avatar-placeholder {
+      width: 280px; height: 340px;
+      background: linear-gradient(160deg, var(--blue-light), var(--blue-dark));
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden; position: relative;
+      box-shadow: 0 30px 80px rgba(58,101,145,0.25), 0 0 0 8px rgba(201,168,76,0.2);
+    }
+    .avatar-placeholder::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 10%; right: 10%; height: 60%;
+      background: linear-gradient(to top, rgba(58,101,145,0.5), transparent);
+      border-radius: 0 0 50% 50%;
+    }
+    .avatar-icon { font-size: 7rem; line-height: 1; margin-bottom: -0.2rem; position: relative; z-index: 1; }
+    .hero-badge {
+      position: absolute; bottom: 3rem; left: -2rem;
+      background: #fff; padding: 1rem 1.5rem;
+      border-radius: 1rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      display: flex; align-items: center; gap: 0.75rem;
+      border-left: 3px solid var(--gold);
+    }
+    .hero-badge-icon { font-size: 1.5rem; }
+    .hero-badge-text p { font-size: 0.75rem; color: var(--mid-gray); }
+    .hero-badge-text strong { font-size: 0.9rem; color: var(--charcoal); }
+
+    /* SECTION STYLES */
+    section { padding: 6rem 6rem; }
+    .section-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; margin-bottom: 1rem; display: block;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300; line-height: 1.2;
+      color: var(--charcoal); margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--blue-dark); }
+    .section-desc { font-size: 1rem; color: var(--mid-gray); line-height: 1.75; max-width: 560px; font-weight: 300; }
+
+    /* SOBRE */
+    #sobre {
+      background: var(--blue-pale);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    }
+    .sobre-card {
+      background: #fff; border-radius: 1.5rem;
+      padding: 2.5rem; box-shadow: 0 10px 50px rgba(58,101,145,0.1); position: relative;
+    }
+    .sobre-card::before {
+      content: ''; position: absolute;
+      top: -12px; left: 24px; right: 24px; height: 12px;
+      background: linear-gradient(90deg, var(--gold-light), var(--blue-light));
+      border-radius: 1rem 1rem 0 0; opacity: 0.7;
+    }
+    .credential {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.9rem 0; border-bottom: 1px solid var(--border);
+    }
+    .credential:last-child { border-bottom: none; }
+    .credential-icon {
+      width: 40px; height: 40px; background: var(--blue-pale);
+      border-radius: 0.75rem; display: flex; align-items: center;
+      justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .credential-text p { font-size: 0.78rem; color: var(--mid-gray); }
+    .credential-text strong { font-size: 0.9rem; color: var(--charcoal); display: block; }
+    .stats-row { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .stat {
+      background: var(--blue-dark); color: #fff;
+      border-radius: 1rem; padding: 1.25rem 1.5rem; flex: 1; text-align: center;
+    }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; display: block; color: var(--gold-light);
+    }
+    .stat-label { font-size: 0.72rem; opacity: 0.8; letter-spacing: 0.06em; }
+
+    /* SERVICOS */
+    #servicos { background: var(--white); }
+    .services-header { margin-bottom: 3.5rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .service-card {
+      background: var(--blue-pale); border-radius: 1.25rem;
+      padding: 2.25rem 2rem; transition: transform 0.25s, box-shadow 0.25s;
+      position: relative; overflow: hidden; border: 1px solid var(--border);
+    }
+    .service-card::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--blue-mid));
+      transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(58,101,145,0.12); }
+    .service-card:hover::after { transform: scaleX(1); }
+    .service-icon { font-size: 2rem; margin-bottom: 1.25rem; display: block; }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400; margin-bottom: 0.75rem;
+    }
+    .service-card p { font-size: 0.88rem; color: var(--mid-gray); line-height: 1.7; }
+    .service-tag {
+      display: inline-block; margin-top: 1.2rem;
+      background: var(--blue-dark); color: #fff;
+      font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.3rem 0.75rem; border-radius: 2rem;
+    }
+
+    /* TESTEMUNHOS */
+    #testemunhos { background: linear-gradient(135deg, var(--blue-dark) 0%, #2a4f72 100%); }
+    #testemunhos .section-eyebrow { color: var(--gold-light); }
+    #testemunhos .section-title { color: #fff; }
+    #testemunhos .section-title em { color: var(--gold-light); }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .testimonial-card {
+      background: rgba(255,255,255,0.07); border-radius: 1.25rem;
+      padding: 2rem; border: 1px solid rgba(201,168,76,0.2); transition: background 0.25s;
+    }
+    .testimonial-card:hover { background: rgba(255,255,255,0.13); }
+    .testimonial-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; color: var(--gold-light); line-height: 0.5;
+      margin-bottom: 1rem; display: block;
+    }
+    .testimonial-text {
+      font-size: 0.93rem; color: rgba(255,255,255,0.85);
+      line-height: 1.75; margin-bottom: 1.5rem; font-weight: 300; font-style: italic;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+    .testimonial-avatar {
+      width: 38px; height: 38px; background: var(--gold-light);
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 0.85rem; color: var(--blue-dark); font-weight: 600;
+    }
+    .testimonial-name { font-size: 0.85rem; color: #fff; font-weight: 500; }
+    .testimonial-detail { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+    .stars { color: var(--gold-light); font-size: 0.8rem; margin-bottom: 0.2rem; }
+    .privacy-note {
+      margin-top: 2rem; font-size: 0.75rem; color: rgba(255,255,255,0.4);
+      text-align: center; font-style: italic;
+    }
+
+    /* AGENDAR */
+    #agendar { background: var(--gold-pale); }
+    .booking-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; margin-top: 3rem;
+    }
+    .booking-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400; margin-bottom: 1.5rem;
+    }
+    .booking-options { display: flex; flex-direction: column; gap: 1rem; }
+    .booking-option {
+      background: #fff; border-radius: 1rem;
+      padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+      border: 2px solid transparent; cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none; color: inherit;
+    }
+    .booking-option:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(201,168,76,0.15); }
+    .booking-option-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .booking-option-text p { font-size: 0.75rem; color: var(--mid-gray); }
+    .booking-option-text strong { color: var(--charcoal); display: block; margin-bottom: 0.1rem; }
+    .booking-option-arrow { margin-left: auto; color: var(--gold); font-size: 1.2rem; }
+
+    .booking-form-wrap {
+      background: #fff; border-radius: 1.5rem;
+      padding: 2.5rem; box-shadow: 0 8px 40px rgba(58,101,145,0.1);
+      border-top: 4px solid var(--gold);
+    }
+    .booking-form-wrap h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400; margin-bottom: 1.75rem;
+    }
+    .form-row { display: flex; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.1rem; flex: 1; }
+    .form-group label { font-size: 0.75rem; color: var(--mid-gray); letter-spacing: 0.06em; text-transform: uppercase; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      border: 1.5px solid var(--border); border-radius: 0.75rem;
+      padding: 0.8rem 1rem; font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; color: var(--charcoal); background: var(--blue-pale);
+      outline: none; transition: border-color 0.2s; appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--blue-mid); background: #fff; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-submit {
+      width: 100%; background: var(--blue-dark); color: #fff;
+      border: none; border-radius: 3rem; padding: 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+      font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.04em;
+    }
+    .form-submit:hover { background: var(--gold); color: var(--charcoal); transform: translateY(-1px); }
+    .form-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+    .form-note { font-size: 0.72rem; color: var(--mid-gray); text-align: center; margin-top: 0.9rem; line-height: 1.5; }
+    .success-msg {
+      display: none; background: #e8f4ed; color: #2d6a4f;
+      border-radius: 0.75rem; padding: 1rem; text-align: center;
+      font-size: 0.9rem; margin-top: 1rem; font-weight: 500;
+    }
+    .error-msg {
+      display: none; background: #fdecea; color: #c0392b;
+      border-radius: 0.75rem; padding: 1rem; text-align: center;
+      font-size: 0.9rem; margin-top: 1rem; font-weight: 500;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--charcoal); color: rgba(255,255,255,0.5);
+      padding: 3rem 6rem; display: flex;
+      align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #fff; font-weight: 300; }
+    .footer-logo span { color: var(--gold-light); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold-light); }
+    .footer-copy { font-size: 0.78rem; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 2rem; }
+      .nav-links { display: none; }
+      #inicio { grid-template-columns: 1fr; }
+      .hero-text { padding: 4rem 2rem 3rem; }
+      .hero-image { min-height: 360px; }
+      section { padding: 4rem 2rem; }
+      #sobre { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .booking-layout { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; padding: 2rem; }
+      .hero-badge { display: none; }
+      .form-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="#inicio">Dra. Patrícia <span>Gouveia</span></a>
+    <ul class="nav-links">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#testemunhos">Testemunhos</a></li>
+      <li><a href="#agendar">Contacto</a></li>
+    </ul>
+    <a class="nav-cta" href="#agendar">Marcar Consulta</a>
+  </nav>
+
+  <section id="inicio">
+    <div class="hero-text">
+      <span class="hero-eyebrow">Psicóloga Clínica · Lisboa</span>
+      <h1 class="hero-title">
+        O caminho para<br/>
+        <em>o bem-estar</em><br/>
+        começa aqui.
+      </h1>
+      <p class="hero-subtitle">
+        Consultas individuais, de casal e de grupo, num espaço seguro e confidencial.
+        Abordagem integrativa, centrada na pessoa e nas suas necessidades.
+      </p>
+      <div class="hero-buttons">
+        <a class="btn-primary" href="#agendar">Marcar Consulta</a>
+        <a class="btn-secondary" href="#sobre">Conhecer-me melhor</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="hero-image-inner">
+        <div class="avatar-placeholder">
+          <span class="avatar-icon">🧘</span>
+        </div>
+        <div class="hero-badge">
+          <span class="hero-badge-icon">✨</span>
+          <div class="hero-badge-text">
+            <strong>+200 consultas</strong>
+            <p>Realizadas em 2024</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre">
+    <div class="sobre-visual reveal">
+      <div class="sobre-card">
+        <div class="credential">
+          <div class="credential-icon">🎓</div>
+          <div class="credential-text">
+            <strong>Mestrado em Psicologia Clínica</strong>
+            <p>ISPA – Instituto Universitário, Lisboa</p>
+          </div>
+        </div>
+        <div class="credential">
+          <div class="credential-icon">📋</div>
+          <div class="credential-text">
+            <strong>Cédula Profissional nº XXXX</strong>
+            <p>Ordem dos Psicólogos Portugueses</p>
+          </div>
+        </div>
+        <div class="credential">
+          <div class="credential-icon">🌱</div>
+          <div class="credential-text">
+            <strong>Formação em Mindfulness e EMDR</strong>
+            <p>Centro de Estudos Psicológicos</p>
+          </div>
+        </div>
+        <div class="credential">
+          <div class="credential-icon">💬</div>
+          <div class="credential-text">
+            <strong>Abordagem Cognitivo-Comportamental</strong>
+            <p>Especialização em Ansiedade e Trauma</p>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat">
+            <span class="stat-number">8+</span>
+            <span class="stat-label">Anos de experiência</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">Clientes apoiados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sobre-text reveal">
+      <span class="section-eyebrow">Sobre mim</span>
+      <h2 class="section-title">Uma abordagem <em>humana</em> e integrativa</h2>
+      <p class="section-desc" style="margin-bottom:1.25rem;">
+        Sou psicóloga clínica com mais de 8 anos de experiência a acompanhar adultos, adolescentes e casais.
+        Acredito que cada pessoa é única e que não existe uma fórmula universal para o bem-estar.
+      </p>
+      <p class="section-desc" style="margin-bottom:1.25rem;">
+        O meu trabalho é criar um espaço seguro onde possa explorar os seus pensamentos, emoções e padrões
+        de comportamento — sem julgamento. Juntos, encontramos estratégias práticas e duradouras.
+      </p>
+      <p class="section-desc">
+        Tenho formação em Terapia Cognitivo-Comportamental (TCC), Mindfulness e EMDR.
+        Ofereço consultas presenciais em Lisboa e online para todo o país.
+      </p>
+    </div>
+  </section>
+
+  <section id="servicos">
+    <div class="services-header reveal">
+      <span class="section-eyebrow">O que ofereço</span>
+      <h2 class="section-title">Serviços <em>personalizados</em></h2>
+      <p class="section-desc">Cada acompanhamento é adaptado às suas necessidades, ritmo e objetivos.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-icon">🧠</span>
+        <h3>Consulta Individual</h3>
+        <p>Acompanhamento personalizado para ansiedade, depressão, autoestima, luto, stress ou simplesmente querer conhecer-se melhor.</p>
+        <span class="service-tag">50 min · €65</span>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">💑</span>
+        <h3>Terapia de Casal</h3>
+        <p>Espaço neutro para melhorar a comunicação, resolver conflitos e fortalecer a ligação entre o casal. Presencial ou online.</p>
+        <span class="service-tag">75 min · €90</span>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🌐</span>
+        <h3>Consulta Online</h3>
+        <p>Toda a qualidade da consulta presencial, com a comodidade de estar em casa. Disponível em todo o território nacional.</p>
+        <span class="service-tag">50 min · €55</span>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🌱</span>
+        <h3>Mindfulness</h3>
+        <p>Sessões focadas em técnicas de atenção plena para reduzir o stress, melhorar o sono e aumentar a consciência emocional.</p>
+        <span class="service-tag">60 min · €60</span>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">👤</span>
+        <h3>Psicologia do Adolescente</h3>
+        <p>Apoio especializado para jovens (12–18 anos) em fases de transição, problemas de comportamento, ansiedade escolar ou familiar.</p>
+        <span class="service-tag">50 min · €60</span>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">📋</span>
+        <h3>Avaliação Psicológica</h3>
+        <p>Relatórios e avaliações clínicas para fins pessoais, escolares ou laborais, com aplicação de instrumentos validados.</p>
+        <span class="service-tag">Sob consulta</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="testemunhos">
+    <div class="reveal">
+      <span class="section-eyebrow">Testemunhos</span>
+      <h2 class="section-title">O que dizem os <em>meus clientes</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <span class="testimonial-quote">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">
+          Após dois anos com ansiedade severa, finalmente encontrei um espaço onde me sinto compreendida.
+          A Dra. Patrícia tem uma capacidade extraordinária de me fazer ver as coisas de forma diferente.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MC</div>
+          <div>
+            <div class="testimonial-name">M.C.</div>
+            <div class="testimonial-detail">Cliente há 2 anos · Ansiedade</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <span class="testimonial-quote">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">
+          Começámos terapia de casal numa altura muito difícil. Hoje temos ferramentas para comunicar melhor
+          e resolver conflitos sem destruir a relação. Foi uma das melhores decisões que tomámos.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">RP</div>
+          <div>
+            <div class="testimonial-name">R.P.</div>
+            <div class="testimonial-detail">Terapia de Casal</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <span class="testimonial-quote">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">
+          A Dra. Patrícia ajudou-me a superar um luto que achei que não conseguia. Com muita paciência e empatia,
+          guiou-me num processo que me transformou. Recomendo de coração.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">FS</div>
+          <div>
+            <div class="testimonial-name">F.S.</div>
+            <div class="testimonial-detail">Processo de luto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="privacy-note">* Nomes e detalhes alterados para proteger a privacidade dos clientes. Testemunhos partilhados com autorização.</p>
+  </section>
+
+  <section id="agendar">
+    <div class="reveal">
+      <span class="section-eyebrow">Contacto & Agendamento</span>
+      <h2 class="section-title">Vamos dar o <em>primeiro passo</em></h2>
+      <p class="section-desc">Preencha o formulário ou utilize um dos contactos abaixo. Responderei em 24h.</p>
+    </div>
+    <div class="booking-layout">
+      <div class="booking-info reveal">
+        <h3>Outras formas de contacto</h3>
+        <div class="booking-options">
+          <a class="booking-option" href="tel:+351912345678">
+            <span class="booking-option-icon">📞</span>
+            <div class="booking-option-text">
+              <strong>Telefone / WhatsApp</strong>
+              <p>+351 912 345 678 · Seg–Sex, 9h–18h</p>
+            </div>
+            <span class="booking-option-arrow">→</span>
+          </a>
+          <a class="booking-option" href="mailto:patricia.gouveia@psicologia.pt">
+            <span class="booking-option-icon">✉️</span>
+            <div class="booking-option-text">
+              <strong>Email</strong>
+              <p>patricia.gouveia@psicologia.pt</p>
+            </div>
+            <span class="booking-option-arrow">→</span>
+          </a>
+          <a class="booking-option" href="#">
+            <span class="booking-option-icon">📍</span>
+            <div class="booking-option-text">
+              <strong>Consultório em Lisboa</strong>
+              <p>Av. da Liberdade, 200 · Piso 3</p>
+            </div>
+            <span class="booking-option-arrow">→</span>
+          </a>
+          <a class="booking-option" href="#">
+            <span class="booking-option-icon">📅</span>
+            <div class="booking-option-text">
+              <strong>Calendly (agendamento online)</strong>
+              <p>Marque diretamente na sua agenda</p>
+            </div>
+            <span class="booking-option-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="booking-form-wrap reveal">
+        <h3>Pedido de consulta</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" placeholder="O seu nome"/>
+          </div>
+          <div class="form-group">
+            <label for="telefone">Telefone</label>
+            <input type="tel" id="telefone" name="telefone" placeholder="+351 9XX XXX XXX"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="email@exemplo.pt"/>
+        </div>
+        <div class="form-group">
+          <label for="servico">Tipo de consulta</label>
+          <select id="servico" name="servico">
+            <option value="">Selecionar...</option>
+            <option>Consulta Individual</option>
+            <option>Terapia de Casal</option>
+            <option>Consulta Online</option>
+            <option>Sessão de Mindfulness</option>
+            <option>Psicologia do Adolescente</option>
+            <option>Avaliação Psicológica</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="mensagem">Mensagem (opcional)</label>
+          <textarea id="mensagem" name="mensagem" placeholder="Pode partilhar brevemente o que a traz até aqui..."></textarea>
+        </div>
+        <button class="form-submit" id="submitBtn" onclick="handleSubmit(event)">Enviar Pedido →</button>
+        <p class="form-note">🔒 Os seus dados são confidenciais e não são partilhados com terceiros.</p>
+        <div class="success-msg" id="successMsg">✅ Pedido enviado com sucesso! Entrarei em contacto em breve para confirmar a consulta.</div>
+        <div class="error-msg" id="errorMsg">❌ Ocorreu um erro ao enviar. Por favor tente novamente ou contacte diretamente por telefone.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Dra. Patrícia <span>Gouveia</span> — Psicóloga</div>
+    <div class="footer-links">
+      <a href="#inicio">Início</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#testemunhos">Testemunhos</a>
+      <a href="#agendar">Contacto</a>
+    </div>
+    <div class="footer-copy">© 2025 · Cédula OPP nº XXXX</div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Formspree submit
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const nome      = document.getElementById('nome').value.trim();
+      const email     = document.getElementById('email').value.trim();
+      const telefone  = document.getElementById('telefone').value.trim();
+      const servico   = document.getElementById('servico').value;
+      const mensagem  = document.getElementById('mensagem').value.trim();
+      const btn       = document.getElementById('submitBtn');
+      const successEl = document.getElementById('successMsg');
+      const errorEl   = document.getElementById('errorMsg');
+
+      if (!nome || !email) { alert('Por favor preencha pelo menos o nome e o email.'); return; }
+
+      btn.textContent = 'A enviar...';
+      btn.disabled = true;
+      successEl.style.display = 'none';
+      errorEl.style.display = 'none';
+
+      try {
+        const res = await fetch('https://formspree.io/f/mdawjjoa', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ nome, email, telefone, servico, mensagem })
+        });
+        if (res.ok) {
+          successEl.style.display = 'block';
+          ['nome','email','telefone','mensagem'].forEach(id => document.getElementById(id).value = '');
+          document.getElementById('servico').value = '';
+        } else {
+          errorEl.style.display = 'block';
+        }
+      } catch { errorEl.style.display = 'block'; }
+
+      btn.textContent = 'Enviar Pedido →';
+      btn.disabled = false;
+    }
+  </script>
+</body>
+</html>
