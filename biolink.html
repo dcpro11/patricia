@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dra. Patrícia Gouveia — Psicóloga Clínica</title>
+  <meta name="description" content="Psicóloga clínica em Loures e Lisboa. Marque a sua consulta." />
+  <meta name="robots" content="noindex, follow" /><!-- página de bio-link para redes sociais; o site principal (patriciagouveia.pt) é a página a indexar -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-512x512.png" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-pale:   #eef3f9;
+      --blue-light:  #c8d9ee;
+      --blue-mid:    #7aa3c8;
+      --blue-dark:   #3a6591;
+      --gold:        #c9a84c;
+      --gold-light:  #e8d49a;
+      --gold-pale:   #faf6ec;
+      --white:       #ffffff;
+      --charcoal:    #252830;
+      --mid-gray:    #6b7280;
+      --border:      #dde5ef;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(160deg, var(--blue-pale) 0%, var(--gold-pale) 100%);
+      color: var(--charcoal);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    /* PROFILE */
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .profile-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(160deg, var(--blue-light), var(--blue-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 3.2rem;
+      margin-bottom: 1.25rem;
+      box-shadow:
+        0 0 0 4px var(--white),
+        0 0 0 7px var(--gold-light),
+        0 20px 50px rgba(58,101,145,0.22);
+    }
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .profile-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      letter-spacing: 0.02em;
+      line-height: 1.15;
+      margin-bottom: 0.3rem;
+    }
+
+    .profile-name span { color: var(--gold); }
+
+    .profile-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue-dark);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+
+    .profile-tagline {
+      font-size: 0.88rem;
+      color: var(--mid-gray);
+      font-weight: 300;
+      line-height: 1.65;
+      max-width: 300px;
+    }
+
+    /* BADGE */
+    .profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 2rem;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.72rem;
+      color: var(--mid-gray);
+      margin-top: 0.9rem;
+    }
+
+    .profile-badge strong { color: var(--charcoal); }
+
+    /* LINKS */
+    .links {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      animation: fadeUp 0.9s ease both 0.15s;
+    }
+
+    .link-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 0.1rem;
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 1rem;
+      padding: 1rem 1.25rem;
+      text-decoration: none;
+      color: var(--charcoal);
+      font-weight: 400;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, transform 0.18s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .link-btn:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(201,168,76,0.15);
+    }
+
+    .link-btn.primary {
+      background: var(--blue-dark);
+      border-color: var(--blue-dark);
+      color: #fff;
+    }
+
+    .link-btn.primary:hover {
+      background: #2a4f72;
+      border-color: #2a4f72;
+      box-shadow: 0 8px 28px rgba(58,101,145,0.28);
+    }
+
+    .link-btn.whatsapp {
+      background: #25D366;
+      border-color: #25D366;
+      color: #fff;
+    }
+
+    .link-btn.whatsapp:hover {
+      background: #1fba58;
+      border-color: #1fba58;
+      box-shadow: 0 8px 28px rgba(37,211,102,0.3);
+    }
+
+    .link-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 0.6rem;
+      background: rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .link-btn:not(.primary):not(.whatsapp) .link-icon {
+      background: var(--blue-pale);
+    }
+
+    .link-text {
+      flex: 1;
+    }
+
+    .link-text strong {
+      display: block;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+
+    .link-text small {
+      font-size: 0.73rem;
+      opacity: 0.7;
+      font-weight: 300;
+    }
+
+    .link-arrow {
+      font-size: 1rem;
+      opacity: 0.5;
+    }
+
+    .link-btn.primary .link-arrow,
+    .link-btn.whatsapp .link-arrow { opacity: 0.7; }
+
+    /* SERVICES MINI */
+    .services-section {
+      width: 100%;
+      max-width: 420px;
+      margin-top: 0.5rem;
+      animation: fadeUp 0.9s ease both 0.25s;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+
+    .service-pill {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 0.9rem;
+      padding: 0.9rem 1rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--mid-gray);
+      line-height: 1.5;
+    }
+
+    .service-pill .pill-icon { font-size: 1.2rem; display: block; margin-bottom: 0.3rem; }
+    .service-pill strong { display: block; color: var(--charcoal); font-size: 0.8rem; margin-bottom: 0.1rem; }
+
+    .service-tag {
+      display: inline-block;
+      margin-top: 0.4rem;
+      background: var(--blue-dark);
+      color: #fff;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.55rem;
+      border-radius: 2rem;
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.4rem 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* FOOTER */
+    .bio-footer {
+      margin-top: 2.5rem;
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--mid-gray);
+      font-weight: 300;
+      line-height: 1.8;
+      animation: fadeUp 0.9s ease both 0.35s;
+    }
+
+    .bio-footer a {
+      color: var(--blue-dark);
+      text-decoration: none;
+    }
+
+    .bio-footer a:hover { text-decoration: underline; }
+
+    .opp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.68rem;
+      color: var(--mid-gray);
+      margin-top: 0.5rem;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 2rem 1rem 3.5rem; }
+      .profile-name { font-size: 1.7rem; }
+      .services-grid { grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PROFILE -->
+  <div class="profile">
+    <div class="profile-avatar">
+      <img src="assets/profile.png" alt="Dra. Patrícia Gouveia, Psicóloga Clínica" width="110" height="110" />
+    </div>
+    <h1 class="profile-name">Dra. Patrícia <span>Gouveia</span></h1>
+    <p class="profile-title">Psicóloga Clínica · Lisboa</p>
+    <p class="profile-tagline">Consultas individuais para crianças, adolescentes, adultos e idosos, num espaço seguro e confidencial.</p>
+    <div class="profile-badge">
+      <span>✨</span>
+      <strong>+1000 consultas</strong>
+      <span>realizadas em 2025</span>
+    </div>
+  </div>
+
+  <!-- PRIMARY LINKS -->
+  <div class="links">
+
+    <span class="link-label">Marcar Consulta</span>
+
+    <a class="link-btn whatsapp" href="https://wa.me/351968378816" target="_blank" rel="noopener">
+      <div class="link-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+        </svg>
+      </div>
+      <div class="link-text">
+        <strong>WhatsApp</strong>
+        <small>+351 968 378 816 · Resposta rápida</small>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a class="link-btn primary" href="index.html#agendar">
+      <div class="link-icon">📅</div>
+      <div class="link-text">
+        <strong>Marcar Consulta Online</strong>
+        <small>Formulário de agendamento</small>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a class="link-btn" href="tel:+351968378816">
+      <div class="link-icon">📞</div>
+      <div class="link-text">
+        <strong>Ligar Agora</strong>
+        <small>Seg–Sex, 9h–19h</small>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a class="link-btn" href="mailto:patriciagouveia.psicologa@hotmail.com">
+      <div class="link-icon">✉️</div>
+      <div class="link-text">
+        <strong>Enviar Email</strong>
+        <small>patriciagouveia.psicologa@hotmail.com</small>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <div class="divider"><span class="link-label" style="white-space:nowrap">Saber Mais</span></div>
+
+    <a class="link-btn" href="index.html">
+      <div class="link-icon">🌐</div>
+      <div class="link-text">
+        <strong>Website Oficial</strong>
+        <small>patriciagouveia.pt</small>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a class="link-btn" href="index.html#sobre">
+      <div class="link-icon">👩‍⚕️</div>
+      <div class="link-text">
+        <strong>Sobre mim</strong>
+        <small>Formação e abordagem terapêutica</small>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a class="link-btn" href="ansiedade/index.html">
+      <div class="link-icon">🧠</div>
+      <div class="link-text">
+        <strong>Ansiedade</strong>
+        <small>Saiba como posso ajudar</small>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a class="link-btn" href="https://maps.app.goo.gl/rRMhHn2nZUXRhBCT7" target="_blank" rel="noopener">
+      <div class="link-icon">📍</div>
+      <div class="link-text">
+        <strong>Consultório em Loures</strong>
+        <small>Alameda Salgueiro Maia Nº4, Loja B</small>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="bio-footer">
+    <div>
+      <a href="index.html">www.patriciagouveia.pt</a>
+    </div>
+    <div class="opp-badge">
+      📋 Cédula OPP nº 026373
+    </div>
+    <div style="margin-top: 1rem; font-size: 0.68rem; opacity: 0.6;">
+      © 2026 · Dra. Patrícia Gouveia — Psicóloga Clínica <br>
+      Biolink feito com ❤️ por David Cardoso
+    </div>
+  </div>
+
+</body>
+</html>

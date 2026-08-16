@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /jogos/
+Disallow: /INSTRUCOES-INTEGRACAO.html
+
+Sitemap: https://www.patriciagouveia.pt/sitemap.xml
