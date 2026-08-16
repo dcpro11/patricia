@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- =====================================================
+       ANSIEDADE — Página Hub / Menu de Tópicos
+       Herda: css/style.css e js/script.js do site principal
+       Path relativo: ../ sobe um nível da pasta /ansiedade/
+       ===================================================== -->
+
+  <title>Ansiedade — Dra. Patrícia Gouveia · Psicóloga</title>
+  <meta name="description" content="Guia completo sobre ansiedade: o que é, sintomas, tipos, técnicas de gestão e quando pedir ajuda profissional. Por Dra. Patrícia Gouveia, Psicóloga Clínica em Lisboa."/>
+
+  <!-- Fontes (mesmo par do site principal) -->
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.patriciagouveia.pt/ansiedade/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.patriciagouveia.pt/ansiedade/" />
+  <meta property="og:title" content="Ansiedade — Dra. Patrícia Gouveia · Psicóloga" />
+  <meta property="og:description" content="Guia completo sobre ansiedade: o que é, sintomas, tipos, técnicas de gestão e quando pedir ajuda profissional. Por Dra. Patrícia Gouveia, Psicóloga Clínica em Lisboa." />
+  <meta property="og:locale" content="pt_PT" />
+  <meta property="og:site_name" content="Dra. Patrícia Gouveia — Psicóloga" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Ansiedade — Dra. Patrícia Gouveia · Psicóloga" />
+  <meta name="twitter:description" content="Guia completo sobre ansiedade: o que é, sintomas, tipos, técnicas de gestão e quando pedir ajuda profissional. Por Dra. Patrícia Gouveia, Psicóloga Clínica em Lisboa." />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Início",
+            "item": "https://www.patriciagouveia.pt/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Ansiedade",
+            "item": "https://www.patriciagouveia.pt/ansiedade/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <!-- CSS principal (path relativo) -->
+  <link rel="stylesheet" href="../css/style.css"/>
+
+  <!-- CSS adicional específico desta secção -->
+  <style>
+
+    /* -------------------------------------------------------
+       HERO DA PÁGINA ANSIEDADE
+       Substituí o hero de 2 colunas por um hero centrado,
+       mais adequado para páginas de conteúdo/artigos
+       ------------------------------------------------------- */
+    #hero-ansiedade {
+      min-height: 52vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 9rem 4rem 5rem;
+      background: linear-gradient(160deg, var(--blue-pale) 0%, #fff 60%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Detalhe decorativo de fundo */
+    #hero-ansiedade::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      border: 1px solid var(--blue-light);
+      top: -200px;
+      right: -150px;
+      opacity: 0.5;
+    }
+
+    #hero-ansiedade::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 1px solid var(--gold-light);
+      bottom: -100px;
+      left: -80px;
+      opacity: 0.4;
+    }
+
+    .hero-ansiedade-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Breadcrumb de navegação */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--mid-gray);
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .breadcrumb a {
+      color: var(--blue-dark);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb span { opacity: 0.5; }
+
+    .hero-ansiedade-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--charcoal);
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-ansiedade-title em {
+      font-style: italic;
+      color: var(--blue-dark);
+    }
+
+    .hero-ansiedade-desc {
+      font-size: 1rem;
+      color: var(--mid-gray);
+      line-height: 1.75;
+      max-width: 560px;
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* -------------------------------------------------------
+       GRID DE TÓPICOS
+       Reutiliza o padrão visual dos .service-card do site,
+       mas com link completo no card e badge de leitura
+       ------------------------------------------------------- */
+    #topicos {
+      padding: 5rem 6rem;
+      background: var(--white);
+    }
+
+    .topicos-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    /* Grid: 3 colunas como os serviços */
+    .topicos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    /* Card de tópico — link que engloba todo o card */
+    .topico-card {
+      display: block;                         /* <a> como bloco */
+      text-decoration: none;
+      color: inherit;
+      background: var(--blue-pale);
+      border-radius: 1.25rem;
+      padding: 2.25rem 2rem;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    /* Barra animada na base (igual aos service-card) */
+    .topico-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--blue-mid));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .topico-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(58, 101, 145, 0.12);
+    }
+    .topico-card:hover::after { transform: scaleX(1); }
+
+    .topico-icon {
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+
+    .topico-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      color: var(--charcoal);
+    }
+
+    .topico-card p {
+      font-size: 0.88rem;
+      color: var(--mid-gray);
+      line-height: 1.7;
+    }
+
+    /* Badge de tempo de leitura */
+    .topico-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.2rem;
+      background: var(--blue-dark);
+      color: #fff;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2rem;
+    }
+
+    /* Seta de "ler mais" no canto inferior direito */
+    .topico-arrow {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--gold);
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    .topico-card:hover .topico-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* -------------------------------------------------------
+       SECÇÃO CTA — Marcar consulta (reutiliza padrão do site)
+       ------------------------------------------------------- */
+    #cta-ansiedade {
+      background: var(--blue-dark);
+      padding: 5rem 6rem;
+      text-align: center;
+    }
+
+    #cta-ansiedade .section-eyebrow { color: var(--gold-light); }
+
+    #cta-ansiedade .section-title {
+      color: #fff;
+      margin-bottom: 1.25rem;
+    }
+    #cta-ansiedade .section-title em { color: var(--gold-light); }
+
+    #cta-ansiedade .section-desc {
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* Botão claro sobre fundo escuro */
+    .btn-light {
+      background: #fff;
+      color: var(--blue-dark);
+      padding: 0.9rem 2.2rem;
+      border-radius: 3rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border: 2px solid #fff;
+      transition: background 0.2s, color 0.2s;
+      display: inline-block;
+    }
+    .btn-light:hover {
+      background: transparent;
+      color: #fff;
+    }
+
+    /* -------------------------------------------------------
+       RESPONSIVO
+       ------------------------------------------------------- */
+    @media (max-width: 900px) {
+      #hero-ansiedade { padding: 7rem 2rem 3.5rem; }
+      #topicos { padding: 3.5rem 2rem; }
+      .topicos-grid { grid-template-columns: 1fr; }
+      #cta-ansiedade { padding: 3.5rem 2rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================
+       NAVEGAÇÃO — idêntica ao site principal
+       Link "Início" aponta para a raiz (../)
+       ===================================================== -->
+  <nav>
+    <a class="nav-logo" href="../index.html">Dra. Patrícia <span>Gouveia</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#sobre">Sobre mim</a></li>
+      <li><a href="../index.html#servicos">Serviços</a></li>
+      <li><a href="#ansiedade">Ansiedade</a></li>
+      <li><a href="../index.html#agendar">Contacto</a></li>
+    </ul>
+    <div class="nav-right">
+      <a class="nav-cta" href="../index.html#agendar">Marcar Consulta</a>
+      <button class="nav-burger" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Drawer -->
+  <div class="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu-inner">
+      <nav class="mobile-nav">
+        <a href="../index.html#sobre" class="mobile-nav-link">Sobre mim</a>
+        <a href="../index.html#servicos" class="mobile-nav-link">Serviços</a>
+        <a href="#ansiedade" class="mobile-nav-link">Ansiedade</a>
+        <a href="../index.html#agendar" class="mobile-nav-link">Contacto</a>
+      </nav>
+      <a class="mobile-nav-cta" href="../index.html#agendar">Marcar Consulta</a>
+    </div>
+  </div>
+  <div class="mobile-menu-overlay"></div>
+
+
+  <!-- =====================================================
+       HERO DA PÁGINA ANSIEDADE
+       ===================================================== -->
+  <section id="hero-ansiedade">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Início</a>
+      <span>›</span>
+      <span>Ansiedade</span>
+    </nav>
+
+    <span class="hero-ansiedade-eyebrow">Psicoeducação · Ansiedade</span>
+
+    <h1 class="hero-ansiedade-title">
+      Compreender a <em>Ansiedade</em>
+    </h1>
+
+    <p class="hero-ansiedade-desc">
+      A ansiedade afeta milhões de pessoas. Conhecer os seus mecanismos é o primeiro passo para recuperar
+      o controlo. Escolha um tópico para começar.
+    </p>
+  </section>
+
+
+  <!-- =====================================================
+       GRID DE 6 TÓPICOS
+       Para adicionar um novo tópico: duplicar um .topico-card
+       e atualizar o href, ícone, título e descrição.
+       ===================================================== -->
+  <section id="topicos">
+
+    <div class="topicos-header reveal">
+      <span class="section-eyebrow">Guia de tópicos</span>
+      <h2 class="section-title">O que quer <em>saber</em> sobre ansiedade?</h2>
+    </div>
+
+    <div class="topicos-grid">
+
+      <!-- TÓPICO 1 -->
+      <a class="topico-card reveal" href="artigos/o-que-e-ansiedade.html">
+        <span class="topico-icon">🧠</span>
+        <h3>O que é a Ansiedade?</h3>
+        <p>
+          Perceba o que acontece no seu cérebro e corpo durante um episódio de ansiedade.
+          Distinguir ansiedade normal de ansiedade patológica.
+        </p>
+        <span class="topico-badge">⏱ 5 min de leitura</span>
+        <span class="topico-arrow">→</span>
+      </a>
+
+      <!-- TÓPICO 2 -->
+      <a class="topico-card reveal" href="artigos/sintomas.html">
+        <span class="topico-icon">💓</span>
+        <h3>Sintomas de Ansiedade</h3>
+        <p>
+          Reconheça os sinais físicos, emocionais e cognitivos da ansiedade.
+          Saber identificá-los é essencial para agir a tempo.
+        </p>
+        <span class="topico-badge">⏱ 4 min de leitura</span>
+        <span class="topico-arrow">→</span>
+      </a>
+
+      <!-- TÓPICO 3 -->
+      <a class="topico-card reveal" href="artigos/tipos-de-ansiedade.html">
+        <span class="topico-icon">🔍</span>
+        <h3>Tipos de Ansiedade</h3>
+        <p>
+          Ansiedade generalizada, fobias, pânico, ansiedade social... Descubra as diferenças
+          e o que caracteriza cada perturbação.
+        </p>
+        <span class="topico-badge">⏱ 6 min de leitura</span>
+        <span class="topico-arrow">→</span>
+      </a>
+
+      <!-- TÓPICO 4 -->
+      <a class="topico-card reveal" href="artigos/tecnicas-de-gestao.html">
+        <span class="topico-icon">🌿</span>
+        <h3>Técnicas de Gestão</h3>
+        <p>
+          Exercícios de respiração, grounding, mindfulness e estratégias cognitivas
+          que pode praticar agora mesmo para reduzir a ansiedade.
+        </p>
+        <span class="topico-badge">⏱ 7 min de leitura</span>
+        <span class="topico-arrow">→</span>
+      </a>
+
+      <!-- TÓPICO 5 -->
+      <a class="topico-card reveal" href="artigos/quando-pedir-ajuda.html">
+        <span class="topico-icon">🤝</span>
+        <h3>Quando Pedir Ajuda?</h3>
+        <p>
+          Perceba quando a ansiedade deixou de ser gerível sozinho e como é o processo
+          de iniciar acompanhamento psicológico.
+        </p>
+        <span class="topico-badge">⏱ 4 min de leitura</span>
+        <span class="topico-arrow">→</span>
+      </a>
+
+      <!-- TÓPICO 6 -->
+      <a class="topico-card reveal" href="artigos/ansiedade-em-criancas.html">
+        <span class="topico-icon">🌱</span>
+        <h3>Ansiedade em Crianças</h3>
+        <p>
+          Como reconhecer a ansiedade em crianças e adolescentes e de que forma os pais
+          e educadores podem ajudar no dia a dia.
+        </p>
+        <span class="topico-badge">⏱ 6 min de leitura</span>
+        <span class="topico-arrow">→</span>
+      </a>
+
+    </div><!-- /topicos-grid -->
+  </section>
+
+
+  <!-- =====================================================
+       CTA — Marcar consulta
+       ===================================================== -->
+  <section id="cta-ansiedade">
+    <div class="reveal">
+      <span class="section-eyebrow">Pronta para ajudar</span>
+      <h2 class="section-title">A informação é um passo — <em>o apoio é outro</em></h2>
+      <p class="section-desc">
+        Se a ansiedade está a afetar a sua qualidade de vida, marque uma consulta.
+        Juntos encontramos um caminho adaptado a si.
+      </p>
+      <a class="btn-light" href="../index.html#agendar">Marcar Consulta →</a>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       RODAPÉ — idêntico ao site principal
+       ===================================================== -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-left">
+        <div class="footer-logo">Dra. Patrícia <span>Gouveia</span> — Psicóloga</div>
+        <div class="footer-copy">© 2026 · Cédula OPP nº 026373</div>
+      </div>
+      <div class="footer-nav">
+        <span class="footer-links">
+          <a href="../index.html#inicio">Início</a>
+          <a href="../index.html#sobre">Sobre mim</a>
+          <a href="../index.html#servicos">Serviços</a>
+          <a href="#ansiedade">Ansiedade</a>
+          <a href="../index.html#agendar">Contacto</a>
+        </span>
+        <span class="footer-links footer-legal">
+          <a href="../politica-de-privacidade.html">Política de Privacidade</a>
+          <a href="../politica-de-cookies.html">Política de Cookies</a>
+          <a href="INSERIR URL AQUI">Livro de Reclamações</a>
+        </span>
+      </div>
+    </div>
+    <div class="footer-credits">Website feito com ❤️ por David Cardoso</div>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <a class="whatsapp-float" href="https://wa.me/351968378816" target="_blank" rel="noopener" aria-label="Enviar mensagem via WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="28" height="28">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+  </a>
+
+  <!-- JS principal (path relativo) -->
+  <script src="../js/script.js"></script>
+  <script src="../js/cookies.js"></script>
+
+</body>
+</html>

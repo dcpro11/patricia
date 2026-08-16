@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O Frasco da Calma – Cantinho da Calma</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --cor-fundo:    #0d1b2a;
+      --cor-titulo:   #e8f4ff;
+      --cor-texto:    #b8d4f0;
+      --cor-destaque: #4fc3f7;
+      --cor-painel:   rgba(255,255,255,0.06);
+      --fonte-titulo: 'Baloo 2', cursive;
+      --fonte-texto:  'Nunito', sans-serif;
+      --raio: 20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--fonte-texto);
+      background: var(--cor-fundo);
+      color: var(--cor-texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(79,195,247,0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(156,39,176,0.06) 0%, transparent 50%);
+    }
+
+    .btn-voltar {
+      position: fixed; top: 18px; left: 18px;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(79,195,247,0.4);
+      border-radius: 50px; padding: 8px 20px;
+      font-family: var(--fonte-titulo); font-size: 0.9rem;
+      color: var(--cor-titulo); cursor: pointer; text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+      backdrop-filter: blur(8px);
+      transition: transform 0.2s, background 0.2s; z-index: 300;
+    }
+    .btn-voltar:hover { background: rgba(79,195,247,0.15); transform: translateX(-3px); }
+
+    .pagina {
+      width: 100%;
+      max-width: 700px;
+      padding: 80px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    header { text-align: center; }
+    header h1 {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.7rem, 5vw, 2.5rem);
+      color: var(--cor-titulo); margin-bottom: 8px;
+    }
+    header p {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      line-height: 1.6; opacity: 0.8;
+      max-width: 460px; margin: 0 auto;
+    }
+
+    /*
+      CANVAS ÚNICO — frasco + glitter desenhados juntos.
+      O glitter usa as mesmas coordenadas que o frasco,
+      por isso é fisicamente impossível aparecer fora dele.
+      O CSS torna-o responsivo sem alterar a resolução interna.
+    */
+    #frasco-canvas {
+      cursor: pointer;
+      filter: drop-shadow(0 20px 50px rgba(79,195,247,0.35));
+      transition: transform 0.12s ease;
+      /* Responsivo: nunca ultrapassa 260px, mas encolhe em ecrãs pequenos */
+      width: min(260px, 78vw);
+      height: auto;
+      display: block;
+    }
+    #frasco-canvas:active { transform: scale(0.96) rotate(-2deg); }
+
+    .dica-agitar {
+      margin-top: 10px;
+      font-size: 0.88rem; opacity: 0.6; text-align: center;
+      animation: piscar 2.5s ease-in-out infinite;
+    }
+    @keyframes piscar {
+      0%, 100% { opacity: 0.35; }
+      50%       { opacity: 0.95; }
+    }
+
+    .cores-painel {
+      background: var(--cor-painel);
+      border: 1px solid rgba(79,195,247,0.15);
+      border-radius: var(--raio); padding: 18px 24px; width: 100%;
+      backdrop-filter: blur(10px);
+    }
+    .cores-titulo {
+      font-family: var(--fonte-titulo); font-size: 0.9rem;
+      color: var(--cor-titulo); margin-bottom: 14px; opacity: 0.8;
+    }
+    .cores-grelha { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .cor-opcao {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 3px solid transparent; cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .cor-opcao:hover { transform: scale(1.15); }
+    .cor-opcao.ativo { border-color: #fff; transform: scale(1.2); box-shadow: 0 0 12px rgba(255,255,255,0.4); }
+
+    .mensagem-painel {
+      background: var(--cor-painel);
+      border: 1px solid rgba(79,195,247,0.15);
+      border-radius: var(--raio); padding: 22px 26px; width: 100%;
+      text-align: center; backdrop-filter: blur(10px);
+      min-height: 110px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      transition: border-color 0.6s ease;
+    }
+    .mensagem-emoji { font-size: 2rem; }
+    .mensagem-emoji.agitado { animation: tremer 0.3s ease infinite; }
+    @keyframes tremer {
+      0%, 100% { transform: rotate(-5deg); }
+      50%       { transform: rotate(5deg); }
+    }
+    .mensagem-texto { font-size: 1rem; line-height: 1.65; color: var(--cor-titulo); }
+
+    .btn {
+      padding: 13px 36px; border: none; border-radius: 50px;
+      font-family: var(--fonte-titulo); font-size: 1rem;
+      cursor: pointer; transition: transform 0.2s, filter 0.2s;
+    }
+    .btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+    .btn-principal {
+      background: linear-gradient(135deg, #4fc3f7, #0288d1); color: #fff;
+      box-shadow: 0 4px 20px rgba(79,195,247,0.4);
+    }
+    .btn-cinza {
+      background: rgba(255,255,255,0.1); color: var(--cor-titulo);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<a href="index.html" class="btn-voltar">← Voltar</a>
+
+<div class="pagina">
+
+  <header>
+    <h1>✨ O Frasco da Calma</h1>
+    <p>Agita o frasco e observa o glitter a brilhar. Quando ele pousar, a tua mente também vai acalmar.</p>
+  </header>
+
+  <canvas id="frasco-canvas"
+    role="button"
+    aria-label="Frasco da Calma — clica para agitar"
+    onclick="agitar()"
+    ontouchstart="agitar()">
+  </canvas>
+
+  <p class="dica-agitar" id="dica-texto">👆 Clica no frasco para agitar!</p>
+
+  <div class="cores-painel">
+    <p class="cores-titulo">✨ Cor do glitter:</p>
+    <div class="cores-grelha">
+      <button class="cor-opcao ativo" data-cor="#4fc3f7"
+        style="background:radial-gradient(circle at 35% 35%,#87dcff,#0288d1)"
+        onclick="mudarCor(this)" title="Azul gelado"></button>
+      <button class="cor-opcao" data-cor="#ce93d8"
+        style="background:radial-gradient(circle at 35% 35%,#e8b4f8,#9c27b0)"
+        onclick="mudarCor(this)" title="Lilás mágico"></button>
+      <button class="cor-opcao" data-cor="#f48fb1"
+        style="background:radial-gradient(circle at 35% 35%,#ffb8d0,#e91e8c)"
+        onclick="mudarCor(this)" title="Rosa encantado"></button>
+      <button class="cor-opcao" data-cor="#fff176"
+        style="background:radial-gradient(circle at 35% 35%,#fff9c4,#f9a825)"
+        onclick="mudarCor(this)" title="Dourado"></button>
+      <button class="cor-opcao" data-cor="#a5d6a7"
+        style="background:radial-gradient(circle at 35% 35%,#c8e6c9,#388e3c)"
+        onclick="mudarCor(this)" title="Verde natureza"></button>
+      <button class="cor-opcao" data-cor="#ffcc80"
+        style="background:radial-gradient(circle at 35% 35%,#ffe0b2,#ef6c00)"
+        onclick="mudarCor(this)" title="Laranja pôr-do-sol"></button>
+      <button class="cor-opcao" data-cor="#ef9a9a"
+        style="background:radial-gradient(circle at 35% 35%,#ffcdd2,#c62828)"
+        onclick="mudarCor(this)" title="Vermelho rubi"></button>
+      <button class="cor-opcao" data-cor="#ffffff"
+        style="background:radial-gradient(circle at 35% 35%,#fff,#b0bec5);border:2px solid rgba(255,255,255,0.3)"
+        onclick="mudarCor(this)" title="Prata"></button>
+    </div>
+  </div>
+
+  <div class="mensagem-painel" id="mensagem-painel">
+    <span class="mensagem-emoji" id="mensagem-emoji">😌</span>
+    <p class="mensagem-texto" id="mensagem-texto">
+      O frasco está calmo. Os teus pensamentos também podem ficar assim —
+      como o glitter que pousou no fundo, quieto e bonito.
+    </p>
+  </div>
+
+  <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+    <button class="btn btn-principal" onclick="agitar()">🌀 Agitar!</button>
+    <a href="index.html"><button class="btn btn-cinza">🏠 Menu</button></a>
+  </div>
+
+</div>
+
+<script>
+  // ═══════════════════════════════════════════════════
+  // CANVAS — dimensões internas fixas
+  // O CSS escala o canvas visualmente mas as coordenadas
+  // internas são sempre CW × CH. Frasco e glitter partilham
+  // o mesmo sistema de coordenadas → alinhamento perfeito.
+  // ═══════════════════════════════════════════════════
+
+  const canvas = document.getElementById('frasco-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  const CW = 260;  /* largura interna do canvas */
+  const CH = 440;  /* altura interna do canvas  */
+  canvas.width  = CW;
+  canvas.height = CH;
+
+  // ═══════════════════════════════════════════════════
+  // GEOMETRIA DO FRASCO
+  // Estas constantes definem o interior do frasco onde
+  // o glitter pode existir. A física usa estes mesmos
+  // valores como limites de colisão.
+  // ═══════════════════════════════════════════════════
+
+  const FX = 42;   /* X do canto esquerdo do corpo interior  */
+  const FY = 105;  /* Y do topo do corpo interior            */
+  const FW = 176;  /* largura do corpo interior              */
+  const FH = 295;  /* altura do corpo interior               */
+  const FR = 52;   /* raio do arredondamento do fundo        */
+
+  // ═══════════════════════════════════════════════════
+  // PARTÍCULAS
+  // ═══════════════════════════════════════════════════
+
+  let corAtual  = '#4fc3f7';
+  let particulas = [];
+
+  function criarParticulas() {
+    particulas = [];
+    for (let i = 0; i < 80; i++) {
+      particulas.push({
+        x:  FX + 12 + Math.random() * (FW - 24),
+        y:  FY + FH - 12 - Math.random() * 50,
+        vx: 0, vy: 0,
+        r:  2 + Math.random() * 3.5,
+        op: 0.45 + Math.random() * 0.55,
+        rot:  Math.random() * Math.PI * 2,
+        vrot: (Math.random() - 0.5) * 0.12,
+        losango: Math.random() > 0.5,
+      });
+    }
+  }
+
+  function hexRGB(h) {
+    return [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+  }
+
+  // ═══════════════════════════════════════════════════
+  // FÍSICA
+  // Os limites usam FX, FY, FW, FH, FR — os mesmos
+  // valores usados para desenhar o frasco.
+  // ═══════════════════════════════════════════════════
+
+  function atualizarFisica() {
+    particulas.forEach(p => {
+      p.vy  += 0.10;          /* gravidade */
+      p.x   += p.vx;
+      p.y   += p.vy;
+      p.rot += p.vrot;
+      p.vx  *= 0.955;         /* fricção do líquido */
+      p.vy  *= 0.955;
+
+      const mg = 6;
+
+      /* Paredes laterais */
+      if (p.x < FX + mg)        { p.x = FX + mg;        p.vx =  Math.abs(p.vx) * 0.4; }
+      if (p.x > FX + FW - mg)   { p.x = FX + FW - mg;   p.vx = -Math.abs(p.vx) * 0.4; }
+
+      /* Tecto */
+      if (p.y < FY + mg)        { p.y = FY + mg;         p.vy =  Math.abs(p.vy) * 0.4; }
+
+      /* Fundo arredondado — colisão com elipse */
+      const cy = FY + FH - FR;               /* centro Y da curva do fundo */
+      const cx = FX + FW / 2;               /* centro X                    */
+      if (p.y > cy) {
+        /* raio horizontal da elipse na posição X da partícula */
+        const dx   = p.x - cx;
+        const maxY = cy + FR * Math.sqrt(Math.max(0, 1 - (dx / (FW / 2)) ** 2));
+        if (p.y > maxY - mg) {
+          p.y  = maxY - mg;
+          p.vy = -Math.abs(p.vy) * 0.28;
+          p.vx *= 0.78;
+        }
+      }
+    });
+  }
+
+  // ═══════════════════════════════════════════════════
+  // DESENHO DO FRASCO (camadas, de baixo para cima)
+  // ═══════════════════════════════════════════════════
+
+  /* Path do corpo interior do frasco */
+  function pathInterior() {
+    const x = FX, y = FY, w = FW, h = FH, r = FR;
+    ctx.beginPath();
+    ctx.moveTo(x + 8, y);
+    ctx.lineTo(x + w - 8, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + 8);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w/2, y + h);
+    ctx.quadraticCurveTo(x,     y + h, x, y + h - r);
+    ctx.lineTo(x, y + 8);
+    ctx.quadraticCurveTo(x, y, x + 8, y);
+    ctx.closePath();
+  }
+
+  function desenharFrasco() {
+    /* 1 — Corpo exterior (sombra/espessura do vidro) */
+    ctx.save();
+    ctx.shadowColor   = 'rgba(5,20,50,0.7)';
+    ctx.shadowBlur    = 28;
+    ctx.shadowOffsetY = 10;
+    ctx.fillStyle     = '#08182e';
+    const ex = FX-5, ey = FY-2, ew = FW+10, eh = FH+2, er = FR+5;
+    ctx.beginPath();
+    ctx.moveTo(ex+8, ey);
+    ctx.lineTo(ex+ew-8, ey);
+    ctx.quadraticCurveTo(ex+ew, ey, ex+ew, ey+8);
+    ctx.lineTo(ex+ew, ey+eh-er);
+    ctx.quadraticCurveTo(ex+ew, ey+eh, ex+ew/2, ey+eh);
+    ctx.quadraticCurveTo(ex, ey+eh, ex, ey+eh-er);
+    ctx.lineTo(ex, ey+8);
+    ctx.quadraticCurveTo(ex, ey, ex+8, ey);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    /* 2 — Líquido + glitter (clip dentro do frasco) */
+    ctx.save();
+    pathInterior();
+    ctx.clip();
+
+    /* Fundo do líquido */
+    const gLiq = ctx.createLinearGradient(FX, FY, FX+FW, FY+FH);
+    gLiq.addColorStop(0,   '#06121e');
+    gLiq.addColorStop(0.5, '#091c30');
+    gLiq.addColorStop(1,   '#04100a');
+    ctx.fillStyle = gLiq;
+    ctx.fillRect(FX, FY, FW, FH);
+
+    /* Glitter */
+    const [r,g,b] = hexRGB(corAtual);
+    particulas.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.shadowColor = `rgba(${r},${g},${b},0.9)`;
+      ctx.shadowBlur  = p.r * 4;
+      ctx.fillStyle   = `rgba(${r},${g},${b},${p.op})`;
+      if (p.losango) {
+        const s = p.r;
+        ctx.beginPath();
+        ctx.moveTo(0, -s*1.5); ctx.lineTo(s, 0);
+        ctx.lineTo(0, s*1.5);  ctx.lineTo(-s, 0);
+        ctx.closePath(); ctx.fill();
+      } else {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+      ctx.restore();
+    });
+
+    /* Brilho difuso do glitter no líquido */
+    const gGlow = ctx.createRadialGradient(FX+FW*0.35, FY+FH*0.5, 0, FX+FW*0.35, FY+FH*0.5, FW*0.6);
+    gGlow.addColorStop(0, `rgba(${r},${g},${b},0.08)`);
+    gGlow.addColorStop(1, 'transparent');
+    ctx.fillStyle = gGlow;
+    ctx.fillRect(FX, FY, FW, FH);
+
+    /* Reflexo do vidro (esquerda) */
+    const gRefl = ctx.createLinearGradient(FX, 0, FX+30, 0);
+    gRefl.addColorStop(0,   'rgba(255,255,255,0.13)');
+    gRefl.addColorStop(0.6, 'rgba(255,255,255,0.06)');
+    gRefl.addColorStop(1,   'rgba(255,255,255,0)');
+    ctx.fillStyle = gRefl;
+    ctx.fillRect(FX, FY, 30, FH);
+
+    /* Fio de brilho */
+    const gFio = ctx.createLinearGradient(FX+9, 0, FX+14, 0);
+    gFio.addColorStop(0, 'rgba(255,255,255,0.22)');
+    gFio.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gFio;
+    ctx.fillRect(FX+9, FY+24, 5, FH-70);
+
+    ctx.restore(); /* fim do clip */
+
+    /* 3 — Borda exterior do vidro */
+    pathInterior();
+    ctx.strokeStyle = 'rgba(79,195,247,0.4)';
+    ctx.lineWidth   = 2.5;
+    ctx.stroke();
+
+    /* 4 — Gargalo */
+    const gX = FX+22, gW = FW-44, gY = FY-30, gH = 32;
+    ctx.fillStyle = '#081828';
+    ctx.beginPath(); ctx.roundRect(gX, gY, gW, gH, 5); ctx.fill();
+    ctx.strokeStyle = 'rgba(79,195,247,0.25)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    /* 5 — Tampa */
+    const tX = FX+12, tW = FW-24, tY = 14, tH = 62, tR = 13;
+    const gTampa = ctx.createLinearGradient(0, tY, 0, tY+tH);
+    gTampa.addColorStop(0, '#1c5688'); gTampa.addColorStop(1, '#0c2f58');
+    ctx.fillStyle = gTampa;
+    ctx.beginPath(); ctx.roundRect(tX, tY, tW, tH, tR); ctx.fill();
+    ctx.strokeStyle = 'rgba(79,195,247,0.55)'; ctx.lineWidth = 2; ctx.stroke();
+    /* Roscas */
+    ctx.fillStyle = 'rgba(79,195,247,0.14)';
+    ctx.beginPath(); ctx.roundRect(tX+4, tY+19, tW-8, 8, 3); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(tX+4, tY+31, tW-8, 6, 3); ctx.fill();
+    /* Brilho topo da tampa */
+    const gBT = ctx.createLinearGradient(0, tY, 0, tY+16);
+    gBT.addColorStop(0, 'rgba(255,255,255,0.2)');
+    gBT.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gBT;
+    ctx.beginPath(); ctx.roundRect(tX+4, tY+2, tW-8, 14, [tR-2,tR-2,0,0]); ctx.fill();
+    /* Estrelinhas */
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font = '11px serif';
+    ctx.fillText('✦', tX+14, tY+47);
+    ctx.fillText('✦', tX+tW/2-5, tY+47);
+    ctx.fillText('✦', tX+tW-26, tY+47);
+
+    /* 6 — Sombra no chão */
+    const gSombra = ctx.createRadialGradient(CW/2, CH-8, 4, CW/2, CH-8, 68);
+    gSombra.addColorStop(0, 'rgba(0,0,0,0.38)');
+    gSombra.addColorStop(1, 'transparent');
+    ctx.fillStyle = gSombra;
+    ctx.beginPath(); ctx.ellipse(CW/2, CH-8, 62, 11, 0, 0, Math.PI*2); ctx.fill();
+  }
+
+  // ═══════════════════════════════════════════════════
+  // LOOP PRINCIPAL
+  // ═══════════════════════════════════════════════════
+
+  function animar() {
+    ctx.clearRect(0, 0, CW, CH);
+    atualizarFisica();
+    desenharFrasco();
+    requestAnimationFrame(animar);
+  }
+
+  // ═══════════════════════════════════════════════════
+  // AGITAR
+  // ═══════════════════════════════════════════════════
+
+  let estado     = 'calmo';
+  let timerCalma = null;
+
+  function agitar() {
+    particulas.forEach(p => {
+      p.vx += (Math.random() - 0.5) * 16;
+      p.vy += (Math.random() - 0.5) * 16 - 8;
+    });
+    mudarEstado('agitado');
+    document.getElementById('dica-texto').textContent = '✨ Observa o glitter a pousar...';
+    if (timerCalma) clearTimeout(timerCalma);
+    timerCalma = setTimeout(verificarCalma, 3500);
+  }
+
+  function verificarCalma() {
+    const vel = particulas.reduce((s, p) => s + Math.abs(p.vx) + Math.abs(p.vy), 0);
+    if (vel < 4) {
+      mudarEstado('calmo');
+      document.getElementById('dica-texto').textContent = '👆 Clica no frasco para agitar!';
+    } else {
+      timerCalma = setTimeout(verificarCalma, 1200);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════
+  // MENSAGENS
+  // ═══════════════════════════════════════════════════
+
+  const MENSAGENS = {
+    agitado: [
+      { emoji: '🌀', texto: 'Assim é quando temos muitos pensamentos ao mesmo tempo — tudo misturado e confuso. Mas observa... vai passar.' },
+      { emoji: '💭', texto: 'A tua cabeça às vezes fica assim cheia de ideias e preocupações. Não precisas de as resolver todas agora.' },
+      { emoji: '🌊', texto: 'Como as ondas do mar, os pensamentos agitados acabam sempre por acalmar. Respira e observa.' },
+    ],
+    calmo: [
+      { emoji: '😌', texto: 'O glitter pousou. A tua mente também pode ficar assim — calma, clara e bonita.' },
+      { emoji: '✨', texto: 'Vês como tudo ficou quieto? Os teus pensamentos também conseguem pousar quando lhes dás tempo.' },
+      { emoji: '💙', texto: 'Aqui está a tua calma. Ela esteve sempre dentro de ti — às vezes só precisa de um momento para aparecer.' },
+    ]
+  };
+
+  let idxMsg = { agitado: 0, calmo: 0 };
+
+  function mudarEstado(novo) {
+    if (estado === novo && novo === 'agitado')
+      idxMsg.agitado = (idxMsg.agitado + 1) % MENSAGENS.agitado.length;
+    estado = novo;
+    const d = MENSAGENS[estado][idxMsg[estado]];
+    document.getElementById('mensagem-emoji').textContent = d.emoji;
+    document.getElementById('mensagem-texto').textContent = d.texto;
+    document.getElementById('mensagem-emoji').classList.toggle('agitado', estado === 'agitado');
+    document.getElementById('mensagem-painel').style.borderColor =
+      estado === 'calmo' ? 'rgba(79,195,247,0.3)' : 'rgba(200,100,255,0.3)';
+    if (estado === 'calmo')
+      idxMsg.calmo = (idxMsg.calmo + 1) % MENSAGENS.calmo.length;
+  }
+
+  // ═══════════════════════════════════════════════════
+  // MUDAR COR
+  // ═══════════════════════════════════════════════════
+
+  function mudarCor(botao) {
+    document.querySelectorAll('.cor-opcao').forEach(b => b.classList.remove('ativo'));
+    botao.classList.add('ativo');
+    corAtual = botao.dataset.cor;
+    particulas.forEach(p => { p.vx += (Math.random()-0.5)*4; p.vy -= Math.random()*4; });
+  }
+
+  // ═══════════════════════════════════════════════════
+  // INICIAR
+  // ═══════════════════════════════════════════════════
+
+  criarParticulas();
+  animar();
+
+  document.addEventListener('keydown', e => {
+    if (e.code === 'Space') { e.preventDefault(); agitar(); }
+  });
+</script>
+
+</body>
+</html>

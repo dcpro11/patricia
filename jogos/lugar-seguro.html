@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O Meu Lugar Seguro – Cantinho da Calma</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =====================================================
+       VARIÁVEIS GLOBAIS
+       ===================================================== */
+    :root {
+      --cor-fundo:       #e8f4f0;
+      --cor-titulo:      #1a4a3a;
+      --cor-texto:       #2c4a3a;
+      --cor-destaque:    #2e8b6a;
+      --cor-destaque-2:  #5dbf9a;
+      --cor-painel:      #ffffffee;
+      --fonte-titulo:    'Baloo 2', cursive;
+      --fonte-texto:     'Nunito', sans-serif;
+      --raio:            18px;
+      --sombra:          0 6px 28px rgba(20,80,60,0.13);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--fonte-texto);
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      min-height: 100vh;
+      background-image: radial-gradient(circle, #c0ddd4 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ─── BOTÃO VOLTAR ─── */
+    .btn-voltar {
+      position: fixed; top: 18px; left: 18px;
+      background: #fff; border: 2px solid var(--cor-destaque-2);
+      border-radius: 50px; padding: 8px 20px;
+      font-family: var(--fonte-titulo); font-size: 0.9rem;
+      color: var(--cor-titulo); cursor: pointer; text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+      box-shadow: var(--sombra); transition: transform 0.2s, background 0.2s;
+      z-index: 300;
+    }
+    .btn-voltar:hover { background: #d4f0e8; transform: translateX(-3px); }
+
+    /* ─── CABEÇALHO ─── */
+    header {
+      text-align: center;
+      padding: 72px 20px 12px;
+    }
+    header h1 {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      color: var(--cor-titulo);
+      margin-bottom: 6px;
+    }
+    header p {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      color: var(--cor-texto); opacity: 0.8;
+      max-width: 500px; margin: 0 auto; line-height: 1.55;
+    }
+
+    /* =====================================================
+       LAYOUT — ecrãs empilhados, só um visível de cada vez
+       ===================================================== */
+    .ecra {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 16px 16px 80px;
+      animation: aparecer 0.4s ease forwards;
+    }
+    .ecra.ativo { display: flex; }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── BOTÕES GERAIS ─── */
+    .btn {
+      padding: 13px 36px; border: none; border-radius: 50px;
+      font-family: var(--fonte-titulo); font-size: 1rem;
+      cursor: pointer; box-shadow: var(--sombra);
+      transition: transform 0.2s, filter 0.2s;
+    }
+    .btn:hover { transform: scale(1.05); filter: brightness(1.08); }
+    .btn-principal { background: var(--cor-destaque); color: #fff; }
+    .btn-cinza     { background: #d8ece6; color: var(--cor-titulo); }
+    .btn-sm        { padding: 9px 22px; font-size: 0.9rem; }
+
+    /* ─── PAINEL CAIXA ─── */
+    .painel {
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 22px 26px;
+      box-shadow: var(--sombra);
+      width: 100%;
+    }
+    .painel-titulo {
+      font-family: var(--fonte-titulo);
+      font-size: 1.05rem;
+      color: var(--cor-titulo);
+      margin-bottom: 14px;
+    }
+
+    /* =====================================================
+       ECRÃ 1 — ESCOLHER CENÁRIO
+       ===================================================== */
+    .cenarios-grelha {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px;
+      width: 100%;
+    }
+
+    .cenario-btn {
+      background: #fff;
+      border: 3px solid #b0d8cc;
+      border-radius: 16px;
+      padding: 20px 10px 16px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 8px;
+      cursor: pointer;
+      font-family: var(--fonte-texto);
+      font-size: 0.95rem; font-weight: 700;
+      color: var(--cor-titulo);
+      transition: transform 0.2s, border-color 0.2s, background 0.2s;
+      text-align: center;
+    }
+    .cenario-btn:hover { background: #e0f5ee; transform: translateY(-4px); }
+    .cenario-btn.ativo {
+      border-color: var(--cor-destaque);
+      background: #d0f0e4;
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(46,139,106,0.2);
+    }
+    .cenario-emoji { font-size: 3rem; line-height: 1; }
+
+    /* =====================================================
+       ECRÃ 2 — PERSONALIZAR (construtor)
+       ===================================================== */
+    .construtor-layout {
+      display: flex;
+      gap: 18px;
+      width: 100%;
+      align-items: flex-start;
+    }
+
+    /* Painel de opções à esquerda */
+    .opcoes-painel {
+      width: 230px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Grupos de opções (luz, sons, extras) */
+    .opcao-grupo { width: 100%; }
+
+    .opcao-grupo-titulo {
+      font-family: var(--fonte-titulo);
+      font-size: 0.85rem;
+      color: var(--cor-titulo);
+      margin-bottom: 8px;
+      opacity: 0.8;
+      letter-spacing: 0.5px;
+    }
+
+    .opcao-chips {
+      display: flex; flex-wrap: wrap; gap: 7px;
+    }
+
+    /*
+      Chips clicáveis para cada opção.
+      Cada chip tem um data-grupo e data-valor.
+      Apenas um chip por grupo pode estar ativo.
+    */
+    .chip {
+      background: #f0faf6;
+      border: 2px solid #b0d8cc;
+      border-radius: 50px;
+      padding: 6px 13px;
+      font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; color: var(--cor-titulo);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .chip:hover { background: #d4f0e8; transform: scale(1.04); }
+    .chip.ativo {
+      background: var(--cor-destaque);
+      border-color: var(--cor-destaque);
+      color: #fff;
+    }
+
+    /* Nome personalizado do lugar */
+    .input-nome {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #b0d8cc;
+      border-radius: 12px;
+      font-family: var(--fonte-texto);
+      font-size: 0.95rem;
+      color: var(--cor-titulo);
+      outline: none;
+      transition: border-color 0.2s;
+      background: #f8fffe;
+    }
+    .input-nome:focus { border-color: var(--cor-destaque); }
+    .input-nome::placeholder { opacity: 0.45; }
+
+    /* ─── CENA (canvas visual do lugar) ─── */
+    .cena-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /*
+      A cena é um canvas HTML onde desenhamos
+      o lugar seguro dinamicamente com JavaScript.
+    */
+    #cena-canvas {
+      border-radius: var(--raio);
+      box-shadow: var(--sombra);
+      width: 100%;
+      max-width: 480px;
+      height: 300px;
+      display: block;
+      cursor: default;
+    }
+
+    /* Nome do lugar exibido abaixo da cena */
+    .cena-nome {
+      font-family: var(--fonte-titulo);
+      font-size: 1.1rem;
+      color: var(--cor-titulo);
+      opacity: 0.8;
+      min-height: 1.4em;
+    }
+
+    /* Partículas decorativas (geradas por JS) */
+    .particula {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.4rem;
+      z-index: 999;
+      animation: subir 2.5s ease-out forwards;
+    }
+    @keyframes subir {
+      0%   { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-160px) scale(0.5); }
+    }
+
+    /* =====================================================
+       ECRÃ 3 — LUGAR PRONTO (visita guiada)
+       ===================================================== */
+    .lugar-pronto-cena {
+      border-radius: var(--raio);
+      box-shadow: var(--sombra);
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .lugar-pronto-titulo {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: var(--cor-titulo);
+      text-align: center;
+    }
+
+    /* Caixa de texto da visita guiada */
+    .visita-caixa {
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 24px 28px;
+      box-shadow: var(--sombra);
+      width: 100%;
+      text-align: center;
+    }
+    .visita-emoji {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .visita-texto {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--cor-texto);
+    }
+
+    /* Barra de progresso da visita */
+    .visita-progresso {
+      display: flex; gap: 8px; justify-content: center;
+    }
+    .visita-ponto {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #b0d8cc;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .visita-ponto.ativo {
+      background: var(--cor-destaque);
+      transform: scale(1.4);
+    }
+    .visita-ponto.feito { background: var(--cor-destaque-2); }
+
+    /* Botão de navegação da visita */
+    .visita-nav { display: flex; gap: 12px; justify-content: center; }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 620px) {
+      .construtor-layout { flex-direction: column; }
+      .opcoes-painel { width: 100%; }
+      #cena-canvas { height: 220px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<a href="index.html" class="btn-voltar">← Voltar</a>
+
+<header>
+  <h1>🏡 O Meu Lugar Seguro</h1>
+  <p>Vamos criar um lugar só teu — onde te sentes calmo, seguro e feliz!</p>
+</header>
+
+<!-- =====================================================
+     ECRÃ 1 — ESCOLHER CENÁRIO BASE
+     ===================================================== -->
+<div class="ecra ativo" id="ecra-1">
+
+  <div class="painel" style="text-align:center;">
+    <p class="painel-titulo" style="font-size:1.15rem;">✨ Primeiro, escolhe o teu cenário:</p>
+    <p style="font-size:0.92rem; opacity:0.7;">Onde imaginas o teu lugar especial?</p>
+  </div>
+
+  <!--
+    CENÁRIOS DISPONÍVEIS
+    Para adicionar um novo: copia um <button> e edita
+    data-cenario (identificador), emoji e nome.
+  -->
+  <div class="cenarios-grelha">
+
+    <button class="cenario-btn" data-cenario="praia" onclick="selecionarCenario(this)">
+      <span class="cenario-emoji">🏖️</span>
+      <span>Praia</span>
+    </button>
+
+    <button class="cenario-btn" data-cenario="floresta" onclick="selecionarCenario(this)">
+      <span class="cenario-emoji">🌲</span>
+      <span>Floresta</span>
+    </button>
+
+    <button class="cenario-btn" data-cenario="quarto" onclick="selecionarCenario(this)">
+      <span class="cenario-emoji">🛋️</span>
+      <span>Quarto Aconchegante</span>
+    </button>
+
+    <button class="cenario-btn" data-cenario="nuvens" onclick="selecionarCenario(this)">
+      <span class="cenario-emoji">☁️</span>
+      <span>No Meio das Nuvens</span>
+    </button>
+
+    <button class="cenario-btn" data-cenario="jardim" onclick="selecionarCenario(this)">
+      <span class="cenario-emoji">🌸</span>
+      <span>Jardim Mágico</span>
+    </button>
+
+    <button class="cenario-btn" data-cenario="espaco" onclick="selecionarCenario(this)">
+      <span class="cenario-emoji">🌌</span>
+      <span>Espaço Estrelado</span>
+    </button>
+
+  </div>
+
+  <button class="btn btn-principal" id="btn-ecra1" style="display:none;" onclick="irParaEcra(2)">
+    Personalizar o meu lugar →
+  </button>
+
+</div><!-- /ecra-1 -->
+
+
+<!-- =====================================================
+     ECRÃ 2 — PERSONALIZAR O LUGAR
+     ===================================================== -->
+<div class="ecra" id="ecra-2">
+
+  <div class="construtor-layout">
+
+    <!-- ── OPÇÕES À ESQUERDA ── -->
+    <aside class="opcoes-painel">
+
+      <!-- Nome do lugar -->
+      <div class="painel opcao-grupo">
+        <p class="painel-titulo">📛 Nome do teu lugar:</p>
+        <input
+          class="input-nome"
+          type="text"
+          id="input-nome"
+          placeholder="ex: Cantinho da Paz..."
+          maxlength="30"
+          oninput="atualizarCena()"
+        />
+      </div>
+
+      <!-- Hora do dia / luz -->
+      <div class="painel opcao-grupo">
+        <p class="opcao-grupo-titulo">🌤️ LUZ</p>
+        <div class="opcao-chips">
+          <button class="chip ativo" data-grupo="luz" data-valor="dia"     onclick="selecionarChip(this)">☀️ Dia</button>
+          <button class="chip"       data-grupo="luz" data-valor="por-do-sol" onclick="selecionarChip(this)">🌅 Pôr do sol</button>
+          <button class="chip"       data-grupo="luz" data-valor="noite"   onclick="selecionarChip(this)">🌙 Noite</button>
+        </div>
+      </div>
+
+      <!-- Clima / tempo -->
+      <div class="painel opcao-grupo">
+        <p class="opcao-grupo-titulo">🌦️ TEMPO</p>
+        <div class="opcao-chips">
+          <button class="chip ativo" data-grupo="tempo" data-valor="limpo"   onclick="selecionarChip(this)">✨ Limpo</button>
+          <button class="chip"       data-grupo="tempo" data-valor="chuva"   onclick="selecionarChip(this)">🌧️ Chuvisqueiro</button>
+          <button class="chip"       data-grupo="tempo" data-valor="neve"    onclick="selecionarChip(this)">❄️ Neve</button>
+        </div>
+      </div>
+
+      <!-- Extras / elementos -->
+      <div class="painel opcao-grupo">
+        <p class="opcao-grupo-titulo">🎁 EXTRAS (escolhe até 2)</p>
+        <div class="opcao-chips">
+          <button class="chip" data-grupo="extras" data-valor="arcoiris"   onclick="selecionarExtra(this)">🌈 Arco-íris</button>
+          <button class="chip" data-grupo="extras" data-valor="animais"    onclick="selecionarExtra(this)">🦋 Animais</button>
+          <button class="chip" data-grupo="extras" data-valor="fogueira"   onclick="selecionarExtra(this)">🔥 Fogueira</button>
+          <button class="chip" data-grupo="extras" data-valor="flores"     onclick="selecionarExtra(this)">🌺 Flores</button>
+          <button class="chip" data-grupo="extras" data-valor="estrelas"   onclick="selecionarExtra(this)">⭐ Estrelas</button>
+          <button class="chip" data-grupo="extras" data-valor="musica"     onclick="selecionarExtra(this)">🎵 Música</button>
+        </div>
+      </div>
+
+    </aside><!-- /opcoes-painel -->
+
+    <!-- ── CENA CENTRAL ── -->
+    <div class="cena-wrapper">
+      <canvas id="cena-canvas" width="480" height="300"
+        aria-label="Pré-visualização do teu lugar seguro"></canvas>
+      <p class="cena-nome" id="cena-nome-display">✨ O meu lugar especial</p>
+      <button class="btn btn-principal" onclick="irParaEcra(3)">
+        Entrar no meu lugar! 🚪
+      </button>
+      <button class="btn btn-cinza btn-sm" onclick="irParaEcra(1)">← Mudar cenário</button>
+    </div>
+
+  </div><!-- /construtor-layout -->
+
+</div><!-- /ecra-2 -->
+
+
+<!-- =====================================================
+     ECRÃ 3 — VISITA GUIADA AO LUGAR SEGURO
+     Sequência de textos de relaxamento/visualização.
+     ===================================================== -->
+<div class="ecra" id="ecra-3">
+
+  <!-- Imagem final da cena -->
+  <img id="lugar-imagem" class="lugar-pronto-cena"
+    src="" alt="O teu lugar seguro" />
+
+  <h2 class="lugar-pronto-titulo" id="lugar-titulo">🏡 O teu lugar</h2>
+
+  <!-- Barra de progresso da visita -->
+  <div class="visita-progresso" id="visita-progresso">
+    <!-- Gerada pelo JS -->
+  </div>
+
+  <!-- Caixa de texto da visita guiada -->
+  <div class="visita-caixa">
+    <span class="visita-emoji" id="visita-emoji">🌿</span>
+    <p class="visita-texto" id="visita-texto">
+      Fecha os olhos e imagina que estás aqui...
+    </p>
+  </div>
+
+  <!-- Botões de navegação -->
+  <div class="visita-nav">
+    <button class="btn btn-cinza  btn-sm" id="btn-visita-anterior"
+      style="display:none;" onclick="navegarVisita(-1)">← Anterior</button>
+    <button class="btn btn-principal" id="btn-visita-proximo"
+      onclick="navegarVisita(1)">Próximo →</button>
+  </div>
+
+  <!-- Botões finais (aparecem no último passo) -->
+  <div id="visita-final" style="display:none; flex-direction:column; align-items:center; gap:12px; width:100%;">
+    <button class="btn btn-principal" onclick="irParaEcra(2)">
+      🎨 Mudar o meu lugar
+    </button>
+    <button class="btn btn-cinza" onclick="guardarLugar()">
+      💾 Guardar a imagem
+    </button>
+    <a href="index.html">
+      <button class="btn btn-cinza">🏠 Voltar ao Menu</button>
+    </a>
+  </div>
+
+</div><!-- /ecra-3 -->
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+<script>
+
+  // ─────────────────────────────────────────────────────
+  // ESTADO DO JOGO
+  // ─────────────────────────────────────────────────────
+
+  /** Configuração atual do lugar seguro */
+  const lugar = {
+    cenario:  'praia',   /* cenário base selecionado        */
+    luz:      'dia',     /* opção de luz/hora do dia        */
+    tempo:    'limpo',   /* opção de clima                  */
+    extras:   [],        /* array de extras ativos (máx. 2) */
+    nome:     ''         /* nome personalizado              */
+  };
+
+  /** Passo atual da visita guiada (0 = primeiro) */
+  let passoVisita = 0;
+
+  /** Canvas e contexto */
+  const canvas = document.getElementById('cena-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  // ─────────────────────────────────────────────────────
+  // DADOS DOS CENÁRIOS
+  // Cada cenário define paletas de cores para o céu,
+  // solo e elementos específicos, conforme luz e tempo.
+  // ─────────────────────────────────────────────────────
+
+  /*
+    Estrutura de cada cenário:
+    {
+      nome: string,
+      emoji: string,
+      // Gradientes do céu por luz [topo, base]
+      ceu: { dia, porDoSol, noite },
+      // Cor / gradiente do solo (chão / água / etc.)
+      solo: { cor1, cor2 },
+      // Função de desenho dos elementos do cenário
+      // (chamada pelo JS para pintar a cena no canvas)
+      desenharElementos: function(ctx, opcoes)
+    }
+  */
+  const CENARIOS = {
+
+    praia: {
+      nome: 'Praia',
+      emoji: '🏖️',
+      ceu: {
+        dia:      ['#87CEEB', '#d4f1f9'],
+        porDoSol: ['#FF6B35', '#FFD166'],
+        noite:    ['#0a0a2e', '#1a1a5e']
+      },
+      solo: { cor1: '#f4d06f', cor2: '#e8b84b' }, /* areia */
+      soloAltura: 0.58,  /* fração da altura do canvas onde começa o solo */
+      desenharElementos(ctx, opcoes) {
+        const w = canvas.width, h = canvas.height;
+        const hSolo = h * this.soloAltura;
+
+        /* Água do mar */
+        const corAgua = opcoes.luz === 'noite' ? '#0a2a6e' :
+                        opcoes.luz === 'porDoSol' ? '#e05a1e' : '#3a9ad9';
+        const gradAgua = ctx.createLinearGradient(0, hSolo - 30, 0, hSolo + 20);
+        gradAgua.addColorStop(0, corAgua);
+        gradAgua.addColorStop(1, '#2980b9');
+        ctx.fillStyle = gradAgua;
+        ctx.fillRect(0, hSolo - 30, w, 60);
+
+        /* Ondas */
+        ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 3; i++) {
+          ctx.beginPath();
+          const y = hSolo - 20 + i * 14;
+          ctx.moveTo(0, y);
+          for (let x = 0; x < w; x += 40) {
+            ctx.quadraticCurveTo(x + 10, y - 6, x + 20, y);
+            ctx.quadraticCurveTo(x + 30, y + 6, x + 40, y);
+          }
+          ctx.stroke();
+        }
+
+        /* Areia */
+        const gradAreia = ctx.createLinearGradient(0, hSolo + 20, 0, h);
+        gradAreia.addColorStop(0, this.solo.cor1);
+        gradAreia.addColorStop(1, this.solo.cor2);
+        ctx.fillStyle = gradAreia;
+        ctx.fillRect(0, hSolo + 20, w, h);
+
+        /* Guarda-sol */
+        if (opcoes.luz !== 'noite') {
+          desenharGuardaSol(ctx, 80, hSolo + 30);
+        }
+
+        /* Concha na areia */
+        ctx.font = '22px serif';
+        ctx.fillText('🐚', 200, h - 30);
+        ctx.fillText('🦀', 320, h - 20);
+      }
+    },
+
+    floresta: {
+      nome: 'Floresta',
+      emoji: '🌲',
+      ceu: {
+        dia:      ['#4db8e8', '#a8ddf0'],
+        porDoSol: ['#c0392b', '#f39c12'],
+        noite:    ['#0d1b2a', '#1b3a5c']
+      },
+      solo: { cor1: '#5a8a3c', cor2: '#3d6e26' },
+      soloAltura: 0.62,
+      desenharElementos(ctx, opcoes) {
+        const w = canvas.width, h = canvas.height;
+        const hSolo = h * this.soloAltura;
+
+        /* Solo / relva */
+        const gradSolo = ctx.createLinearGradient(0, hSolo, 0, h);
+        gradSolo.addColorStop(0, this.solo.cor1);
+        gradSolo.addColorStop(1, this.solo.cor2);
+        ctx.fillStyle = gradSolo;
+        ctx.fillRect(0, hSolo, w, h);
+
+        /* Árvores */
+        const posArvores = [40, 120, 300, 400, 460];
+        posArvores.forEach((x, i) => {
+          const altEscala = 0.8 + (i % 3) * 0.15;
+          desenharArvore(ctx, x, hSolo, altEscala, opcoes.luz);
+        });
+
+        /* Chão — folhas e cogumelos */
+        ctx.font = '18px serif';
+        ctx.fillText('🍄', 170, h - 20);
+        ctx.fillText('🌿', 240, h - 14);
+        ctx.fillText('🦔', 340, h - 22);
+      }
+    },
+
+    quarto: {
+      nome: 'Quarto Aconchegante',
+      emoji: '🛋️',
+      ceu: {
+        dia:      ['#f9e4c8', '#fdf0dc'],
+        porDoSol: ['#f5cba7', '#f0b27a'],
+        noite:    ['#2c1a4a', '#4a2c7a']
+      },
+      solo: { cor1: '#c8a882', cor2: '#a88c6a' },
+      soloAltura: 0.70,
+      desenharElementos(ctx, opcoes) {
+        const w = canvas.width, h = canvas.height;
+        const hSolo = h * this.soloAltura;
+
+        /* Parede */
+        const corParede = opcoes.luz === 'noite' ? '#2a1a3e' :
+                          opcoes.luz === 'porDoSol' ? '#f5d5b0' : '#f8ede0';
+        ctx.fillStyle = corParede;
+        ctx.fillRect(0, 0, w, hSolo);
+
+        /* Chão / tapete */
+        ctx.fillStyle = '#8b6340';
+        ctx.fillRect(0, hSolo, w, h);
+        /* Tapete */
+        ctx.fillStyle = '#c0392b';
+        ctx.beginPath();
+        ctx.ellipse(w/2, hSolo + 50, 120, 35, 0, 0, Math.PI*2);
+        ctx.fill();
+        ctx.strokeStyle = '#f1948a';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        /* Sofá */
+        desenharSofa(ctx, w/2 - 90, hSolo - 70);
+
+        /* Janela */
+        desenharJanela(ctx, 30, 40, opcoes);
+
+        /* Abajur */
+        desenharAbajur(ctx, w - 80, hSolo - 80);
+
+        /* Livros no chão */
+        ctx.font = '20px serif';
+        ctx.fillText('📚', 20, h - 20);
+        ctx.fillText('🧸', w - 50, h - 18);
+      }
+    },
+
+    nuvens: {
+      nome: 'No Meio das Nuvens',
+      emoji: '☁️',
+      ceu: {
+        dia:      ['#6ab4f0', '#c8e8ff'],
+        porDoSol: ['#e8704a', '#f5c06a'],
+        noite:    ['#1a0a3a', '#3a1a6a']
+      },
+      solo: { cor1: '#fff', cor2: '#e8f4ff' },
+      soloAltura: 0.55,
+      desenharElementos(ctx, opcoes) {
+        const w = canvas.width, h = canvas.height;
+        const hSolo = h * this.soloAltura;
+
+        /* Mar de nuvens em baixo */
+        const gradNuvens = ctx.createLinearGradient(0, hSolo, 0, h);
+        gradNuvens.addColorStop(0, '#fff');
+        gradNuvens.addColorStop(1, '#d0e8f8');
+        ctx.fillStyle = gradNuvens;
+        ctx.fillRect(0, hSolo, w, h);
+
+        /* Nuvens flutuantes */
+        const posNuvens = [[60,hSolo-20,1.2],[180,hSolo+30,0.9],[320,hSolo-10,1.0],[430,hSolo+20,0.8]];
+        posNuvens.forEach(([x,y,s]) => desenharNuvem(ctx, x, y, s, opcoes.luz));
+
+        /* Pássaros */
+        if (opcoes.luz !== 'noite') {
+          ctx.font = '16px serif';
+          ctx.fillText('🕊️', 140, 80);
+          ctx.fillText('🦅', 280, 50);
+        }
+
+        /* Estrelas cadentes de noite */
+        if (opcoes.luz === 'noite') {
+          ctx.font = '18px serif';
+          ctx.fillText('🌙', 60, 60);
+        }
+      }
+    },
+
+    jardim: {
+      nome: 'Jardim Mágico',
+      emoji: '🌸',
+      ceu: {
+        dia:      ['#90d4f5', '#c8eef8'],
+        porDoSol: ['#f5a25a', '#ffd580'],
+        noite:    ['#1a0d3a', '#3a1870']
+      },
+      solo: { cor1: '#5cb85c', cor2: '#3d8c3d' },
+      soloAltura: 0.60,
+      desenharElementos(ctx, opcoes) {
+        const w = canvas.width, h = canvas.height;
+        const hSolo = h * this.soloAltura;
+
+        /* Relva */
+        const gradRelva = ctx.createLinearGradient(0, hSolo, 0, h);
+        gradRelva.addColorStop(0, this.solo.cor1);
+        gradRelva.addColorStop(1, this.solo.cor2);
+        ctx.fillStyle = gradRelva;
+        ctx.fillRect(0, hSolo, w, h);
+
+        /* Flores */
+        const flores = ['🌸','🌼','🌺','🌻','💐','🌷'];
+        const posFlores = [30,90,170,250,340,410,460];
+        posFlores.forEach((x,i) => {
+          ctx.font = '26px serif';
+          ctx.fillText(flores[i % flores.length], x, hSolo + 18);
+        });
+
+        /* Caminho de pedras */
+        ctx.fillStyle = '#b0a090';
+        [180, 220, 240, 260, 280].forEach((x, i) => {
+          ctx.beginPath();
+          ctx.ellipse(x, hSolo + 50 + i*8, 18, 10, Math.random()*0.5, 0, Math.PI*2);
+          ctx.fill();
+        });
+
+        /* Árvore de flor de cerejeira */
+        desenharCerejeira(ctx, w - 100, hSolo, opcoes.luz);
+
+        /* Borboletas */
+        ctx.font = '20px serif';
+        ctx.fillText('🦋', 120, hSolo - 40);
+        ctx.fillText('🐝', 360, hSolo - 30);
+        ctx.fillText('🐛', 60, h - 18);
+      }
+    },
+
+    espaco: {
+      nome: 'Espaço Estrelado',
+      emoji: '🌌',
+      ceu: {
+        dia:      ['#0a0020', '#1a0050'],   /* espaço é sempre escuro */
+        porDoSol: ['#0d0030', '#1a0060'],
+        noite:    ['#000010', '#000030']
+      },
+      solo: { cor1: '#8c8c8c', cor2: '#5a5a5a' }, /* superfície lunar */
+      soloAltura: 0.72,
+      desenharElementos(ctx, opcoes) {
+        const w = canvas.width, h = canvas.height;
+        const hSolo = h * this.soloAltura;
+
+        /* Estrelas aleatórias (seed fixa com Math.sin para consistência) */
+        for (let i = 0; i < 80; i++) {
+          const x = ((Math.sin(i * 7.3) + 1) / 2) * w;
+          const y = ((Math.sin(i * 3.7) + 1) / 2) * hSolo;
+          const r = Math.sin(i * 13.1) * 0.8 + 1.2;
+          ctx.fillStyle = `rgba(255,255,255,${0.4 + Math.sin(i)*0.4})`;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        /* Planeta colorido */
+        const gradPlaneta = ctx.createRadialGradient(360, 80, 5, 360, 80, 45);
+        gradPlaneta.addColorStop(0, '#9b59b6');
+        gradPlaneta.addColorStop(0.6, '#6c3483');
+        gradPlaneta.addColorStop(1, '#4a235a');
+        ctx.fillStyle = gradPlaneta;
+        ctx.beginPath();
+        ctx.arc(360, 80, 45, 0, Math.PI*2);
+        ctx.fill();
+        /* Anel do planeta */
+        ctx.strokeStyle = 'rgba(180,130,230,0.6)';
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.ellipse(360, 80, 70, 14, -0.3, 0, Math.PI*2);
+        ctx.stroke();
+
+        /* Superfície lunar */
+        const gradLua = ctx.createLinearGradient(0, hSolo, 0, h);
+        gradLua.addColorStop(0, this.solo.cor1);
+        gradLua.addColorStop(1, this.solo.cor2);
+        ctx.fillStyle = gradLua;
+        ctx.fillRect(0, hSolo, w, h);
+
+        /* Crateras */
+        [[80,hSolo+30,20],[220,hSolo+50,14],[380,hSolo+25,18]].forEach(([x,y,r]) => {
+          ctx.fillStyle = 'rgba(0,0,0,0.2)';
+          ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+        });
+
+        /* Astronauta e foguetão */
+        ctx.font = '26px serif';
+        ctx.fillText('👨‍🚀', 160, hSolo - 10);
+        ctx.font = '30px serif';
+        ctx.fillText('🚀', 60, hSolo - 20);
+        ctx.font = '22px serif';
+        ctx.fillText('🌙', 420, 40);
+      }
+    }
+
+  }; // fim CENARIOS
+
+  // ─────────────────────────────────────────────────────
+  // FUNÇÕES AUXILIARES DE DESENHO
+  // Formas reutilizáveis pelos vários cenários.
+  // ─────────────────────────────────────────────────────
+
+  /** Desenha uma árvore simples */
+  function desenharArvore(ctx, x, yBase, escala=1, luz='dia') {
+    const corTronco = '#6b4226';
+    const corCopa   = luz === 'noite' ? '#1a3a1a' : '#2d7a2d';
+    const corCopa2  = luz === 'noite' ? '#0d200d' : '#1e5c1e';
+
+    /* Tronco */
+    ctx.fillStyle = corTronco;
+    ctx.fillRect(x - 6*escala, yBase - 50*escala, 12*escala, 50*escala);
+
+    /* Copa (triângulos) */
+    ctx.fillStyle = corCopa;
+    [[0,50],[0,30],[0,10]].forEach(([ox, oy], i) => {
+      ctx.beginPath();
+      ctx.moveTo(x, yBase - (50 + oy + i*20)*escala);
+      ctx.lineTo(x - (30 - i*4)*escala, yBase - (20 + oy)*escala);
+      ctx.lineTo(x + (30 - i*4)*escala, yBase - (20 + oy)*escala);
+      ctx.closePath();
+      ctx.fillStyle = i % 2 === 0 ? corCopa : corCopa2;
+      ctx.fill();
+    });
+  }
+
+  /** Desenha uma nuvem suave */
+  function desenharNuvem(ctx, x, y, escala=1, luz='dia') {
+    const cor = luz === 'noite' ? 'rgba(80,80,120,0.6)' : 'rgba(255,255,255,0.85)';
+    ctx.fillStyle = cor;
+    [[0,0,28],[22,8,22],[44,4,26],[66,8,20],[-18,8,20]].forEach(([ox,oy,r]) => {
+      ctx.beginPath();
+      ctx.arc(x + ox*escala, y + oy*escala, r*escala, 0, Math.PI*2);
+      ctx.fill();
+    });
+  }
+
+  /** Desenha um guarda-sol de praia */
+  function desenharGuardaSol(ctx, x, yBase) {
+    /* Pau */
+    ctx.strokeStyle = '#8B4513'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(x, yBase); ctx.lineTo(x + 10, yBase - 70); ctx.stroke();
+    /* Chapéu */
+    const cores = ['#e74c3c','#f39c12','#2ecc71','#3498db','#9b59b6'];
+    for (let i = 0; i < 5; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI/2;
+      const ang2 = ang + Math.PI/5;
+      ctx.fillStyle = cores[i];
+      ctx.beginPath();
+      ctx.moveTo(x + 10, yBase - 70);
+      ctx.arc(x + 10, yBase - 70, 40, ang, ang2);
+      ctx.closePath(); ctx.fill();
+    }
+  }
+
+  /** Desenha um sofá simples */
+  function desenharSofa(ctx, x, y) {
+    ctx.fillStyle = '#8e44ad';
+    ctx.beginPath(); ctx.roundRect(x, y, 180, 60, 12); ctx.fill();
+    /* Encosto */
+    ctx.fillStyle = '#6c3483';
+    ctx.beginPath(); ctx.roundRect(x, y - 30, 180, 35, 8); ctx.fill();
+    /* Braços */
+    ctx.fillStyle = '#6c3483';
+    ctx.beginPath(); ctx.roundRect(x - 16, y - 20, 20, 80, 8); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(x + 176, y - 20, 20, 80, 8); ctx.fill();
+    /* Almofada */
+    ctx.fillStyle = '#d7bde2';
+    ctx.beginPath(); ctx.roundRect(x + 20, y + 8, 55, 36, 8); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(x + 90, y + 8, 55, 36, 8); ctx.fill();
+  }
+
+  /** Desenha uma janela */
+  function desenharJanela(ctx, x, y, opcoes) {
+    /* Moldura */
+    ctx.fillStyle = '#8B6340'; ctx.fillRect(x, y, 80, 70);
+    /* Vidro */
+    const corCeu = opcoes.luz === 'noite' ? '#1a0a3a' :
+                   opcoes.luz === 'porDoSol' ? '#f0a060' : '#87ceeb';
+    ctx.fillStyle = corCeu; ctx.fillRect(x+6, y+6, 68, 58);
+    /* Cruz da janela */
+    ctx.strokeStyle = '#8B6340'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(x+40, y+6); ctx.lineTo(x+40, y+64); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+6, y+35); ctx.lineTo(x+74, y+35); ctx.stroke();
+    /* Sol / lua na janela */
+    ctx.font = '16px serif';
+    ctx.fillText(opcoes.luz === 'noite' ? '🌙' : '☀️', x+14, y+30);
+  }
+
+  /** Desenha um abajur */
+  function desenharAbajur(ctx, x, y) {
+    /* Pé */
+    ctx.strokeStyle = '#d4ac6e'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(x, y+60); ctx.lineTo(x, y+20); ctx.stroke();
+    /* Base */
+    ctx.fillStyle = '#b8860b'; ctx.fillRect(x-15, y+58, 30, 8);
+    /* Abajur */
+    ctx.fillStyle = '#f5deb3';
+    ctx.beginPath(); ctx.moveTo(x-20, y+20); ctx.lineTo(x+20, y+20);
+    ctx.lineTo(x+12, y); ctx.lineTo(x-12, y); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(255,220,100,0.3)';
+    ctx.beginPath(); ctx.ellipse(x, y+40, 40, 25, 0, 0, Math.PI*2); ctx.fill();
+  }
+
+  /** Desenha uma cerejeira */
+  function desenharCerejeira(ctx, x, yBase, luz) {
+    ctx.strokeStyle = '#5a3010'; ctx.lineWidth = 8;
+    ctx.beginPath(); ctx.moveTo(x, yBase); ctx.lineTo(x, yBase-90); ctx.stroke();
+    ctx.lineWidth = 4;
+    [[x-30, yBase-80, x-60, yBase-120],[x+20, yBase-70, x+50, yBase-110]].forEach(([x1,y1,x2,y2]) => {
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    });
+    /* Flores */
+    const corFlor = luz==='noite' ? 'rgba(255,182,193,0.4)' : 'rgba(255,182,193,0.8)';
+    ctx.fillStyle = corFlor;
+    [[x-50,yBase-130,30],[x,yBase-115,35],[x+45,yBase-125,28]].forEach(([cx,cy,r]) => {
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
+    });
+    ctx.font = '14px serif';
+    ctx.fillText('🌸',x-58,yBase-125);
+    ctx.fillText('🌸',x+28,yBase-118);
+  }
+
+  // ─────────────────────────────────────────────────────
+  // DESENHO PRINCIPAL DA CENA
+  // ─────────────────────────────────────────────────────
+
+  /**
+   * Redesenha o canvas completo com as opções atuais.
+   * Chamada sempre que o utilizador muda qualquer opção.
+   */
+  function atualizarCena() {
+    const cenario = CENARIOS[lugar.cenario];
+    const w = canvas.width, h = canvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    /* 1. Gradiente do céu */
+    const cores = cenario.ceu[
+      lugar.luz === 'porDoSol' ? 'porDoSol' :
+      lugar.luz === 'noite'    ? 'noite'    : 'dia'
+    ];
+    const gradCeu = ctx.createLinearGradient(0, 0, 0, h * (cenario.soloAltura || 0.6));
+    gradCeu.addColorStop(0, cores[0]);
+    gradCeu.addColorStop(1, cores[1]);
+    ctx.fillStyle = gradCeu;
+    ctx.fillRect(0, 0, w, h);
+
+    /* 2. Sol / lua no céu (dependendo da luz) */
+    if (lugar.cenario !== 'espaco') {
+      if (lugar.luz === 'dia') {
+        const gradSol = ctx.createRadialGradient(80, 60, 5, 80, 60, 35);
+        gradSol.addColorStop(0, '#fff7a0'); gradSol.addColorStop(1, '#FFD700');
+        ctx.fillStyle = gradSol;
+        ctx.beginPath(); ctx.arc(80, 60, 32, 0, Math.PI*2); ctx.fill();
+      } else if (lugar.luz === 'noite') {
+        ctx.font = '36px serif';
+        ctx.fillText('🌕', 60, 75);
+      } else if (lugar.luz === 'porDoSol') {
+        const gradSolPosto = ctx.createRadialGradient(w/2, h*0.6, 0, w/2, h*0.6, 80);
+        gradSolPosto.addColorStop(0, '#FFD166'); gradSolPosto.addColorStop(1, 'rgba(255,120,0,0)');
+        ctx.fillStyle = gradSolPosto;
+        ctx.beginPath(); ctx.arc(w/2, h*(cenario.soloAltura||0.6), 80, Math.PI, 0); ctx.fill();
+      }
+    }
+
+    /* 3. Elementos específicos do cenário */
+    cenario.desenharElementos(ctx, lugar);
+
+    /* 4. Efeito de tempo por cima de tudo */
+    desenharTempo(ctx, w, h);
+
+    /* 5. Extras */
+    desenharExtras(ctx, w, h, cenario);
+
+    /* 6. Overlay noturno suave */
+    if (lugar.luz === 'noite') {
+      ctx.fillStyle = 'rgba(0,0,30,0.18)';
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    /* 7. Nome do lugar */
+    const nomeInput = document.getElementById('input-nome').value.trim();
+    lugar.nome = nomeInput || '✨ O meu lugar especial';
+    document.getElementById('cena-nome-display').textContent = lugar.nome;
+  }
+
+  /** Desenha o efeito de chuva ou neve */
+  function desenharTempo(ctx, w, h) {
+    if (lugar.tempo === 'chuva') {
+      ctx.strokeStyle = 'rgba(150,180,220,0.55)';
+      ctx.lineWidth = 1.2;
+      for (let i = 0; i < 40; i++) {
+        const x = ((Math.sin(i * 9.1) + 1) / 2) * w;
+        const y = ((Math.sin(i * 5.3) + 1) / 2) * h;
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x-3, y+14); ctx.stroke();
+      }
+    } else if (lugar.tempo === 'neve') {
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      for (let i = 0; i < 35; i++) {
+        const x = ((Math.sin(i * 6.7) + 1) / 2) * w;
+        const y = ((Math.sin(i * 4.1) + 1) / 2) * h * 0.85;
+        const r = 2 + Math.sin(i * 11) * 1.5;
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+      }
+    }
+  }
+
+  /** Desenha os extras selecionados */
+  function desenharExtras(ctx, w, h, cenario) {
+    const hSolo = h * (cenario.soloAltura || 0.6);
+
+    lugar.extras.forEach(extra => {
+      ctx.font = '26px serif';
+      switch(extra) {
+        case 'arcoiris':
+          /* Arco-íris desenhado com arcos coloridos */
+          const cores = ['#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6'];
+          cores.forEach((cor, i) => {
+            ctx.strokeStyle = cor; ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.arc(w/2, hSolo + 20, 90 + i*10, Math.PI, 0);
+            ctx.stroke();
+          });
+          break;
+        case 'animais':
+          ctx.fillText('🦋', 160, hSolo - 50);
+          ctx.fillText('🐿️', 260, hSolo + 10);
+          ctx.fillText('🐦', 360, hSolo - 60);
+          break;
+        case 'fogueira':
+          ctx.fillText('🔥', w/2 - 14, hSolo + 12);
+          ctx.fillText('🪵', w/2 - 30, hSolo + 30);
+          break;
+        case 'flores':
+          ['🌸','🌼','🌺'].forEach((f, i) => {
+            ctx.fillText(f, 30 + i*50, hSolo + 14);
+          });
+          break;
+        case 'estrelas':
+          for (let i = 0; i < 10; i++) {
+            ctx.font = (12 + Math.sin(i*5)*5) + 'px serif';
+            const x = ((Math.sin(i*3.7)+1)/2) * w;
+            const y = ((Math.sin(i*7.1)+1)/2) * hSolo * 0.7;
+            ctx.fillText('⭐', x, y);
+          }
+          break;
+        case 'musica':
+          ctx.fillText('🎵', 40, 50);
+          ctx.fillText('🎶', w - 60, 70);
+          ctx.fillText('🎵', w/2 - 10, 40);
+          break;
+      }
+    });
+  }
+
+  // ─────────────────────────────────────────────────────
+  // SELEÇÃO DE CENÁRIO, CHIPS E EXTRAS
+  // ─────────────────────────────────────────────────────
+
+  function selecionarCenario(botao) {
+    document.querySelectorAll('.cenario-btn').forEach(b => b.classList.remove('ativo'));
+    botao.classList.add('ativo');
+    lugar.cenario = botao.dataset.cenario;
+    document.getElementById('btn-ecra1').style.display = 'block';
+  }
+
+  /**
+   * Seleciona um chip de opção única por grupo (luz, tempo).
+   * Só um chip por grupo pode estar ativo.
+   */
+  function selecionarChip(chip) {
+    const grupo = chip.dataset.grupo;
+    /* Desativa os outros do mesmo grupo */
+    document.querySelectorAll(`.chip[data-grupo="${grupo}"]`).forEach(c => {
+      c.classList.remove('ativo');
+    });
+    chip.classList.add('ativo');
+    lugar[grupo] = chip.dataset.valor;
+    atualizarCena();
+    lancarParticulas(chip);
+  }
+
+  /**
+   * Seleciona/deseleciona um extra (máx. 2 ativos).
+   */
+  function selecionarExtra(chip) {
+    const valor = chip.dataset.valor;
+    if (lugar.extras.includes(valor)) {
+      /* Já está ativo — remove */
+      lugar.extras = lugar.extras.filter(e => e !== valor);
+      chip.classList.remove('ativo');
+    } else {
+      if (lugar.extras.length >= 2) {
+        /* Limite de 2 — remove o mais antigo */
+        const removido = lugar.extras.shift();
+        document.querySelector(`.chip[data-valor="${removido}"]`).classList.remove('ativo');
+      }
+      lugar.extras.push(valor);
+      chip.classList.add('ativo');
+    }
+    atualizarCena();
+    lancarParticulas(chip);
+  }
+
+  // ─────────────────────────────────────────────────────
+  // PARTÍCULAS DECORATIVAS
+  // ─────────────────────────────────────────────────────
+
+  /**
+   * Lança emojis flutuantes junto ao elemento clicado.
+   * Dá feedback visual divertido ao interagir.
+   */
+  function lancarParticulas(el) {
+    const rect    = el.getBoundingClientRect();
+    const emojis  = ['✨','🌟','💫','🌈','🎉'];
+    for (let i = 0; i < 4; i++) {
+      const p = document.createElement('span');
+      p.className = 'particula';
+      p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      p.style.left = (rect.left + rect.width/2 + (Math.random()-0.5)*40) + 'px';
+      p.style.top  = (rect.top  + window.scrollY - 10) + 'px';
+      p.style.animationDelay = (i * 0.1) + 's';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 2600);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────
+  // NAVEGAÇÃO ENTRE ECRÃS
+  // ─────────────────────────────────────────────────────
+
+  function irParaEcra(n) {
+    document.querySelectorAll('.ecra').forEach(e => e.classList.remove('ativo'));
+    document.getElementById(`ecra-${n}`).classList.add('ativo');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (n === 2) atualizarCena();
+    if (n === 3) iniciarVisita();
+  }
+
+  // ─────────────────────────────────────────────────────
+  // ECRÃ 3 — VISITA GUIADA
+  // Sequência de textos de relaxamento personalizados
+  // pelo cenário escolhido.
+  // ─────────────────────────────────────────────────────
+
+  /*
+    TEXTOS DA VISITA GUIADA
+    Cada cenário tem a sua sequência de 5 momentos,
+    cada um com emoji e texto de visualização.
+    Para personalizar: edita o texto de cada passo.
+  */
+  const TEXTOS_VISITA = {
+    praia: [
+      { emoji: '🌊', texto: 'Fecha os olhos e imagina que estás na praia. Sentes a areia morna debaixo dos teus pés — cada grão é como um abraço quentinho.' },
+      { emoji: '🌬️', texto: 'Uma brisa suave toca no teu rosto. Cheira a maresia e a verão. O ar aqui é limpo e fresco. Podes respirar fundo...' },
+      { emoji: '🌊', texto: 'Ouves o som das ondas a chegarem e a irem. Uma e outra vez. Como a tua respiração. Suave, calmo, tranquilo.' },
+      { emoji: '☀️', texto: 'O sol aquece os teus ombros, muito gentilmente. Aqui ninguém te pode magoar. Estás completamente seguro(a).' },
+      { emoji: '💛', texto: 'Este é o teu lugar. Sempre que precisares de calma, podes voltar aqui na tua imaginação. Ele estará sempre à tua espera. 🌊' }
+    ],
+    floresta: [
+      { emoji: '🌲', texto: 'Fecha os olhos. Estás numa floresta calma e verde. O chão é macio de folhas e musgo, como um tapete natural.' },
+      { emoji: '🍃', texto: 'As árvores altíssimas protegem-te como guardiões amigos. O vento murmura entre as folhas... shhhh...' },
+      { emoji: '🐦', texto: 'Algures perto, um passarinho canta. É uma música simples e bonita, só para ti. A floresta conhece o teu nome.' },
+      { emoji: '🌿', texto: 'Cheira a terra molhada e a pinheiro. Este cheiro diz ao teu corpo: "Estás em segurança. Podes descansar."' },
+      { emoji: '💚', texto: 'A floresta cuida de ti. Sempre que precisares de força, lembra-te das árvores: crescem devagar, mas ficam de pé mesmo nas tempestades. 🌲' }
+    ],
+    quarto: [
+      { emoji: '🛋️', texto: 'Fecha os olhos. Estás no teu quarto especial. O sofá abraça-te com almofadas macias como nuvens.' },
+      { emoji: '🕯️', texto: 'Uma luz suave aquece o ambiente. Tudo aqui é teu: os teus livros, os teus brinquedos, as tuas memórias felizes.' },
+      { emoji: '🎵', texto: 'Uma música calma flutua no ar. Sentes os teus ombros a descer... a tensão a sair pelo corpo todo...' },
+      { emoji: '🧸', texto: 'Aqui ninguém te apressa. O tempo passa devagar. Podes ser exatamente como és, sem precisar de fazer nada.' },
+      { emoji: '💜', texto: 'Este cantinho pertence-te. É o lugar onde te podes refugiar quando o mundo parece grande demais. Volta sempre que precisares. 🛋️' }
+    ],
+    nuvens: [
+      { emoji: '☁️', texto: 'Fecha os olhos. Estás a flutuar numa nuvem macia e branca. É como um colchão de algodão, só para ti.' },
+      { emoji: '🌤️', texto: 'Lá em baixo, o mundo é pequenino. As preocupações parecem tão distantes daqui em cima, quase invisíveis.' },
+      { emoji: '🌈', texto: 'Um arco-íris atravessa o céu à tua frente. As cores são tão bonitas que o teu coração fica mais leve só de olhar.' },
+      { emoji: '🕊️', texto: 'Um pombinho branco pousa perto de ti. Olha para ti com olhos gentis. Aqui em cima, só existe paz.' },
+      { emoji: '💙', texto: 'Podes voar até aqui sempre que quiseres. Basta fechar os olhos e respirar fundo — e as nuvens virão buscar-te. ☁️' }
+    ],
+    jardim: [
+      { emoji: '🌸', texto: 'Fecha os olhos. Estás num jardim mágico onde as flores têm todas as cores do arco-íris e cheiram maravilhosamente.' },
+      { emoji: '🦋', texto: 'Uma borboleta cor-de-rosa pousa na tua mão. É tão leve que quase não a sentes. Fica quieto(a)... ela confia em ti.' },
+      { emoji: '💐', texto: 'O aroma das flores enche os teus pulmões. Cada respiração é uma pequena dose de felicidade que entra no teu corpo.' },
+      { emoji: '🐝', texto: 'Ouve o zumbido suave das abelhas ao longe. Elas estão a trabalhar, contentes. Toda a natureza aqui está em harmonia.' },
+      { emoji: '💗', texto: 'Este jardim floresce dentro de ti. A calma que sentes agora é real e é tua. Leva-a contigo quando abrires os olhos. 🌸' }
+    ],
+    espaco: [
+      { emoji: '🌌', texto: 'Fecha os olhos. Estás no espaço, numa nave confortável. Lá fora, estrelas brilham aos milhões, como diamantes espalhados.' },
+      { emoji: '🌍', texto: 'Ao longe, vês a Terra — azul e verde e bonita. Os problemas daqui parecem tão pequenos comparados com o universo imenso.' },
+      { emoji: '🌙', texto: 'A lua está perto. Podes ver cada cratera. Há um silêncio perfeito aqui no espaço — um silêncio que acalma tudo.' },
+      { emoji: '⭐', texto: 'Cada estrela que vês já existia antes de tu nasceres. Mesmo as mais antigas brilham para ti esta noite. És especial no universo.' },
+      { emoji: '💫', texto: 'O espaço é infinito — e há sempre espaço para ti nele. Sempre que te sentires pequeno(a), lembra-te: fazes parte de algo imenso e bonito. 🌌' }
+    ]
+  };
+
+  /** Inicializa o ecrã 3 com a cena e os textos corretos */
+  function iniciarVisita() {
+    passoVisita = 0;
+
+    /* Mostra o título com o nome do lugar */
+    const cenario = CENARIOS[lugar.cenario];
+    document.getElementById('lugar-titulo').textContent =
+      `${cenario.emoji} ${lugar.nome}`;
+
+    /* Exporta a imagem do canvas para o ecrã 3 */
+    document.getElementById('lugar-imagem').src = canvas.toDataURL('image/png');
+
+    /* Cria os pontos de progresso */
+    const textos = TEXTOS_VISITA[lugar.cenario];
+    const prog   = document.getElementById('visita-progresso');
+    prog.innerHTML = '';
+    textos.forEach((_, i) => {
+      const p = document.createElement('div');
+      p.className = 'visita-ponto' + (i === 0 ? ' ativo' : '');
+      p.id = `vponto-${i}`;
+      prog.appendChild(p);
+    });
+
+    /* Mostra o primeiro texto */
+    mostrarPassoVisita(0);
+    document.getElementById('visita-final').style.display = 'none';
+    document.getElementById('btn-visita-proximo').style.display = 'block';
+  }
+
+  /** Mostra o texto do passo atual da visita */
+  function mostrarPassoVisita(passo) {
+    const textos = TEXTOS_VISITA[lugar.cenario];
+    const dados  = textos[passo];
+
+    document.getElementById('visita-emoji').textContent = dados.emoji;
+    document.getElementById('visita-texto').textContent = dados.texto;
+
+    /* Atualiza pontos */
+    textos.forEach((_, i) => {
+      const p = document.getElementById(`vponto-${i}`);
+      p.className = 'visita-ponto' +
+        (i < passo ? ' feito' : i === passo ? ' ativo' : '');
+    });
+
+    /* Botão anterior */
+    document.getElementById('btn-visita-anterior').style.display =
+      passo > 0 ? 'block' : 'none';
+  }
+
+  /** Avança ou recua na visita guiada */
+  function navegarVisita(direcao) {
+    const textos  = TEXTOS_VISITA[lugar.cenario];
+    passoVisita  += direcao;
+
+    if (passoVisita >= textos.length) {
+      /* Chegou ao fim — mostra botões finais */
+      document.getElementById('btn-visita-proximo').style.display = 'none';
+      document.getElementById('btn-visita-anterior').style.display = 'none';
+      document.getElementById('visita-final').style.display = 'flex';
+      /* Atualiza todos os pontos como feitos */
+      textos.forEach((_,i) => {
+        document.getElementById(`vponto-${i}`).className = 'visita-ponto feito';
+      });
+      return;
+    }
+
+    passoVisita = Math.max(0, passoVisita);
+    mostrarPassoVisita(passoVisita);
+  }
+
+  // ─────────────────────────────────────────────────────
+  // GUARDAR IMAGEM
+  // ─────────────────────────────────────────────────────
+
+  function guardarLugar() {
+    /* Cria canvas final com o nome do lugar incorporado */
+    const c   = document.createElement('canvas');
+    c.width   = canvas.width; c.height = canvas.height + 50;
+    const ct  = c.getContext('2d');
+
+    /* Fundo branco */
+    ct.fillStyle = '#fff'; ct.fillRect(0, 0, c.width, c.height);
+    /* Cena */
+    ct.drawImage(canvas, 0, 0);
+    /* Nome por baixo */
+    ct.fillStyle = '#1a4a3a';
+    ct.font      = 'bold 20px "Baloo 2", cursive';
+    ct.textAlign = 'center';
+    ct.fillText(lugar.nome, c.width/2, canvas.height + 32);
+
+    const link    = document.createElement('a');
+    link.download = 'o-meu-lugar-seguro.png';
+    link.href     = c.toDataURL('image/png');
+    link.click();
+  }
+
+  // ─────────────────────────────────────────────────────
+  // INICIALIZAÇÃO
+  // ─────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    /* Pré-seleciona "praia" por defeito para mostrar algo */
+    const primeiroBotao = document.querySelector('.cenario-btn[data-cenario="praia"]');
+    if (primeiroBotao) selecionarCenario(primeiroBotao);
+  });
+
+</script>
+
+</body>
+</html>

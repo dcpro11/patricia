@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Tartaruga – Cantinho da Calma</title>
+
+  <!-- Fontes Google (mesmas do menu para consistência visual) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =====================================================
+       VARIÁVEIS GLOBAIS
+       Edita aqui para mudar cores facilmente.
+       ===================================================== */
+    :root {
+      --cor-fundo:        #fffdf0;   /* creme muito suave              */
+      --cor-fundo-escuro: #fff8da;   /* creme um pouco mais escuro     */
+      --cor-titulo:       #3d5a1a;   /* verde floresta escuro          */
+      --cor-texto:        #4a4a2e;   /* castanho escuro (texto geral)  */
+      --cor-destaque:     #e8a800;   /* amarelo ouro (botões, acentos) */
+      --cor-destaque-2:   #f5c842;   /* amarelo mais claro             */
+      --cor-tartaruga:    #5a9e3a;   /* verde da tartaruga             */
+      --cor-casco:        #3d7a1a;   /* verde escuro do casco          */
+      --cor-casco-claro:  #7ec24a;   /* verde claro do casco           */
+
+      --fonte-titulo: 'Baloo 2', cursive;
+      --fonte-texto:  'Nunito', sans-serif;
+      --raio:         20px;
+      --sombra:       0 6px 24px rgba(0,0,0,0.10);
+    }
+
+    /* =====================================================
+       RESET E BASE
+       ===================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--fonte-texto);
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      /* Fundo com bolinhas subtis (igual ao menu) */
+      background-image: radial-gradient(circle, #e0d8a0 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* =====================================================
+       BOTÃO VOLTAR (canto superior esquerdo)
+       ===================================================== */
+    .btn-voltar {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      background: #fff;
+      border: 2px solid var(--cor-destaque);
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-family: var(--fonte-titulo);
+      font-size: 0.9rem;
+      color: var(--cor-titulo);
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--sombra);
+      transition: transform 0.2s, background 0.2s;
+      z-index: 100;
+    }
+
+    .btn-voltar:hover {
+      background: var(--cor-destaque-2);
+      transform: translateX(-3px);
+    }
+
+    /* =====================================================
+       CONTENTOR PRINCIPAL DO JOGO
+       ===================================================== */
+    .jogo-contentor {
+      width: 100%;
+      max-width: 680px;
+      padding: 90px 24px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0; /* espaçamento controlado em cada passo */
+    }
+
+    /* =====================================================
+       PAINEL DE PASSO (cada fase do jogo)
+       Cada "passo" é um <section> com esta classe.
+       Usamos display:none / display:flex para mostrar/esconder.
+       ===================================================== */
+    .passo {
+      display: none; /* escondido por defeito */
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+      width: 100%;
+      animation: aparece 0.4s ease forwards;
+    }
+
+    /* O passo ativo fica visível */
+    .passo.ativo {
+      display: flex;
+    }
+
+    @keyframes aparece {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* =====================================================
+       BALÃO DE FALA DA TARTARUGA
+       Caixa branca arredondada que simula um balão de fala.
+       ===================================================== */
+    .balao {
+      background: #fff;
+      border: 3px solid var(--cor-destaque-2);
+      border-radius: var(--raio);
+      padding: 28px 32px;
+      box-shadow: var(--sombra);
+      position: relative;
+      width: 100%;
+    }
+
+    /* Triângulo no fundo do balão (apontando para a tartaruga) */
+    .balao::after {
+      content: '';
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 9px solid transparent;
+      border-top-color: var(--cor-destaque-2);
+    }
+
+    /* Texto principal da tartaruga */
+    .balao-titulo {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.2rem, 4vw, 1.7rem);
+      color: var(--cor-titulo);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .balao-texto {
+      font-size: clamp(0.9rem, 3vw, 1.05rem);
+      line-height: 1.65;
+      color: var(--cor-texto);
+    }
+
+    /* =====================================================
+       TARTARUGA SVG
+       Desenhada em CSS/SVG inline para ser editável.
+       ===================================================== */
+    .tartaruga-wrapper {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin-top: 24px;
+    }
+
+    /* A própria imagem SVG da tartaruga */
+    .tartaruga-svg {
+      width: 180px;
+      height: 180px;
+      transition: transform 0.5s ease;
+    }
+
+    /*
+      Estado "na concha": a tartaruga fica menor e as
+      patas/cabeça "desaparecem" (scale Y reduzido).
+      Ativado via JavaScript adicionando a classe .na-concha
+    */
+    .tartaruga-svg.na-concha {
+      transform: scale(0.75);
+    }
+
+    /* Estrelinhas decorativas que aparecem em passos positivos */
+    .estrelinha {
+      position: absolute;
+      font-size: 1.4rem;
+      animation: flotar 2s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .estrelinha:nth-child(1) { top: -10px; left: 10px;  animation-delay: 0s;    }
+    .estrelinha:nth-child(2) { top:   0px; right: 5px;  animation-delay: 0.4s;  }
+    .estrelinha:nth-child(3) { bottom: 5px; left: 5px;  animation-delay: 0.8s;  }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0);   opacity: 0.7; }
+      50%       { transform: translateY(-8px); opacity: 1;   }
+    }
+
+    /* =====================================================
+       BARRA DE PROGRESSO
+       Mostra em que passo estamos (ex: Passo 2 de 4).
+       ===================================================== */
+    .progresso {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .progresso-ponto {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ddd;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .progresso-ponto.ativo {
+      background: var(--cor-destaque);
+      transform: scale(1.3);
+    }
+
+    .progresso-ponto.feito {
+      background: var(--cor-tartaruga);
+    }
+
+    /* =====================================================
+       BOTÕES DE AÇÃO (Próximo, Tentar de Novo, etc.)
+       ===================================================== */
+    .btn {
+      padding: 14px 40px;
+      border: none;
+      border-radius: 50px;
+      font-family: var(--fonte-titulo);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.2s, filter 0.2s;
+      box-shadow: var(--sombra);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      filter: brightness(1.07);
+    }
+
+    .btn-principal {
+      background: var(--cor-destaque);
+      color: #3d3000;
+    }
+
+    .btn-verde {
+      background: var(--cor-tartaruga);
+      color: #fff;
+    }
+
+    .btn-cinza {
+      background: #e0e0e0;
+      color: #555;
+      font-size: 0.95rem;
+      padding: 10px 28px;
+    }
+
+    /* =====================================================
+       ÁREA DE ESCOLHA (botões de opção)
+       Usado no Passo 1 para a criança escolher a emoção.
+       ===================================================== */
+    .opcoes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .opcao-btn {
+      background: #fff;
+      border: 3px solid var(--cor-destaque-2);
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-family: var(--fonte-texto);
+      font-size: 1rem;
+      cursor: pointer;
+      flex: 1 1 130px;
+      max-width: 160px;
+      transition: background 0.2s, transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .opcao-btn:hover,
+    .opcao-btn.selecionado {
+      background: var(--cor-destaque-2);
+      border-color: var(--cor-destaque);
+      transform: scale(1.05);
+    }
+
+    .opcao-emoji {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    /* =====================================================
+       CAIXA DE RESPIRAÇÃO (Passo 3)
+       Círculo que expande e contrai para guiar a respiração.
+       ===================================================== */
+    .respiracao-circulo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--cor-destaque-2), var(--cor-destaque));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      box-shadow: 0 0 0 0 rgba(232,168,0,0.4);
+      animation: respirar 4s ease-in-out infinite;
+    }
+
+    @keyframes respirar {
+      0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(232,168,0,0.4); }
+      50%       { transform: scale(1.35); box-shadow: 0 0 0 20px rgba(232,168,0,0); }
+    }
+
+    .respiracao-legenda {
+      font-size: 1rem;
+      color: var(--cor-titulo);
+      font-weight: 700;
+    }
+
+    /* =====================================================
+       SOLUÇÕES (Passo 4)
+       Cartões de sugestão do que fazer depois de acalmar.
+       ===================================================== */
+    .solucoes {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .solucao-item {
+      background: #fff;
+      border: 2px solid var(--cor-destaque-2);
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.95rem;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .solucao-item:hover {
+      background: var(--cor-destaque-2);
+      transform: translateX(6px);
+    }
+
+    .solucao-emoji {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    /* =====================================================
+       ECRÃ FINAL (celebração)
+       ===================================================== */
+    .celebracao {
+      font-size: 4rem;
+      animation: saltitar 0.6s ease infinite alternate;
+    }
+
+    @keyframes saltitar {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-12px); }
+    }
+
+    .estrelas-finais {
+      font-size: 2rem;
+      letter-spacing: 8px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Botão para voltar ao menu -->
+  <a href="index.html" class="btn-voltar">← Voltar</a>
+
+  <!-- =====================================================
+       CONTENTOR PRINCIPAL
+       ===================================================== -->
+  <div class="jogo-contentor">
+
+    <!-- Barra de progresso (pontinho por passo) -->
+    <div class="progresso" id="progresso">
+      <!-- Gerada pelo JavaScript -->
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PASSO 0 – INTRODUÇÃO
+         Apresenta a tartaruga Tina e explica o jogo.
+         ══════════════════════════════════════════════════ -->
+    <section class="passo ativo" id="passo-0">
+
+      <div class="balao">
+        <p class="balao-titulo">Olá! Eu sou a Tina, a tartaruga! 🐢</p>
+        <p class="balao-texto">
+          Quando me sinto muito zangada ou assustada, aprendi um truque especial.<br><br>
+          <strong>Queres que eu te ensine?</strong> É fácil e ajuda muito!
+        </p>
+      </div>
+
+      <!-- Tartaruga SVG desenhada inline -->
+      <div class="tartaruga-wrapper">
+        <svg class="tartaruga-svg" id="tartaruga-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="Tartaruga Tina">
+
+          <!-- Sombra no chão -->
+          <ellipse cx="100" cy="185" rx="55" ry="8" fill="rgba(0,0,0,0.08)" />
+
+          <!-- Patas traseiras -->
+          <ellipse cx="58"  cy="155" rx="18" ry="11" fill="#5a9e3a" transform="rotate(-20,58,155)"  />
+          <ellipse cx="142" cy="155" rx="18" ry="11" fill="#5a9e3a" transform="rotate(20,142,155)"  />
+
+          <!-- Patas dianteiras -->
+          <ellipse cx="52"  cy="105" rx="14" ry="9"  fill="#5a9e3a" transform="rotate(-35,52,105)"  />
+          <ellipse cx="148" cy="105" rx="14" ry="9"  fill="#5a9e3a" transform="rotate(35,148,105)"  />
+
+          <!-- Corpo principal (oval verde) -->
+          <ellipse cx="100" cy="125" rx="62" ry="48" fill="#5a9e3a" />
+
+          <!-- Casco – base -->
+          <ellipse cx="100" cy="118" rx="52" ry="40" fill="#3d7a1a" />
+
+          <!-- Padrão do casco (hexágonos simplificados como polígonos) -->
+          <polygon points="100,82 114,90 114,106 100,114 86,106 86,90"  fill="#7ec24a" opacity="0.7" />
+          <polygon points="72,95  86,103 86,119 72,127 58,119 58,103"   fill="#6ab33a" opacity="0.6" />
+          <polygon points="128,95 142,103 142,119 128,127 114,119 114,103" fill="#6ab33a" opacity="0.6" />
+          <polygon points="100,116 114,124 114,140 100,148 86,140 86,124" fill="#6ab33a" opacity="0.6" />
+
+          <!-- Borda do casco -->
+          <ellipse cx="100" cy="118" rx="52" ry="40" fill="none" stroke="#2d5c10" stroke-width="2.5" />
+
+          <!-- Cabeça -->
+          <circle cx="100" cy="78" r="24" fill="#5a9e3a" />
+
+          <!-- Olhos -->
+          <circle cx="91"  cy="72" r="7"   fill="#fff" />
+          <circle cx="109" cy="72" r="7"   fill="#fff" />
+          <circle cx="92"  cy="72" r="4"   fill="#222" />   <!-- pupila esq -->
+          <circle cx="110" cy="72" r="4"   fill="#222" />   <!-- pupila dir -->
+          <!-- Brilho nos olhos -->
+          <circle cx="93"  cy="70" r="1.5" fill="#fff" />
+          <circle cx="111" cy="70" r="1.5" fill="#fff" />
+
+          <!-- Boca (sorriso) -->
+          <path d="M 90 84 Q 100 92 110 84" stroke="#2d5c10" stroke-width="2.5" fill="none" stroke-linecap="round" />
+
+          <!-- Antenas / sobrancelhas -->
+          <path d="M 91 66 Q 87 60 84 58" stroke="#3d7a1a" stroke-width="2" fill="none" stroke-linecap="round" />
+          <path d="M 109 66 Q 113 60 116 58" stroke="#3d7a1a" stroke-width="2" fill="none" stroke-linecap="round" />
+
+          <!-- Pescoço (liga cabeça ao casco) -->
+          <rect x="88" y="95" width="24" height="14" rx="8" fill="#5a9e3a" />
+
+          <!-- Cauda pequena -->
+          <ellipse cx="100" cy="162" rx="8" ry="5" fill="#5a9e3a" />
+
+        </svg>
+      </div><!-- /tartaruga-wrapper -->
+
+      <button class="btn btn-principal" onclick="irParaPasso(1)">
+        Sim, ensina-me! 🌟
+      </button>
+
+    </section><!-- /passo-0 -->
+
+    <!-- ══════════════════════════════════════════════════
+         PASSO 1 – RECONHECER A EMOÇÃO
+         A criança identifica o que está a sentir.
+         ══════════════════════════════════════════════════ -->
+    <section class="passo" id="passo-1">
+
+      <div class="balao">
+        <p class="balao-titulo">Passo 1: Reconhecer 👀</p>
+        <p class="balao-texto">
+          O primeiro passo é <strong>perceber o que estás a sentir</strong>.<br>
+          Como te sentes agora, ou como te sentiste quando ficaste chateado?
+        </p>
+      </div>
+
+      <div class="tartaruga-wrapper">
+        <svg class="tartaruga-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="Tartaruga curiosa">
+          <!-- (tartaruga igual, reutilizamos o mesmo SVG) -->
+          <ellipse cx="100" cy="185" rx="55" ry="8" fill="rgba(0,0,0,0.08)" />
+          <ellipse cx="58"  cy="155" rx="18" ry="11" fill="#5a9e3a" transform="rotate(-20,58,155)" />
+          <ellipse cx="142" cy="155" rx="18" ry="11" fill="#5a9e3a" transform="rotate(20,142,155)" />
+          <ellipse cx="52"  cy="105" rx="14" ry="9"  fill="#5a9e3a" transform="rotate(-35,52,105)" />
+          <ellipse cx="148" cy="105" rx="14" ry="9"  fill="#5a9e3a" transform="rotate(35,148,105)" />
+          <ellipse cx="100" cy="125" rx="62" ry="48" fill="#5a9e3a" />
+          <ellipse cx="100" cy="118" rx="52" ry="40" fill="#3d7a1a" />
+          <polygon points="100,82 114,90 114,106 100,114 86,106 86,90"  fill="#7ec24a" opacity="0.7" />
+          <polygon points="72,95  86,103 86,119 72,127 58,119 58,103"   fill="#6ab33a" opacity="0.6" />
+          <polygon points="128,95 142,103 142,119 128,127 114,119 114,103" fill="#6ab33a" opacity="0.6" />
+          <polygon points="100,116 114,124 114,140 100,148 86,140 86,124" fill="#6ab33a" opacity="0.6" />
+          <ellipse cx="100" cy="118" rx="52" ry="40" fill="none" stroke="#2d5c10" stroke-width="2.5" />
+          <circle cx="100" cy="78" r="24" fill="#5a9e3a" />
+          <circle cx="91"  cy="72" r="7"  fill="#fff" />
+          <circle cx="109" cy="72" r="7"  fill="#fff" />
+          <circle cx="92"  cy="72" r="4"  fill="#222" />
+          <circle cx="110" cy="72" r="4"  fill="#222" />
+          <circle cx="93"  cy="70" r="1.5" fill="#fff" />
+          <circle cx="111" cy="70" r="1.5" fill="#fff" />
+          <!-- Boca surpresa / curiosa -->
+          <circle cx="100" cy="87" r="4" fill="#2d5c10" />
+          <rect x="88" y="95" width="24" height="14" rx="8" fill="#5a9e3a" />
+          <ellipse cx="100" cy="162" rx="8" ry="5" fill="#5a9e3a" />
+        </svg>
+      </div>
+
+      <!-- Opções de emoção para a criança clicar -->
+      <div class="opcoes" id="opcoes-emocao">
+        <button class="opcao-btn" onclick="selecionarEmocao(this, 'zangado')">
+          <span class="opcao-emoji">😠</span>
+          <span>Zangado(a)</span>
+        </button>
+        <button class="opcao-btn" onclick="selecionarEmocao(this, 'assustado')">
+          <span class="opcao-emoji">😨</span>
+          <span>Assustado(a)</span>
+        </button>
+        <button class="opcao-btn" onclick="selecionarEmocao(this, 'triste')">
+          <span class="opcao-emoji">😢</span>
+          <span>Triste</span>
+        </button>
+        <button class="opcao-btn" onclick="selecionarEmocao(this, 'frustrado')">
+          <span class="opcao-emoji">😤</span>
+          <span>Frustrado(a)</span>
+        </button>
+      </div>
+
+      <!-- Botão só aparece depois de selecionar (ver JS) -->
+      <button class="btn btn-principal" id="btn-passo1" style="display:none;" onclick="irParaPasso(2)">
+        Próximo →
+      </button>
+
+    </section><!-- /passo-1 -->
+
+    <!-- ══════════════════════════════════════════════════
+         PASSO 2 – PARAR / ENTRAR NA CONCHA
+         A tartaruga "recolhe" para dentro da concha.
+         ══════════════════════════════════════════════════ -->
+    <section class="passo" id="passo-2">
+
+      <div class="balao">
+        <p class="balao-titulo">Passo 2: Parar e Entrar na Concha 🐚</p>
+        <p class="balao-texto">
+          Quando sentes uma emoção muito grande, <strong>para o que estás a fazer</strong>.<br>
+          Imagina que és uma tartaruga e entra na tua concha — dobra os braços, fecha os olhos e fica quieto(a) um momento.
+        </p>
+      </div>
+
+      <!-- Tartaruga com animação "na concha" -->
+      <div class="tartaruga-wrapper">
+        <svg class="tartaruga-svg na-concha" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="Tartaruga na concha">
+          <!-- Sem patas nem cabeça visíveis – só o casco -->
+          <ellipse cx="100" cy="185" rx="55" ry="8" fill="rgba(0,0,0,0.08)" />
+          <ellipse cx="100" cy="130" rx="75" ry="58" fill="#5a9e3a" />
+          <ellipse cx="100" cy="122" rx="62" ry="48" fill="#3d7a1a" />
+          <polygon points="100,80  116,90  116,110 100,120 84,110 84,90"   fill="#7ec24a" opacity="0.7" />
+          <polygon points="68,98  84,108  84,128 68,138  52,128 52,108"   fill="#6ab33a" opacity="0.6" />
+          <polygon points="132,98 148,108 148,128 132,138 116,128 116,108" fill="#6ab33a" opacity="0.6" />
+          <polygon points="100,118 116,128 116,148 100,158 84,148 84,128"  fill="#6ab33a" opacity="0.6" />
+          <ellipse cx="100" cy="122" rx="62" ry="48" fill="none" stroke="#2d5c10" stroke-width="2.5" />
+          <!-- Cabeça meio escondida -->
+          <circle cx="100" cy="87" r="14" fill="#5a9e3a" />
+          <circle cx="95"  cy="83" r="4"  fill="#fff" />
+          <circle cx="105" cy="83" r="4"  fill="#fff" />
+          <circle cx="95"  cy="83" r="2.5" fill="#222" />
+          <circle cx="105" cy="83" r="2.5" fill="#222" />
+          <!-- Olhinhos fechados -->
+          <path d="M 92 83 Q 95 86 98 83" stroke="#222" stroke-width="1.5" fill="none" />
+          <path d="M 102 83 Q 105 86 108 83" stroke="#222" stroke-width="1.5" fill="none" />
+        </svg>
+      </div>
+
+      <!-- Atividade interativa: o utilizador clica para "entrar na concha" -->
+      <p style="font-size:0.95rem; opacity:0.75;">Toca na tartaruga para ela entrar na concha!</p>
+
+      <button class="btn btn-principal" onclick="irParaPasso(3)">
+        Já entrei na concha! ✅
+      </button>
+
+    </section><!-- /passo-2 -->
+
+    <!-- ══════════════════════════════════════════════════
+         PASSO 3 – RESPIRAR
+         Guia de respiração visual simples.
+         ══════════════════════════════════════════════════ -->
+    <section class="passo" id="passo-3">
+
+      <div class="balao">
+        <p class="balao-titulo">Passo 3: Respirar 🌬️</p>
+        <p class="balao-texto">
+          Dentro da concha, <strong>respira fundo</strong>.<br>
+          Segue o círculo: quando ele cresce, inspira; quando encolhe, expira.
+        </p>
+      </div>
+
+      <!-- Círculo animado de respiração -->
+      <div class="respiracao-circulo" aria-label="Círculo de respiração">
+        🌸
+      </div>
+
+      <!-- Texto que muda conforme a fase (ver JS) -->
+      <p class="respiracao-legenda" id="respiracao-texto">Inspira devagar... 🌬️</p>
+
+      <!-- Contador de respirações -->
+      <p style="font-size:0.9rem; color: var(--cor-titulo);">
+        Respirações feitas: <strong id="contador-resp">0</strong> / 3
+      </p>
+
+      <button class="btn btn-cinza" id="btn-resp-manual" onclick="contarRespiracao()">
+        Já respirei! ✔️
+      </button>
+
+      <!-- Botão para avançar, só aparece após 3 respirações -->
+      <button class="btn btn-verde" id="btn-passo3" style="display:none;" onclick="irParaPasso(4)">
+        Próximo →
+      </button>
+
+    </section><!-- /passo-3 -->
+
+    <!-- ══════════════════════════════════════════════════
+         PASSO 4 – PENSAR E RESOLVER
+         Sugestões do que fazer depois de acalmar.
+         ══════════════════════════════════════════════════ -->
+    <section class="passo" id="passo-4">
+
+      <div class="balao">
+        <p class="balao-titulo">Passo 4: Pensar e Resolver 💡</p>
+        <p class="balao-texto">
+          Já estás mais calmo(a)! Agora é hora de <strong>pensar numa solução</strong>.<br>
+          O que podias fazer? Escolhe uma ideia:
+        </p>
+      </div>
+
+      <!--
+        Lista de soluções possíveis.
+        Podes adicionar mais <div class="solucao-item"> aqui.
+      -->
+      <div class="solucoes">
+
+        <div class="solucao-item" onclick="selecionarSolucao(this)">
+          <span class="solucao-emoji">💬</span>
+          <div>
+            <strong>Falar com alguém</strong><br>
+            <span style="font-size:0.85rem; opacity:0.8;">Contar o que aconteceu a um adulto de confiança.</span>
+          </div>
+        </div>
+
+        <div class="solucao-item" onclick="selecionarSolucao(this)">
+          <span class="solucao-emoji">✏️</span>
+          <div>
+            <strong>Desenhar ou escrever</strong><br>
+            <span style="font-size:0.85rem; opacity:0.8;">Pôr os sentimentos no papel ajuda muito!</span>
+          </div>
+        </div>
+
+        <div class="solucao-item" onclick="selecionarSolucao(this)">
+          <span class="solucao-emoji">🚶</span>
+          <div>
+            <strong>Dar uma volta</strong><br>
+            <span style="font-size:0.85rem; opacity:0.8;">Mover o corpo ajuda a soltar a energia das emoções.</span>
+          </div>
+        </div>
+
+        <div class="solucao-item" onclick="selecionarSolucao(this)">
+          <span class="solucao-emoji">🤝</span>
+          <div>
+            <strong>Pedir desculpa</strong><br>
+            <span style="font-size:0.85rem; opacity:0.8;">Se magoaste alguém sem querer, um pedido de desculpa ajuda.</span>
+          </div>
+        </div>
+
+        <div class="solucao-item" onclick="selecionarSolucao(this)">
+          <span class="solucao-emoji">🎵</span>
+          <div>
+            <strong>Ouvir música calma</strong><br>
+            <span style="font-size:0.85rem; opacity:0.8;">Uma música suave pode ajudar-te a acalmar.</span>
+          </div>
+        </div>
+
+      </div><!-- /solucoes -->
+
+      <!-- Botão só aparece após escolher uma solução -->
+      <button class="btn btn-verde" id="btn-passo4" style="display:none;" onclick="irParaPasso(5)">
+        Escolhi! Vamos lá 🌟
+      </button>
+
+    </section><!-- /passo-4 -->
+
+    <!-- ══════════════════════════════════════════════════
+         PASSO 5 – CELEBRAÇÃO FINAL
+         Ecrã de parabéns e resumo do que aprenderam.
+         ══════════════════════════════════════════════════ -->
+    <section class="passo" id="passo-5">
+
+      <span class="celebracao" aria-hidden="true">🎉</span>
+
+      <div class="balao">
+        <p class="balao-titulo">Parabéns, foste incrível! 🌟</p>
+        <p class="balao-texto" id="texto-final">
+          Usaste a técnica da tartaruga como um campeão!<br><br>
+          Lembra-te sempre:
+        </p>
+        <br>
+        <!-- Resumo dos 4 passos -->
+        <div style="text-align:left; display:flex; flex-direction:column; gap:8px;">
+          <p>🔵 <strong>Reconhece</strong> o que sentes</p>
+          <p>🐚 <strong>Para</strong> e entra na concha</p>
+          <p>🌬️ <strong>Respira</strong> fundo</p>
+          <p>💡 <strong>Pensa</strong> numa solução</p>
+        </div>
+      </div>
+
+      <div class="estrelas-finais" aria-label="Estrelas">⭐⭐⭐</div>
+
+      <!-- Botão para jogar de novo -->
+      <button class="btn btn-principal" onclick="reiniciar()">
+        🔄 Jogar de Novo
+      </button>
+
+      <!-- Botão para voltar ao menu -->
+      <a href="index.html">
+        <button class="btn btn-cinza">🏠 Voltar ao Menu</button>
+      </a>
+
+    </section><!-- /passo-5 -->
+
+  </div><!-- /jogo-contentor -->
+
+
+  <!-- =====================================================
+       JAVASCRIPT – LÓGICA DO JOGO
+       Tudo comentado para ser fácil de perceber e editar.
+       ===================================================== -->
+  <script>
+
+    // ─────────────────────────────────────────────────────
+    // ESTADO DO JOGO
+    // Variáveis que guardam informação durante o jogo.
+    // ─────────────────────────────────────────────────────
+
+    /** Número do passo atual (0 = introdução, 5 = fim) */
+    let passoAtual = 0;
+
+    /** Emoção selecionada pela criança no Passo 1 */
+    let emocaoEscolhida = '';
+
+    /** Solução escolhida pela criança no Passo 4 */
+    let solucaoEscolhida = '';
+
+    /** Contador de respirações no Passo 3 */
+    let respiracoes = 0;
+
+    /** Número total de passos (excluindo o 0 de introdução) */
+    const TOTAL_PASSOS = 5;
+
+    // ─────────────────────────────────────────────────────
+    // INICIALIZAÇÃO
+    // Corre quando a página carrega.
+    // ─────────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+      criarBarraProgresso();
+      atualizarProgresso();
+    });
+
+    // ─────────────────────────────────────────────────────
+    // BARRA DE PROGRESSO
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Cria os pontos da barra de progresso dinamicamente.
+     * Um ponto por cada passo (excluindo introdução e ecrã final).
+     */
+    function criarBarraProgresso() {
+      const contentor = document.getElementById('progresso');
+      contentor.innerHTML = ''; // limpa antes de criar
+
+      // Criamos um ponto para os passos 1 a 4
+      for (let i = 1; i <= 4; i++) {
+        const ponto = document.createElement('div');
+        ponto.classList.add('progresso-ponto');
+        ponto.id = `ponto-${i}`;
+        contentor.appendChild(ponto);
+      }
+    }
+
+    /**
+     * Atualiza o visual da barra de progresso
+     * com base no passo atual.
+     */
+    function atualizarProgresso() {
+      for (let i = 1; i <= 4; i++) {
+        const ponto = document.getElementById(`ponto-${i}`);
+        if (!ponto) continue;
+
+        ponto.classList.remove('ativo', 'feito');
+
+        if (i < passoAtual)  ponto.classList.add('feito');  // já passou
+        if (i === passoAtual) ponto.classList.add('ativo'); // atual
+      }
+
+      // Esconde a barra no ecrã de intro (passo 0) e no final (passo 5)
+      document.getElementById('progresso').style.display =
+        (passoAtual === 0 || passoAtual === 5) ? 'none' : 'flex';
+    }
+
+    // ─────────────────────────────────────────────────────
+    // NAVEGAÇÃO ENTRE PASSOS
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Avança para o passo indicado.
+     * @param {number} numeroPasso - Passo para o qual ir (0–5)
+     */
+    function irParaPasso(numeroPasso) {
+      // Esconde o passo atual
+      const passoAnterior = document.getElementById(`passo-${passoAtual}`);
+      if (passoAnterior) passoAnterior.classList.remove('ativo');
+
+      // Mostra o novo passo
+      passoAtual = numeroPasso;
+      const novosPasso = document.getElementById(`passo-${passoAtual}`);
+      if (novosPasso) novosPasso.classList.add('ativo');
+
+      // Atualiza a barra de progresso
+      atualizarProgresso();
+
+      // Ações especiais por passo
+      if (passoAtual === 5) {
+        mostrarTextoFinal();
+      }
+
+      // Faz scroll para o topo (importante em mobile)
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ─────────────────────────────────────────────────────
+    // PASSO 1 – SELECIONAR EMOÇÃO
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Marca a emoção selecionada e mostra o botão "Próximo".
+     * @param {HTMLElement} botao    - O botão clicado
+     * @param {string}      emocao  - Identificador da emoção (ex: 'zangado')
+     */
+    function selecionarEmocao(botao, emocao) {
+      emocaoEscolhida = emocao;
+
+      // Remove seleção de todos os botões
+      document.querySelectorAll('#opcoes-emocao .opcao-btn').forEach(btn => {
+        btn.classList.remove('selecionado');
+      });
+
+      // Marca este como selecionado
+      botao.classList.add('selecionado');
+
+      // Mostra o botão "Próximo"
+      document.getElementById('btn-passo1').style.display = 'block';
+    }
+
+    // ─────────────────────────────────────────────────────
+    // PASSO 3 – RESPIRAÇÃO
+    // ─────────────────────────────────────────────────────
+
+    /** Mensagens alternadas conforme a fase da respiração */
+    const MENSAGENS_RESPIRACAO = [
+      'Inspira devagar... 🌬️',
+      'Segura o ar... ✋',
+      'Expira devagar... 😮‍💨',
+    ];
+
+    /** Índice da mensagem de respiração atual */
+    let indiceMensagem = 0;
+
+    /** Intervalo para mudar as mensagens de respiração */
+    let intervaloRespiracao = null;
+
+    /**
+     * Quando a criança entra no Passo 3, inicia
+     * o ciclo de mensagens de respiração.
+     * Chamado automaticamente quando o passo 3 se torna ativo.
+     */
+    function iniciarAnimacaoRespiracao() {
+      // Limpa qualquer intervalo anterior
+      if (intervaloRespiracao) clearInterval(intervaloRespiracao);
+
+      indiceMensagem = 0;
+      document.getElementById('respiracao-texto').textContent = MENSAGENS_RESPIRACAO[0];
+
+      // Muda a mensagem a cada 2 segundos
+      intervaloRespiracao = setInterval(() => {
+        indiceMensagem = (indiceMensagem + 1) % MENSAGENS_RESPIRACAO.length;
+        document.getElementById('respiracao-texto').textContent =
+          MENSAGENS_RESPIRACAO[indiceMensagem];
+      }, 2000);
+    }
+
+    /**
+     * Regista uma respiração completa.
+     * Após 3 respirações, mostra o botão "Próximo".
+     */
+    function contarRespiracao() {
+      respiracoes++;
+      document.getElementById('contador-resp').textContent = Math.min(respiracoes, 3);
+
+      if (respiracoes >= 3) {
+        // Para o intervalo de mensagens
+        if (intervaloRespiracao) clearInterval(intervaloRespiracao);
+        document.getElementById('respiracao-texto').textContent = 'Muito bem! 🌟';
+
+        // Esconde o botão de contar e mostra o de avançar
+        document.getElementById('btn-resp-manual').style.display = 'none';
+        document.getElementById('btn-passo3').style.display = 'block';
+      }
+    }
+
+    // ─────────────────────────────────────────────────────
+    // PASSO 4 – SELECIONAR SOLUÇÃO
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Marca a solução escolhida e mostra o botão "Próximo".
+     * @param {HTMLElement} item - O elemento clicado
+     */
+    function selecionarSolucao(item) {
+      solucaoEscolhida = item.querySelector('strong').textContent;
+
+      // Remove destaque de todos
+      document.querySelectorAll('.solucao-item').forEach(el => {
+        el.style.background = '';
+        el.style.transform = '';
+      });
+
+      // Destaca o escolhido
+      item.style.background = 'var(--cor-destaque-2)';
+
+      // Mostra o botão de avançar
+      document.getElementById('btn-passo4').style.display = 'block';
+    }
+
+    // ─────────────────────────────────────────────────────
+    // PASSO 5 – ECRÃ FINAL
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Personaliza o texto final com a emoção e solução escolhidas.
+     */
+    function mostrarTextoFinal() {
+      const emojiEmocao = {
+        'zangado':    '😠',
+        'assustado':  '😨',
+        'triste':     '😢',
+        'frustrado':  '😤',
+      };
+
+      const emoji = emojiEmocao[emocaoEscolhida] || '💛';
+
+      document.getElementById('texto-final').innerHTML = `
+        Sentiste-te <strong>${emocaoEscolhida} ${emoji}</strong>, 
+        usaste a técnica da tartaruga e escolheste <strong>${solucaoEscolhida || 'uma solução'}</strong>.<br><br>
+        Isso é ser muito corajoso(a)! Lembra-te sempre:
+      `;
+    }
+
+    // ─────────────────────────────────────────────────────
+    // REINICIAR O JOGO
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Volta tudo ao estado inicial para jogar de novo.
+     */
+    function reiniciar() {
+      // Reseta variáveis
+      emocaoEscolhida  = '';
+      solucaoEscolhida = '';
+      respiracoes      = 0;
+
+      // Reseta UI do Passo 1
+      document.querySelectorAll('#opcoes-emocao .opcao-btn').forEach(btn => {
+        btn.classList.remove('selecionado');
+      });
+      document.getElementById('btn-passo1').style.display = 'none';
+
+      // Reseta UI do Passo 3
+      document.getElementById('contador-resp').textContent = '0';
+      document.getElementById('btn-resp-manual').style.display = 'block';
+      document.getElementById('btn-passo3').style.display     = 'none';
+      document.getElementById('respiracao-texto').textContent = 'Inspira devagar... 🌬️';
+
+      // Reseta UI do Passo 4
+      document.querySelectorAll('.solucao-item').forEach(el => {
+        el.style.background = '';
+        el.style.transform  = '';
+      });
+      document.getElementById('btn-passo4').style.display = 'none';
+
+      // Volta ao passo 0
+      irParaPasso(0);
+    }
+
+    // ─────────────────────────────────────────────────────
+    // OBSERVADOR DE PASSOS
+    // Deteta quando o passo 3 fica visível para iniciar
+    // a animação de respiração automaticamente.
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Usamos um MutationObserver para detetar quando
+     * o passo-3 ganha a classe "ativo" (fica visível).
+     */
+    const passo3El = document.getElementById('passo-3');
+
+    const observador = new MutationObserver((mutacoes) => {
+      mutacoes.forEach(m => {
+        if (
+          m.type === 'attributes' &&
+          m.attributeName === 'class' &&
+          passo3El.classList.contains('ativo')
+        ) {
+          // O passo 3 acabou de ficar ativo → inicia respiração
+          iniciarAnimacaoRespiracao();
+        }
+      });
+    });
+
+    // Observa mudanças de classe no passo-3
+    observador.observe(passo3El, { attributes: true });
+
+  </script>
+
+</body>
+</html>

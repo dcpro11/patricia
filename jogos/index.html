@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Os Meus Jogos – Cantinho da Calma</title>
+
+  <!--
+    =====================================================
+    FONTE GOOGLE
+    Baloo 2  → títulos e botões (arredondada, amigável)
+    Nunito   → texto corrido (legível para crianças)
+    Para trocar: vai a fonts.google.com, escolhe outra
+    fonte e substitui o link abaixo e as variáveis CSS.
+    =====================================================
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =====================================================
+       VARIÁVEIS GLOBAIS – muda aqui para personalizar
+       facilmente cores, fontes e tamanhos.
+       ===================================================== */
+    :root {
+      /* Paleta de cores principal */
+      --cor-fundo:        #f0faf4;   /* verde muito suave (fundo da página) */
+      --cor-titulo:       #1a5c3a;   /* verde escuro (título principal)      */
+      --cor-texto:        #2d4a3e;   /* verde médio (texto geral)            */
+      --cor-subtitulo:    #4a8c6a;   /* verde intermédio (subtítulo)         */
+
+      /* Cores dos cartões dos jogos */
+      --cor-jogo-1:       #fff8e7;   /* amarelo creme  – A Tartaruga         */
+      --cor-jogo-1-borda: #f5c842;   /* amarelo ouro   – borda               */
+      --cor-jogo-1-btn:   #e8a800;   /* amarelo escuro – botão               */
+
+      --cor-jogo-2:       #e8f4ff;   /* azul suave   – Bolha da Respiração   */
+      --cor-jogo-2-borda: #6ab4f5;   /* azul médio   – borda                 */
+      --cor-jogo-2-btn:   #2980d4;   /* azul escuro  – botão                 */
+
+      --cor-jogo-3:       #fce8f5;   /* rosa suave   – Diário de Emoções     */
+      --cor-jogo-3-borda: #d97ec4;   /* rosa médio   – borda                 */
+      --cor-jogo-3-btn:   #b5439a;   /* rosa escuro  – botão                 */
+
+      --cor-jogo-4:       #e9f7e9;   /* verde suave  – Lugar Seguro          */
+      --cor-jogo-4-borda: #6dbd6d;   /* verde médio  – borda                 */
+      --cor-jogo-4-btn:   #2e8b2e;   /* verde escuro – botão                 */
+
+      --cor-jogo-5:       #fdecea;   /* vermelho suave – Caça Pensamentos    */
+      --cor-jogo-5-borda: #f08070;   /* coral médio    – borda               */
+      --cor-jogo-5-btn:   #d94f35;   /* vermelho escuro – botão              */
+
+      --cor-jogo-6:       #f3eeff;   /* lilás suave  – Termómetro           */
+      --cor-jogo-6-borda: #a07fdb;   /* lilás médio  – borda                */
+      --cor-jogo-6-btn:   #6c3fc7;   /* lilás escuro – botão                */
+
+      --cor-jogo-7:       #fff0f5;   /* rosa-lilás suave – Pintar Emoções   */
+      --cor-jogo-7-borda: #d580b0;   /* rosa médio       – borda            */
+      --cor-jogo-7-btn:   #a0347a;   /* rosa escuro      – botão            */
+
+      --cor-jogo-8:       #e8f8ff;   /* azul gelo suave – Frasco da Calma   */
+      --cor-jogo-8-borda: #4fc3f7;   /* azul brilhante  – borda             */
+      --cor-jogo-8-btn:   #0288d1;   /* azul escuro     – botão             */
+
+      --cor-jogo-9:       #fff8e8;   /* creme quente – Semáforo             */
+      --cor-jogo-9-borda: #f39c12;   /* amarelo      – borda                */
+      --cor-jogo-9-btn:   #c0720a;   /* laranja      – botão                */
+
+      /* Tipografia */
+      --fonte-titulo: 'Baloo 2', cursive;
+      --fonte-texto:  'Nunito', sans-serif;
+
+      /* Espaçamentos e arredondamentos */
+      --raio-cartao:  24px;
+      --raio-botao:   50px;
+      --sombra:       0 8px 30px rgba(0,0,0,0.10);
+    }
+
+    /* =====================================================
+       RESET E BASE
+       ===================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--fonte-texto);
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      min-height: 100vh;
+
+      /* Padrão de bolinhas subtil no fundo */
+      background-image: radial-gradient(circle, #c8e6d4 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* =====================================================
+       CABEÇALHO
+       ===================================================== */
+    header {
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+
+    /* Ícone decorativo no topo */
+    .header-icone {
+      font-size: 72px;
+      display: block;
+      margin-bottom: 16px;
+
+      /* Animação suave de balanço */
+      animation: balancar 3s ease-in-out infinite;
+    }
+
+    @keyframes balancar {
+      0%, 100% { transform: rotate(-5deg); }
+      50%       { transform: rotate(5deg);  }
+    }
+
+    header h1 {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(2rem, 6vw, 3.2rem); /* adapta ao ecrã */
+      color: var(--cor-titulo);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    header p {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      color: var(--cor-subtitulo);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* =====================================================
+       GRELHA DE CARTÕES
+       ===================================================== */
+    .grelha-jogos {
+      display: grid;
+
+      /*
+        Colunas automáticas: mínimo 280px, máximo 1 fração.
+        Ou seja: coloca o máximo de colunas que cabem,
+        mas cada uma tem no mínimo 280px de largura.
+      */
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 24px 80px;
+    }
+
+    /* =====================================================
+       CARTÃO INDIVIDUAL
+       ===================================================== */
+    .cartao {
+      border-radius: var(--raio-cartao);
+      border: 3px solid;          /* cor definida inline em cada cartão */
+      padding: 32px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      box-shadow: var(--sombra);
+      cursor: pointer;
+
+      /* Transição suave ao fazer hover */
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .cartao:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+    }
+
+    /* Emoji grande do jogo */
+    .cartao-emoji {
+      font-size: 64px;
+      line-height: 1;
+
+      /* Pequena animação ao hover do cartão */
+      transition: transform 0.3s ease;
+    }
+
+    .cartao:hover .cartao-emoji {
+      transform: scale(1.15);
+    }
+
+    /* Etiqueta de estado do jogo (ex: "Disponível" ou "Em breve") */
+    .cartao-etiqueta {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 50px;
+      background: rgba(0,0,0,0.08);
+    }
+
+    .cartao h2 {
+      font-family: var(--fonte-titulo);
+      font-size: 1.35rem;
+      color: var(--cor-titulo);
+    }
+
+    .cartao p {
+      font-size: 0.95rem;
+      color: var(--cor-texto);
+      line-height: 1.55;
+      opacity: 0.85;
+    }
+
+    /* Botão "Jogar" */
+    .botao-jogar {
+      margin-top: 8px;
+      padding: 12px 32px;
+      border: none;
+      border-radius: var(--raio-botao);
+      font-family: var(--fonte-titulo);
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+      width: 100%;
+
+      /* Transição de brilho */
+      transition: filter 0.2s ease, transform 0.2s ease;
+    }
+
+    .botao-jogar:hover {
+      filter: brightness(1.1);
+      transform: scale(1.03);
+    }
+
+    /* Estado "em breve" – botão desativado */
+    .botao-jogar:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      filter: none;
+    }
+
+    /* =====================================================
+       RODAPÉ
+       ===================================================== */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.85rem;
+      color: var(--cor-subtitulo);
+      opacity: 0.7;
+    }
+
+    /* =====================================================
+       ANIMAÇÃO DE ENTRADA DOS CARTÕES
+       Os cartões aparecem com um fade+slide ao carregar.
+       ===================================================== */
+    @keyframes entrar {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    .cartao {
+      opacity: 0; /* começa invisível */
+      animation: entrar 0.5s ease forwards;
+    }
+
+    /*
+      Cada cartão aparece com um pequeno atraso a mais,
+      criando um efeito em cascata.
+      (nth-child conta os filhos diretos da grelha)
+    */
+    .cartao:nth-child(1) { animation-delay: 0.05s; }
+    .cartao:nth-child(2) { animation-delay: 0.15s; }
+    .cartao:nth-child(3) { animation-delay: 0.25s; }
+    .cartao:nth-child(4) { animation-delay: 0.35s; }
+    .cartao:nth-child(5) { animation-delay: 0.45s; }
+    .cartao:nth-child(6) { animation-delay: 0.55s; }
+    .cartao:nth-child(7) { animation-delay: 0.65s; }
+    .cartao:nth-child(8) { animation-delay: 0.75s; }
+    .cartao:nth-child(9) { animation-delay: 0.85s; }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================
+       CABEÇALHO DA PÁGINA
+       ===================================================== -->
+  <header>
+    <span class="header-icone" aria-hidden="true">🌿</span>
+    <h1>O Cantinho da Calma</h1>
+    <p>Escolhe um jogo e vamos explorar as tuas emoções juntos! 🌈</p>
+  </header>
+
+  <!-- =====================================================
+       GRELHA COM OS CARTÕES DOS JOGOS
+       Para adicionar um jogo novo: copia um bloco <article>
+       e personaliza o emoji, título, descrição e link.
+       ===================================================== -->
+  <main>
+    <div class="grelha-jogos">
+
+      <!-- ── JOGO 1: A Tartaruga ── -->
+      <article
+        class="cartao"
+        style="background-color: var(--cor-jogo-1); border-color: var(--cor-jogo-1-borda);"
+        onclick="irPara('tartaruga.html')"
+      >
+        <span class="cartao-emoji" role="img" aria-label="Tartaruga">🐢</span>
+        <span class="cartao-etiqueta">Emoções</span>
+        <h2>A Tartaruga</h2>
+        <p>Aprende com a Tina como parar, respirar e pensar antes de agir quando te sentires zangado ou assustado.</p>
+        <button
+          class="botao-jogar"
+          style="background-color: var(--cor-jogo-1-btn);"
+          onclick="event.stopPropagation(); irPara('tartaruga.html')"
+        >
+          🎮 Jogar!
+        </button>
+      </article>
+
+      <!-- ── JOGO 2: Bolha da Respiração ── -->
+      <article
+        class="cartao"
+        style="background-color: var(--cor-jogo-2); border-color: var(--cor-jogo-2-borda);"
+      >
+        <span class="cartao-emoji" role="img" aria-label="Bolha">🫧</span>
+        <span class="cartao-etiqueta">Respiração</span>
+        <h2>Bolha da Respiração</h2>
+        <p>Segue a bolha mágica para respirares fundo e sentires a tua barriga a acalmar-se.</p>
+        <button
+          class="botao-jogar"
+          style="background-color: var(--cor-jogo-2-btn);"
+          disabled
+          title="Em breve!"
+        >
+          🔒 Em breve
+        </button>
+      </article>
+
+      <!-- ── JOGO 3: Diário de Emoções ── -->
+      <article
+        class="cartao"
+        style="background-color: var(--cor-jogo-3); border-color: var(--cor-jogo-3-borda);"
+      >
+        <span class="cartao-emoji" role="img" aria-label="Diário">📔</span>
+        <span class="cartao-etiqueta">Expressão</span>
+        <h2>Diário de Emoções</h2>
+        <p>Conta como te sentes hoje. Escolhe a tua emoção, diz o quão forte é e escreve o que quiseres.</p>
+        <button
+          class="botao-jogar"
+          style="background-color: var(--cor-jogo-3-btn);"
+          disabled
+          title="Em breve!"
+        >
+          🔒 Em breve
+        </button>
+      </article>
+
+      <!-- ── JOGO 4: O Meu Lugar Seguro ── -->
+      <article
+        class="cartao"
+        style="background-color: var(--cor-jogo-4); border-color: var(--cor-jogo-4-borda);"
+        onclick="irPara('lugar-seguro.html')"
+      >
+        <span class="cartao-emoji" role="img" aria-label="Casa">🏡</span>
+        <span class="cartao-etiqueta">Relaxamento</span>
+        <h2>O Meu Lugar Seguro</h2>
+        <p>Cria o teu cantinho especial onde te sentes bem, seguro e tranquilo. Podes ir lá sempre que precisares.</p>
+        <button
+          class="botao-jogar"
+          style="background-color: var(--cor-jogo-4-btn);"
+          onclick="event.stopPropagation(); irPara('lugar-seguro.html')"
+        >
+          🎮 Jogar!
+        </button>
+      </article>
+
+      <!-- ── JOGO 5: Caça aos Pensamentos ── -->
+      <article
+        class="cartao"
+        style="background-color: var(--cor-jogo-5); border-color: var(--cor-jogo-5-borda);"
+      >
+        <span class="cartao-emoji" role="img" aria-label="Nuvem">🌤️</span>
+        <span class="cartao-etiqueta">Pensamentos</span>
+        <h2>Caça aos Pensamentos</h2>
+        <p>Apanha os pensamentos preocupantes que andam a voar e transforma-os em pensamentos mais amigos.</p>
+        <button
+          class="botao-jogar"
+          style="background-color: var(--cor-jogo-5-btn);"
+          disabled
+          title="Em breve!"
+        >
+          🔒 Em breve
+        </button>
+      </article>
+
+      <!-- ── JOGO 6: Termómetro das Emoções ── -->
+      <article
+        class="cartao"
+        style="background-color: var(--cor-jogo-6); border-color: var(--cor-jogo-6-borda);"
+      >
+        <span class="cartao-emoji" role="img" aria-label="Termómetro">🌡️</span>
+        <span class="cartao-etiqueta">Autoconhecimento</span>
+        <h2>Termómetro das Emoções</h2>
+        <p>Quanto é que a tua emoção está quente agora? Descobre o que podes fazer para te sentires melhor.</p>
+        <button
+          class="botao-jogar"
+          style="background-color: var(--cor-jogo-6-btn);"
+          disabled
+          title="Em breve!"
+        >
+          🔒 Em breve
+        </button>
+      </article>
+
+      <!-- ── JOGO 7: Pintar as Emoções no Corpo ── -->
+      <article
+        class="cartao"
+        style="background-color: var(--cor-jogo-7); border-color: var(--cor-jogo-7-borda);"
+        onclick="irPara('mapa-emocoes.html')"
+      >
+        <span class="cartao-emoji" role="img" aria-label="Arco-íris">🌈</span>
+        <span class="cartao-etiqueta">Corpo & Emoções</span>
+        <h2>Pintar as Emoções no Corpo</h2>
+        <p>Onde é que sentes as emoções? Pinta num corpo humano onde a alegria, o medo ou a raiva vivem em ti!</p>
+        <button
+          class="botao-jogar"
+          style="background-color: var(--cor-jogo-7-btn);"
+          onclick="event.stopPropagation(); irPara('mapa-emocoes.html')"
+        >
+          🎮 Jogar!
+        </button>
+      </article>
+
+      <!-- ── JOGO 8: Frasco da Calma ── -->
+      <article
+        class="cartao"
+        style="background-color: var(--cor-jogo-8); border-color: var(--cor-jogo-8-borda);"
+        onclick="irPara('frasco-calma.html')"
+      >
+        <span class="cartao-emoji" role="img" aria-label="Frasco">✨</span>
+        <span class="cartao-etiqueta">Calma Imediata</span>
+        <h2>O Frasco da Calma</h2>
+        <p>Agita o frasco mágico e observa o glitter a brilhar e a pousar. Como os teus pensamentos quando acalmam.</p>
+        <button
+          class="botao-jogar"
+          style="background-color: var(--cor-jogo-8-btn);"
+          onclick="event.stopPropagation(); irPara('frasco-calma.html')"
+        >
+          🎮 Jogar!
+        </button>
+      </article>
+
+      <!-- ── JOGO 9: Semáforo das Emoções ── -->
+      <article
+        class="cartao"
+        style="background-color: var(--cor-jogo-9); border-color: var(--cor-jogo-9-borda);"
+        onclick="irPara('semaforo.html')"
+      >
+        <span class="cartao-emoji" role="img" aria-label="Semáforo">🚦</span>
+        <span class="cartao-etiqueta">Decisões</span>
+        <h2>O Semáforo das Emoções</h2>
+        <p>Vermelho: para! Amarelo: pensa! Verde: age! Aprende a tomar boas decisões mesmo quando estás chateado.</p>
+        <button
+          class="botao-jogar"
+          style="background-color: var(--cor-jogo-9-btn);"
+          onclick="event.stopPropagation(); irPara('semaforo.html')"
+        >
+          🎮 Jogar!
+        </button>
+      </article>
+
+    </div><!-- /grelha-jogos -->
+  </main>
+
+  <!-- =====================================================
+       RODAPÉ
+       ===================================================== -->
+  <footer>
+    <p>💚 Criado com carinho para crianças especiais</p>
+  </footer>
+
+  <!-- =====================================================
+       JAVASCRIPT
+       Função simples de navegação para os jogos.
+       ===================================================== -->
+  <script>
+    /**
+     * irPara(pagina)
+     * Navega para a página do jogo indicada.
+     * @param {string} pagina - Nome do ficheiro HTML do jogo
+     */
+    function irPara(pagina) {
+      window.location.href = pagina;
+    }
+  </script>
+
+</body>
+</html>

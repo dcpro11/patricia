@@ -1,0 +1,90 @@
+<!-- ============================================================
+     ALTERAÇÕES A FAZER NO index.html EXISTENTE
+     (e em qualquer outra página do site)
+     ============================================================
+
+1. ADICIONAR O SCRIPT DO BANNER — antes do </body> no index.html:
+
+     <script src="js/script.js"></script>
+     <script src="js/cookies.js"></script>   ← ADICIONAR ESTA LINHA
+   </body>
+
+   IMPORTANTE: cookies.js deve ser carregado ANTES do snippet do GTM/GA.
+   NÃO coloque o snippet do GTM/GA no HTML — o cookies.js injeta-o dinamicamente
+   após consentimento.
+
+
+2. ATUALIZAR O FOOTER — adicionar links de privacidade:
+
+   ANTES:
+     <div class="footer-links">
+       <a href="#inicio">Início</a>
+       <a href="#sobre">Sobre</a>
+       <a href="#servicos">Serviços</a>
+       <a href="#testemunhos">Testemunhos</a>
+       <a href="#agendar">Contacto</a>
+     </div>
+
+   DEPOIS:
+     <div class="footer-links">
+       <a href="#inicio">Início</a>
+       <a href="#sobre">Sobre</a>
+       <a href="#servicos">Serviços</a>
+       <a href="#testemunhos">Testemunhos</a>
+       <a href="#agendar">Contacto</a>
+       <a href="politica-de-privacidade.html">Privacidade</a>
+       <a href="politica-de-cookies.html">Cookies</a>
+     </div>
+
+
+3. CONFIGURAR OS IDs NO cookies.js — abra js/cookies.js e edite:
+
+     const CONFIG = {
+       GTM_ID:  'GTM-XXXXXX',    ← substitua pelo seu GTM ID real
+       GA_ID:   'G-XXXXXXXXXX',  ← substitua pelo seu GA4 ID (se usar GA sem GTM)
+       USE_GTM: true,            ← true se usar GTM; false se GA direto
+       ...
+     };
+
+
+4. ESTRUTURA DE FICHEIROS FINAL:
+
+   /
+   ├── index.html                          (atualizado com script + footer)
+   ├── politica-de-privacidade.html        (novo)
+   ├── politica-de-cookies.html            (novo)
+   ├── css/
+   │   ├── style.css
+   │   └── artigo.css
+   ├── js/
+   │   ├── script.js
+   │   └── cookies.js                      (novo — banner RGPD)
+   └── ansiedade/
+       └── ...
+
+
+5. PARA PÁGINAS DENTRO DE SUBPASTAS (ex: ansiedade/):
+
+   O cookies.js está na raiz do projeto. Para páginas em subpastas,
+   o path relativo muda. Adicione o script assim:
+
+   Dentro de /ansiedade/index.html:
+     <script src="../js/cookies.js"></script>
+
+   Dentro de /ansiedade/artigos/sintomas.html:
+     <script src="../../js/cookies.js"></script>
+
+
+6. TESTAR O BANNER:
+
+   Para forçar o banner a aparecer novamente durante desenvolvimento:
+   Abra a consola do browser e escreva:
+     CookieConsent.reset()
+
+   Para verificar as preferências atuais:
+     CookieConsent.getPrefs()
+
+   Para verificar se analytics está ativo:
+     CookieConsent.hasConsent('analytics')
+
+============================================================ -->

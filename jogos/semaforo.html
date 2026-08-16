@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O Semáforo das Emoções – Cantinho da Calma</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =====================================================
+       VARIÁVEIS GLOBAIS
+       ===================================================== */
+    :root {
+      --cor-fundo:      #fafff5;
+      --cor-titulo:     #1a3a1a;
+      --cor-texto:      #2a4a2a;
+      --cor-painel:     #ffffffee;
+      --cor-vermelho:   #e74c3c;
+      --cor-amarelo:    #f39c12;
+      --cor-verde:      #27ae60;
+      --fonte-titulo:   'Baloo 2', cursive;
+      --fonte-texto:    'Nunito', sans-serif;
+      --raio:           20px;
+      --sombra:         0 6px 24px rgba(0,0,0,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--fonte-texto);
+      background: var(--cor-fundo);
+      color: var(--cor-texto);
+      min-height: 100vh;
+      background-image: radial-gradient(circle, #c8e6c4 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ─── BOTÃO VOLTAR ─── */
+    .btn-voltar {
+      position: fixed; top: 18px; left: 18px;
+      background: #fff; border: 2px solid #a0d4a0;
+      border-radius: 50px; padding: 8px 20px;
+      font-family: var(--fonte-titulo); font-size: 0.9rem;
+      color: var(--cor-titulo); cursor: pointer; text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+      box-shadow: var(--sombra); transition: transform 0.2s, background 0.2s; z-index: 300;
+    }
+    .btn-voltar:hover { background: #d4f0d4; transform: translateX(-3px); }
+
+    /* ─── LAYOUT ─── */
+    .pagina {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 80px 16px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* Ecrãs (só um visível de cada vez) */
+    .ecra {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      width: 100%;
+      animation: aparecer 0.4s ease forwards;
+    }
+    .ecra.ativo { display: flex; }
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── CABEÇALHO ─── */
+    header { text-align: center; }
+    header h1 {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.7rem, 5vw, 2.5rem);
+      color: var(--cor-titulo); margin-bottom: 8px;
+    }
+    header p {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      line-height: 1.6; opacity: 0.8;
+      max-width: 460px; margin: 0 auto;
+    }
+
+    /* ─── BOTÕES ─── */
+    .btn {
+      padding: 13px 36px; border: none; border-radius: 50px;
+      font-family: var(--fonte-titulo); font-size: 1.05rem;
+      cursor: pointer; box-shadow: var(--sombra);
+      transition: transform 0.2s, filter 0.2s;
+    }
+    .btn:hover { transform: scale(1.05); filter: brightness(1.08); }
+    .btn-cinza  { background: #dff0da; color: var(--cor-titulo); }
+    .btn-verde  { background: var(--cor-verde);    color: #fff; }
+    .btn-sm     { padding: 9px 22px; font-size: 0.9rem; }
+
+    /* =====================================================
+       ECRÃ INTRO — explicação do semáforo
+       ===================================================== */
+    .intro-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%;
+    }
+
+    /*
+      Cartões da explicação: um por cor do semáforo.
+      Cor definida via variável inline.
+    */
+    .intro-card {
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 18px 22px;
+      box-shadow: var(--sombra);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      border-left: 7px solid;
+    }
+
+    .intro-bolinha {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+
+    .intro-card-texto h3 {
+      font-family: var(--fonte-titulo);
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .intro-card-texto p { font-size: 0.9rem; line-height: 1.5; opacity: 0.85; }
+
+    /* =====================================================
+       SEMÁFORO VISUAL (SVG)
+       ===================================================== */
+    .semaforo-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .semaforo-svg {
+      width: 140px;
+      filter: drop-shadow(0 12px 30px rgba(0,0,0,0.2));
+    }
+
+    /*
+      As três luzes são círculos SVG com IDs.
+      O JS muda a opacidade para "acender" a luz certa.
+    */
+    #luz-vermelho, #luz-amarelo, #luz-verde {
+      transition: opacity 0.4s ease, filter 0.4s ease;
+    }
+
+    /* ─── INDICADOR DE FASE (texto ao lado do semáforo) ─── */
+    .semaforo-layout {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .fase-info {
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 20px 24px;
+      box-shadow: var(--sombra);
+      max-width: 320px;
+      flex: 1;
+    }
+
+    .fase-titulo {
+      font-family: var(--fonte-titulo);
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      transition: color 0.4s;
+    }
+
+    .fase-texto {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      opacity: 0.85;
+    }
+
+    /* =====================================================
+       ECRÃ DE SITUAÇÃO
+       Apresenta um cenário e a criança escolhe como reagir.
+       ===================================================== */
+    .situacao-caixa {
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 24px 28px;
+      box-shadow: var(--sombra);
+      text-align: center;
+      width: 100%;
+    }
+
+    .situacao-emoji { font-size: 3rem; margin-bottom: 10px; display: block; }
+    .situacao-titulo {
+      font-family: var(--fonte-titulo);
+      font-size: 1.1rem;
+      color: var(--cor-titulo);
+      margin-bottom: 10px;
+    }
+    .situacao-descricao {
+      font-size: 0.97rem;
+      line-height: 1.6;
+      opacity: 0.85;
+    }
+
+    /* ─── OPÇÕES DE RESPOSTA ─── */
+    .opcoes-resposta {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      width: 100%;
+    }
+
+    .opcao-resposta {
+      background: #fff;
+      border: 2.5px solid #c8e6c4;
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      font-family: var(--fonte-texto);
+      font-size: 0.95rem;
+      color: var(--cor-titulo);
+      text-align: left;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .opcao-resposta:hover { background: #e8f8e8; transform: translateX(4px); }
+
+    /* Feedback após escolha */
+    .opcao-resposta.correta  { background: #d4edda; border-color: var(--cor-verde);    pointer-events: none; }
+    .opcao-resposta.incorreta{ background: #f8d7da; border-color: var(--cor-vermelho); pointer-events: none; }
+    .opcao-resposta.neutra   { background: #fff3cd; border-color: var(--cor-amarelo);  pointer-events: none; }
+
+    .opcao-emoji { font-size: 1.6rem; flex-shrink: 0; }
+
+    /* ─── FEEDBACK DE RESPOSTA ─── */
+    .feedback-caixa {
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 20px 24px;
+      box-shadow: var(--sombra);
+      text-align: center;
+      width: 100%;
+      border-left: 6px solid;
+      display: none; /* mostrado pelo JS após resposta */
+    }
+    .feedback-emoji  { font-size: 2.2rem; margin-bottom: 8px; display: block; }
+    .feedback-titulo { font-family: var(--fonte-titulo); font-size: 1.1rem; margin-bottom: 6px; }
+    .feedback-texto  { font-size: 0.92rem; line-height: 1.6; opacity: 0.85; }
+
+    /* ─── BARRA DE PROGRESSO ─── */
+    .progresso-barra {
+      background: #d4edda;
+      border-radius: 50px;
+      height: 10px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .progresso-fill {
+      height: 100%;
+      background: var(--cor-verde);
+      border-radius: 50px;
+      transition: width 0.5s ease;
+    }
+    .progresso-texto {
+      font-size: 0.82rem;
+      opacity: 0.6;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    /* =====================================================
+       ECRÃ FINAL
+       ===================================================== */
+    .final-estrelas {
+      font-size: 3rem;
+      letter-spacing: 10px;
+      animation: saltitar 0.7s ease infinite alternate;
+    }
+    @keyframes saltitar {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-10px); }
+    }
+
+    .final-painel {
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 28px;
+      box-shadow: var(--sombra);
+      text-align: center;
+      width: 100%;
+    }
+
+    .final-score {
+      font-family: var(--fonte-titulo);
+      font-size: 2.5rem;
+      color: var(--cor-verde);
+      margin: 10px 0;
+    }
+
+    .resumo-passos {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    .resumo-passo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 520px) {
+      .semaforo-layout { flex-direction: column; }
+      .semaforo-svg { width: 100px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<a href="index.html" class="btn-voltar">← Voltar</a>
+
+<div class="pagina">
+
+  <!-- =====================================================
+       ECRÃ 1 — INTRODUÇÃO / EXPLICAÇÃO
+       ===================================================== -->
+  <div class="ecra ativo" id="ecra-intro">
+
+    <header>
+      <h1>🚦 O Semáforo das Emoções</h1>
+      <p>Quando sentimos uma emoção muito grande, o semáforo ajuda-nos a saber o que fazer!</p>
+    </header>
+
+    <div class="intro-cards">
+
+      <!-- Vermelho -->
+      <div class="intro-card" style="border-color: var(--cor-vermelho);">
+        <div class="intro-bolinha" style="background: var(--cor-vermelho);">🛑</div>
+        <div class="intro-card-texto">
+          <h3 style="color: var(--cor-vermelho);">🔴 Vermelho — PARA!</h3>
+          <p>Sentes uma emoção muito forte? <strong>Para o que estás a fazer.</strong> Não ages ainda. Ficas quieto(a) um momento.</p>
+        </div>
+      </div>
+
+      <!-- Amarelo -->
+      <div class="intro-card" style="border-color: var(--cor-amarelo);">
+        <div class="intro-bolinha" style="background: var(--cor-amarelo);">🤔</div>
+        <div class="intro-card-texto">
+          <h3 style="color: #b07800;">🟡 Amarelo — PENSA!</h3>
+          <p><strong>Respira fundo</strong> e pensa: como me estou a sentir? O que posso fazer? Qual é a melhor escolha?</p>
+        </div>
+      </div>
+
+      <!-- Verde -->
+      <div class="intro-card" style="border-color: var(--cor-verde);">
+        <div class="intro-bolinha" style="background: var(--cor-verde);">✅</div>
+        <div class="intro-card-texto">
+          <h3 style="color: var(--cor-verde);">🟢 Verde — AGE!</h3>
+          <p>Agora que pensaste bem, <strong>escolhe a melhor ação</strong> — uma que seja boa para ti e para os outros.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="btn btn-verde" onclick="irParaEcra('jogo')">
+      Entendi! Vamos praticar! 🚦
+    </button>
+
+  </div><!-- /ecra-intro -->
+
+
+  <!-- =====================================================
+       ECRÃ 2 — JOGO (situações)
+       ===================================================== -->
+  <div class="ecra" id="ecra-jogo">
+
+    <!-- Progresso -->
+    <div style="width:100%;">
+      <div class="progresso-barra">
+        <div class="progresso-fill" id="progresso-fill" style="width:0%"></div>
+      </div>
+      <p class="progresso-texto" id="progresso-texto">Situação 1 de 5</p>
+    </div>
+
+    <!-- Semáforo + Info da fase atual -->
+    <div class="semaforo-layout">
+
+      <!-- SVG do semáforo -->
+      <svg class="semaforo-svg" viewBox="0 0 100 260"
+        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+        <!-- Poste -->
+        <rect x="44" y="220" width="12" height="40" rx="4" fill="#555" />
+        <!-- Base -->
+        <rect x="30" y="250" width="40" height="10" rx="5" fill="#444" />
+
+        <!-- Caixa do semáforo -->
+        <rect x="15" y="10" width="70" height="215" rx="18"
+          fill="#2a2a2a" stroke="#1a1a1a" stroke-width="2" />
+
+        <!-- Reflexo lateral -->
+        <rect x="19" y="14" width="8" height="205" rx="4"
+          fill="rgba(255,255,255,0.06)" />
+
+        <!-- Luz VERMELHA -->
+        <circle id="luz-vermelho" cx="50" cy="52" r="24"
+          fill="#e74c3c" opacity="0.25"
+          filter="url(#brilho-vermelho)" />
+
+        <!-- Luz AMARELA -->
+        <circle id="luz-amarelo" cx="50" cy="125" r="24"
+          fill="#f39c12" opacity="0.25"
+          filter="url(#brilho-amarelo)" />
+
+        <!-- Luz VERDE -->
+        <circle id="luz-verde" cx="50" cy="198" r="24"
+          fill="#27ae60" opacity="0.25"
+          filter="url(#brilho-verde)" />
+
+        <!-- Brilho em cada luz (ponto branco) -->
+        <circle cx="40" cy="42" r="6" fill="rgba(255,255,255,0.18)" />
+        <circle cx="40" cy="115" r="6" fill="rgba(255,255,255,0.18)" />
+        <circle cx="40" cy="188" r="6" fill="rgba(255,255,255,0.18)" />
+
+        <!-- Filtros de brilho (glow) -->
+        <defs>
+          <filter id="brilho-vermelho">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="brilho-amarelo">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="brilho-verde">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+      </svg><!-- /semaforo-svg -->
+
+      <!-- Info da fase (muda conforme o passo) -->
+      <div class="fase-info" id="fase-info">
+        <p class="fase-titulo" id="fase-titulo">🔴 PARA!</p>
+        <p class="fase-texto" id="fase-texto">
+          Lê a situação e descobre como o semáforo te pode ajudar.
+        </p>
+      </div>
+
+    </div><!-- /semaforo-layout -->
+
+    <!-- Situação apresentada -->
+    <div class="situacao-caixa" id="situacao-caixa">
+      <span class="situacao-emoji" id="situacao-emoji">🤔</span>
+      <h3 class="situacao-titulo" id="situacao-titulo">A carregar...</h3>
+      <p class="situacao-descricao" id="situacao-descricao"></p>
+    </div>
+
+    <!-- Opções de resposta -->
+    <div class="opcoes-resposta" id="opcoes-resposta">
+      <!-- Geradas pelo JS -->
+    </div>
+
+    <!-- Feedback após resposta -->
+    <div class="feedback-caixa" id="feedback-caixa">
+      <span class="feedback-emoji" id="feedback-emoji"></span>
+      <p class="feedback-titulo" id="feedback-titulo"></p>
+      <p class="feedback-texto" id="feedback-texto"></p>
+      <br>
+      <button class="btn btn-verde btn-sm" id="btn-proxima" onclick="proximaSituacao()">
+        Próxima situação →
+      </button>
+    </div>
+
+  </div><!-- /ecra-jogo -->
+
+
+  <!-- =====================================================
+       ECRÃ 3 — FIM / RESULTADOS
+       ===================================================== -->
+  <div class="ecra" id="ecra-final">
+
+    <span class="final-estrelas" aria-label="Estrelas">🌟🌟🌟</span>
+
+    <div class="final-painel">
+      <p style="font-family: var(--fonte-titulo); font-size: 1.4rem; color: var(--cor-titulo);">
+        Muito bem! Já sabes usar o semáforo! 🚦
+      </p>
+      <p class="final-score" id="final-score">5 / 5</p>
+      <p style="opacity:0.75; font-size:0.95rem;">respostas no caminho certo</p>
+
+      <!-- Resumo dos 3 passos -->
+      <div class="resumo-passos">
+        <div class="resumo-passo" style="background:#fde8e8;">
+          <span style="font-size:1.8rem;">🔴</span>
+          <div>
+            <strong>PARA!</strong> — Fica quieto(a) quando a emoção chega.
+          </div>
+        </div>
+        <div class="resumo-passo" style="background:#fff8e1;">
+          <span style="font-size:1.8rem;">🟡</span>
+          <div>
+            <strong>PENSA!</strong> — Respira e pensa na melhor escolha.
+          </div>
+        </div>
+        <div class="resumo-passo" style="background:#e8f8e8;">
+          <span style="font-size:1.8rem;">🟢</span>
+          <div>
+            <strong>AGE!</strong> — Faz a coisa boa para ti e para os outros.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+      <button class="btn btn-verde" onclick="reiniciarJogo()">🔄 Jogar de novo</button>
+      <a href="index.html">
+        <button class="btn btn-cinza">🏠 Menu</button>
+      </a>
+    </div>
+
+  </div><!-- /ecra-final -->
+
+</div><!-- /pagina -->
+
+
+<!-- =====================================================
+     JAVASCRIPT — Lógica do Jogo
+     ===================================================== -->
+<script>
+
+  // ─────────────────────────────────────────────────────
+  // SITUAÇÕES DO JOGO
+  //
+  // Cada situação tem:
+  // - emoji, titulo, descricao: apresentação do cenário
+  // - opcoes: array de 3-4 escolhas
+  //   - texto: o que a criança pode fazer
+  //   - emoji: ícone visual
+  //   - tipo: 'correta' (verde) | 'neutra' (amarelo) | 'incorreta' (vermelho)
+  //   - feedback: o que o jogo responde após escolher
+  //   - feedbackEmoji / feedbackTitulo: para a caixa de feedback
+  //
+  // Para adicionar uma situação nova:
+  // copia um objeto do array e edita os campos.
+  // ─────────────────────────────────────────────────────
+  const SITUACOES = [
+    {
+      emoji: '😠',
+      titulo: 'O teu colega partiu o teu lápis favorito sem querer.',
+      descricao: 'Sentes uma raiva muito grande. O que fazes?',
+      opcoes: [
+        {
+          emoji: '🤜', texto: 'Bates-lhe imediatamente.',
+          tipo: 'incorreta',
+          feedbackEmoji: '🔴', feedbackTitulo: 'Espera! Primeiro para!',
+          feedback: 'Bater machuca os outros e cria mais problemas. Quando a raiva chega, o semáforo diz: PARA primeiro! Respira fundo antes de fazer qualquer coisa.'
+        },
+        {
+          emoji: '😤', texto: 'Gritas e dizes coisas feias.',
+          tipo: 'incorreta',
+          feedbackEmoji: '🔴', feedbackTitulo: 'Isso vai doer mais!',
+          feedback: 'Gritar e dizer coisas feias magoa as amizades. O semáforo diz: PARA e PENSA antes de falar. As palavras não se apagam.'
+        },
+        {
+          emoji: '💬', texto: 'Dizes calmamente que ficaste triste e pedes que tenha mais cuidado.',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Excelente!',
+          feedback: 'Parar, respirar e falar com calma é exatamente o que o semáforo ensina! Conseguiste dizer o que sentiste sem magoar ninguém. 🌟'
+        },
+        {
+          emoji: '🚶', texto: 'Afastas-te um pouco para respirar antes de falar.',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Muito bem!',
+          feedback: 'Afastar-te para respirar é uma ótima forma de parar o vermelho e chegar ao verde! Depois de calmo(a) consegues resolver melhor as coisas.'
+        }
+      ]
+    },
+
+    {
+      emoji: '😨',
+      titulo: 'Tens de fazer uma apresentação na escola e estás com muito medo.',
+      descricao: 'O coração bate rápido e a barriga dói. O que fazes?',
+      opcoes: [
+        {
+          emoji: '🏃', texto: 'Foges da sala sem dizer nada.',
+          tipo: 'incorreta',
+          feedbackEmoji: '🔴', feedbackTitulo: 'Fugir não resolve!',
+          feedback: 'Fugir faz com que o medo fique ainda maior da próxima vez. O semáforo diz: PARA, respira, e pensa numa forma de enfrentar o medo com coragem.'
+        },
+        {
+          emoji: '🌬️', texto: 'Respiras fundo três vezes e lembras-te de que já praticaste.',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Isso é coragem!',
+          feedback: 'Respirar fundo é o passo amarelo do semáforo — PENSA! Lembrar que praticaste ajuda o teu cérebro a ficar mais calmo. Muito bem! 💪'
+        },
+        {
+          emoji: '🗣️', texto: 'Dizes ao professor que estás nervoso(a) e pedes ajuda.',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Pedir ajuda é corajoso!',
+          feedback: 'Reconhecer que estás nervoso(a) e pedir ajuda é exatamente o passo verde — AGE de forma inteligente! Os adultos estão lá para ajudar.'
+        },
+        {
+          emoji: '😭', texto: 'Choras muito e dizes que não consegues fazer nada.',
+          tipo: 'neutra',
+          feedbackEmoji: '🟡', feedbackTitulo: 'É normal sentires assim...',
+          feedback: 'Chorar quando tens medo é completamente normal. Mas depois de chorar, tenta respirar fundo e pensar: "O que posso fazer para me sentir melhor?" O semáforo ajuda-te!'
+        }
+      ]
+    },
+
+    {
+      emoji: '😢',
+      titulo: 'O teu melhor amigo não te escolheu para a equipa no recreio.',
+      descricao: 'Sentes-te triste e excluído(a). O que fazes?',
+      opcoes: [
+        {
+          emoji: '🤐', texto: 'Não dizes nada e ficas sozinho(a) a chorar no canto.',
+          tipo: 'neutra',
+          feedbackEmoji: '🟡', feedbackTitulo: 'Sentir tristeza é normal...',
+          feedback: 'É completamente normal ficar triste. Mas o semáforo diz: depois de parar e sentir, PENSA — há mais alguém com quem possas brincar? Podes falar com o teu amigo mais tarde?'
+        },
+        {
+          emoji: '😠', texto: 'Decides que nunca mais falas com ele.',
+          tipo: 'incorreta',
+          feedbackEmoji: '🔴', feedbackTitulo: 'Espera um momento!',
+          feedback: 'Às vezes agimos de forma impulsiva quando estamos magoados. O semáforo diz: PARA primeiro! Talvez o teu amigo não tenha querido magoar-te — podes falar com ele com calma.'
+        },
+        {
+          emoji: '💬', texto: 'Mais tarde, dizes ao teu amigo que ficaste triste.',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Comunicar é a chave!',
+          feedback: 'Esperar, pensar e depois falar com calma é usar o semáforo na perfeição! Parar → Pensar → Agir com inteligência. Os bons amigos conseguem conversar sobre o que sentem. 💚'
+        },
+        {
+          emoji: '🎮', texto: 'Vais brincar com outras crianças.',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Boa solução!',
+          feedback: 'Encontrar outra forma de brincar é uma ótima ação! Não ficaste preso(a) na tristeza — pensaste e agiste. Mais tarde podes falar com o teu amigo tranquilamente.'
+        }
+      ]
+    },
+
+    {
+      emoji: '😤',
+      titulo: 'Perdeste num jogo e achaste que foi injusto.',
+      descricao: 'Estás muito frustrado(a) e com vontade de mandar tudo ao ar. O que fazes?',
+      opcoes: [
+        {
+          emoji: '🎲', texto: 'Atiras o jogo ao chão e vais embora.',
+          tipo: 'incorreta',
+          feedbackEmoji: '🔴', feedbackTitulo: 'Atenção!',
+          feedback: 'Atirar coisas quando estamos frustrados pode magoar alguém ou estragar as coisas. O semáforo diz: PARA! Respira antes de agir. A frustração passa.'
+        },
+        {
+          emoji: '🌬️', texto: 'Respiras fundo e dizes "próxima vez ganho".',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Isso é maturidade!',
+          feedback: 'Respirar e pensar de forma positiva é o semáforo a funcionar na perfeição! Parar a impulsividade, pensar e agir com fair-play. Estás a crescer muito! 🌟'
+        },
+        {
+          emoji: '😭', texto: 'Choras e dizes que o jogo é injusto a toda a gente.',
+          tipo: 'neutra',
+          feedbackEmoji: '🟡', feedbackTitulo: 'É frustrante mesmo...',
+          feedback: 'Dizer como te sentes é bom — mas esperar um pouco antes de falar ajuda a fazeres isso de forma mais calma. O passo amarelo (PENSA) diz: há uma forma melhor de dizer o que sinto?'
+        },
+        {
+          emoji: '💬', texto: 'Dizes calmamente que achaste uma regra injusta e perguntas se podem conversar.',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Muito maduro(a)!',
+          feedback: 'Falar sobre o que não te pareceu justo de forma calma e construtiva é exatamente a luz verde! Conseguiste parar, pensar e agir muito bem. 💚'
+        }
+      ]
+    },
+
+    {
+      emoji: '😬',
+      titulo: 'Alguém na escola disse uma coisa má sobre ti.',
+      descricao: 'Sentes-te magoado(a) e com vontade de responder com coisas piores. O que fazes?',
+      opcoes: [
+        {
+          emoji: '😤', texto: 'Respondes com coisas ainda piores.',
+          tipo: 'incorreta',
+          feedbackEmoji: '🔴', feedbackTitulo: 'Isso vai criar mais conflito!',
+          feedback: 'Quando respondemos com maldade, a situação piora sempre. O semáforo diz: PARA! Não precisas de responder imediatamente. Respira primeiro.'
+        },
+        {
+          emoji: '🤐', texto: 'Ignoras e continuas o teu dia.',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Muito forte!',
+          feedback: 'Ignorar quando não vale a pena responder é uma das coisas mais difíceis e mais inteligentes que podes fazer. O semáforo: parar, pensar se vale a pena, e agir com sabedoria. 💪'
+        },
+        {
+          emoji: '👩‍🏫', texto: 'Contas a um adulto de confiança o que aconteceu.',
+          tipo: 'correta',
+          feedbackEmoji: '🟢', feedbackTitulo: 'Pedir ajuda é inteligente!',
+          feedback: 'Contar a um adulto é exatamente o passo verde quando a situação é difícil de resolver sozinho(a). Não tens de enfrentar tudo sozinho(a)!'
+        },
+        {
+          emoji: '😭', texto: 'Ficas a pensar no que disseram o dia todo e não consegues fazer mais nada.',
+          tipo: 'neutra',
+          feedbackEmoji: '🟡', feedbackTitulo: 'É difícil não pensar nisso...',
+          feedback: 'É completamente normal ficares a pensar quando alguém nos magoa. Mas o semáforo pode ajudar: para de ruminar, pensa — será que isso é mesmo verdade? — e age: distrai-te ou pede ajuda.'
+        }
+      ]
+    }
+
+  ]; // fim SITUACOES
+
+  // ─────────────────────────────────────────────────────
+  // ESTADO DO JOGO
+  // ─────────────────────────────────────────────────────
+
+  let indiceSituacao = 0;  /* situação atual (0 a 4)             */
+  let pontuacao      = 0;  /* respostas corretas ou neutras       */
+  let respondeu      = false; /* se já respondeu nesta situação   */
+
+  /*
+    Ordem das situações: misturada aleatoriamente.
+    Assim o jogo parece diferente cada vez que se joga.
+  */
+  let ordemSituacoes = [];
+
+  // ─────────────────────────────────────────────────────
+  // NAVEGAÇÃO ENTRE ECRÃS
+  // ─────────────────────────────────────────────────────
+
+  function irParaEcra(id) {
+    document.querySelectorAll('.ecra').forEach(e => e.classList.remove('ativo'));
+    document.getElementById(`ecra-${id}`).classList.add('ativo');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (id === 'jogo') iniciarJogo();
+  }
+
+  // ─────────────────────────────────────────────────────
+  // SEMÁFORO — acender luzes
+  // ─────────────────────────────────────────────────────
+
+  /*
+    Fases do jogo por situação (roda entre as 3 luzes).
+    Cada situação mostra uma fase diferente como contexto.
+  */
+  const FASES = [
+    {
+      luz: 'vermelho',
+      titulo: '🔴 PARA!',
+      texto: 'Quando sentes uma emoção muito grande, <strong>para primeiro</strong>. Não ages ainda. Respira.',
+      cor: '#e74c3c'
+    },
+    {
+      luz: 'amarelo',
+      titulo: '🟡 PENSA!',
+      texto: '<strong>Respira fundo</strong> e pergunta a ti mesmo(a): como me sinto? O que posso fazer? Qual é a melhor escolha?',
+      cor: '#b07800'
+    },
+    {
+      luz: 'verde',
+      titulo: '🟢 AGE!',
+      texto: 'Agora que pensaste, <strong>faz a melhor escolha</strong> — uma que seja boa para ti e para os outros.',
+      cor: '#27ae60'
+    },
+  ];
+
+  /**
+   * Acende apenas a luz indicada no SVG do semáforo.
+   * @param {'vermelho'|'amarelo'|'verde'|'nenhuma'} luz
+   */
+  function acenderLuz(luz) {
+    const luzes = { vermelho: 0.25, amarelo: 0.25, verde: 0.25 };
+    if (luz !== 'nenhuma') luzes[luz] = 1;
+
+    document.getElementById('luz-vermelho').style.opacity = luzes.vermelho;
+    document.getElementById('luz-amarelo').style.opacity  = luzes.amarelo;
+    document.getElementById('luz-verde').style.opacity    = luzes.verde;
+
+    /* Brilho (filter blur) apenas na luz ativa */
+    ['vermelho','amarelo','verde'].forEach(l => {
+      const el = document.getElementById(`luz-${l}`);
+      el.style.filter = l === luz ? `url(#brilho-${l})` : 'none';
+    });
+  }
+
+  // ─────────────────────────────────────────────────────
+  // INICIAR / REINICIAR JOGO
+  // ─────────────────────────────────────────────────────
+
+  function iniciarJogo() {
+    indiceSituacao = 0;
+    pontuacao      = 0;
+    respondeu      = false;
+
+    /* Mistura aleatória das situações */
+    ordemSituacoes = [...Array(SITUACOES.length).keys()]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5); /* usa 5 situações por jogo */
+
+    mostrarSituacao();
+  }
+
+  function reiniciarJogo() {
+    irParaEcra('jogo');
+  }
+
+  // ─────────────────────────────────────────────────────
+  // MOSTRAR SITUAÇÃO
+  // ─────────────────────────────────────────────────────
+
+  function mostrarSituacao() {
+    respondeu = false;
+
+    const idx      = ordemSituacoes[indiceSituacao];
+    const situacao = SITUACOES[idx];
+    const fase     = FASES[indiceSituacao % 3]; /* cicla pelas 3 fases */
+    const total    = ordemSituacoes.length;
+
+    /* Atualiza progresso */
+    const pct = (indiceSituacao / total) * 100;
+    document.getElementById('progresso-fill').style.width = pct + '%';
+    document.getElementById('progresso-texto').textContent =
+      `Situação ${indiceSituacao + 1} de ${total}`;
+
+    /* Acende a luz correta */
+    acenderLuz(fase.luz);
+
+    /* Atualiza info da fase */
+    const faseTituloEl = document.getElementById('fase-titulo');
+    const faseTextoEl  = document.getElementById('fase-texto');
+    faseTituloEl.textContent  = fase.titulo;
+    faseTituloEl.style.color  = fase.cor;
+    faseTextoEl.innerHTML     = fase.texto;
+
+    /* Atualiza situação */
+    document.getElementById('situacao-emoji').textContent      = situacao.emoji;
+    document.getElementById('situacao-titulo').textContent     = situacao.titulo;
+    document.getElementById('situacao-descricao').textContent  = situacao.descricao;
+
+    /* Esconde feedback anterior */
+    const feedbackEl = document.getElementById('feedback-caixa');
+    feedbackEl.style.display = 'none';
+
+    /* Gera opções — em ordem aleatória */
+    const contentor = document.getElementById('opcoes-resposta');
+    contentor.innerHTML = '';
+
+    const opcoesBaralhadas = [...situacao.opcoes].sort(() => Math.random() - 0.5);
+
+    opcoesBaralhadas.forEach(opcao => {
+      const btn = document.createElement('button');
+      btn.className = 'opcao-resposta';
+      btn.innerHTML = `<span class="opcao-emoji">${opcao.emoji}</span><span>${opcao.texto}</span>`;
+      btn.onclick = () => responder(opcao, btn);
+      contentor.appendChild(btn);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────
+  // RESPONDER
+  // ─────────────────────────────────────────────────────
+
+  /**
+   * Processa a escolha da criança.
+   * @param {object}      opcao - Dados da opção escolhida
+   * @param {HTMLElement} btn   - Botão clicado
+   */
+  function responder(opcao, btn) {
+    if (respondeu) return; /* evita responder duas vezes */
+    respondeu = true;
+
+    /* Aplica classe de feedback ao botão clicado */
+    btn.classList.add(opcao.tipo);
+
+    /* Desativa todos os botões */
+    document.querySelectorAll('.opcao-resposta').forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b !== btn) b.style.opacity = '0.45';
+    });
+
+    /* Conta pontuação */
+    if (opcao.tipo === 'correta' || opcao.tipo === 'neutra') {
+      pontuacao++;
+    }
+
+    /* Mostra feedback */
+    const feedbackEl = document.getElementById('feedback-caixa');
+    document.getElementById('feedback-emoji').textContent  = opcao.feedbackEmoji;
+    document.getElementById('feedback-titulo').textContent = opcao.feedbackTitulo;
+    document.getElementById('feedback-texto').textContent  = opcao.feedback;
+
+    /* Cor da borda do feedback */
+    const corBorda = opcao.tipo === 'correta'   ? '#27ae60' :
+                     opcao.tipo === 'neutra'    ? '#f39c12' : '#e74c3c';
+    feedbackEl.style.borderColor = corBorda;
+    feedbackEl.style.display     = 'block';
+
+    /* Texto do botão de próxima */
+    const ultimaSituacao = indiceSituacao >= ordemSituacoes.length - 1;
+    document.getElementById('btn-proxima').textContent =
+      ultimaSituacao ? '🏁 Ver resultados' : 'Próxima situação →';
+
+    /* Scroll para o feedback */
+    setTimeout(() => {
+      feedbackEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 200);
+  }
+
+  // ─────────────────────────────────────────────────────
+  // PRÓXIMA SITUAÇÃO
+  // ─────────────────────────────────────────────────────
+
+  function proximaSituacao() {
+    indiceSituacao++;
+
+    if (indiceSituacao >= ordemSituacoes.length) {
+      /* Chegou ao fim — mostra resultados */
+      mostrarFinal();
+    } else {
+      mostrarSituacao();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  // ─────────────────────────────────────────────────────
+  // ECRÃ FINAL
+  // ─────────────────────────────────────────────────────
+
+  function mostrarFinal() {
+    /* Progresso a 100% */
+    document.getElementById('progresso-fill').style.width = '100%';
+    acenderLuz('verde');
+
+    /* Atualiza score */
+    document.getElementById('final-score').textContent =
+      `${pontuacao} / ${ordemSituacoes.length}`;
+
+    irParaEcra('final');
+  }
+
+</script>
+
+</body>
+</html>

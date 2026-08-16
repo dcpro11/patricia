@@ -1,0 +1,462 @@
+/* =========================================================
+   ARTIGO-STYLE.CSS
+   CSS específico para páginas de artigo individuais.
+   Importado em cada artigo com: <link rel="stylesheet" href="../../css/style.css"/>
+   Este ficheiro é carregado DEPOIS do style.css principal.
+
+   Para personalizar um artigo individualmente:
+   — adicione um <style> inline no <head> desse artigo
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   HERO DO ARTIGO
+   Layout centrado com eyebrow, título e meta de leitura
+   --------------------------------------------------------- */
+.artigo-hero {
+  min-height: 34vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 9rem 4rem 2.5rem;
+  background: linear-gradient(160deg, var(--blue-pale) 0%, #fff 65%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Detalhe decorativo */
+.artigo-hero::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  border: 1px solid var(--blue-light);
+  top: -180px;
+  right: -120px;
+  opacity: 0.45;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--mid-gray);
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+.breadcrumb a {
+  color: var(--blue-dark);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.breadcrumb a:hover { color: var(--gold); }
+.breadcrumb span { opacity: 0.5; }
+
+.artigo-hero-eyebrow {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.artigo-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+  font-weight: 300;
+  line-height: 1.12;
+  color: var(--charcoal);
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+.artigo-hero-title em {
+  font-style: italic;
+  color: var(--blue-dark);
+}
+
+/* Meta: tempo de leitura + categoria */
+.artigo-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.78rem;
+  color: var(--mid-gray);
+  position: relative;
+  z-index: 1;
+}
+.artigo-meta-pill {
+  background: var(--blue-pale);
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+
+/* ---------------------------------------------------------
+   CORPO DO ARTIGO
+   Coluna central larga com sidebar opcional
+   --------------------------------------------------------- */
+.artigo-body {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 2rem 2rem 6rem;
+}
+
+/* Parágrafo base */
+.artigo-body p {
+  font-size: 1rem;
+  color: var(--charcoal);
+  line-height: 1.85;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+
+/* Títulos de secção dentro do artigo */
+.artigo-body h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+.artigo-body h2 em {
+  font-style: italic;
+  color: var(--blue-dark);
+}
+
+.artigo-body h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--blue-dark);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Linha divisória decorativa */
+.artigo-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3rem 0;
+}
+
+/* Caixa de destaque / citação clínica */
+.artigo-destaque {
+  background: var(--blue-pale);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 1rem 1rem 0;
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  font-size: 1rem;
+  color: var(--charcoal);
+  line-height: 1.75;
+  font-weight: 300;
+}
+.artigo-destaque strong {
+  font-weight: 500;
+  color: var(--blue-dark);
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+}
+
+/* Lista de dicas numeradas */
+.artigo-lista {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.artigo-lista li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: var(--charcoal);
+  line-height: 1.7;
+  font-weight: 300;
+}
+.artigo-lista-num {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: var(--blue-dark);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
+
+/* Lista com ícone emoji */
+.artigo-lista-icon li::before {
+  content: attr(data-icon);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+.artigo-lista-icon li {
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+/* Caixa de aviso / nota clínica */
+.artigo-nota {
+  background: #fff8e1;
+  border: 1px solid #ffe08a;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  font-size: 0.88rem;
+  color: #5c4a00;
+  line-height: 1.65;
+  margin: 2rem 0;
+}
+.artigo-nota strong { display: block; margin-bottom: 0.3rem; color: #7c6200; }
+
+
+/* ---------------------------------------------------------
+   CTA INLINE — no fim de cada artigo
+   --------------------------------------------------------- */
+.artigo-cta {
+  background: linear-gradient(135deg, var(--blue-dark) 0%, #2a4f72 100%);
+  border-radius: 1.5rem;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  margin-top: 4rem;
+}
+.artigo-cta .section-eyebrow { color: var(--gold-light); }
+.artigo-cta h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: #fff;
+  margin: 0.75rem 0 1rem;
+  line-height: 1.2;
+}
+.artigo-cta h3 em { color: var(--gold-light); font-style: italic; }
+.artigo-cta p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 1.75rem;
+}
+.btn-light {
+  background: #fff;
+  color: var(--blue-dark);
+  padding: 0.9rem 2.2rem;
+  border-radius: 3rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: 2px solid #fff;
+  transition: background 0.2s, color 0.2s;
+  display: inline-block;
+}
+.btn-light:hover {
+  background: transparent;
+  color: #fff;
+}
+
+/* Navegação entre artigos (anterior / próximo) */
+.artigo-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.artigo-nav a {
+  font-size: 0.82rem;
+  color: var(--blue-dark);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.artigo-nav a:hover { color: var(--gold); }
+.artigo-nav-center {
+  font-size: 0.75rem;
+  color: var(--mid-gray);
+  text-align: center;
+}
+
+
+/* ---------------------------------------------------------
+   SHARE BLOCK
+   Aparece antes da navegação ← → em cada artigo.
+   Lógica em js/share.js — não editar aqui.
+   --------------------------------------------------------- */
+.artigo-share {
+  margin-top: 3rem;
+  padding: 1.75rem 2rem;
+  background: var(--blue-pale);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.artigo-share-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid-gray);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.artigo-share-buttons {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Botão individual de rede social */
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  border-radius: 3rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+  white-space: nowrap;
+  line-height: 1;
+}
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+.share-btn:active { transform: translateY(0); }
+
+/* Botão principal — Web Share API (mobile) */
+.share-btn-native {
+  background: var(--blue-dark);
+  color: #fff;
+  border-color: var(--blue-dark);
+  padding: 0.6rem 1.25rem;
+  font-size: 0.82rem;
+}
+.share-btn-native:hover { background: #2a4f72; border-color: #2a4f72; color: #fff; }
+
+/* WhatsApp */
+.share-btn-whatsapp { background: #25D366; color: #fff; border-color: #25D366; }
+.share-btn-whatsapp:hover { opacity: 0.88; }
+
+/* Facebook */
+.share-btn-facebook { background: #1877F2; color: #fff; border-color: #1877F2; }
+.share-btn-facebook:hover { opacity: 0.88; }
+
+/* X / Twitter */
+.share-btn-x { background: #000; color: #fff; border-color: #000; }
+.share-btn-x:hover { opacity: 0.78; }
+
+/* LinkedIn */
+.share-btn-linkedin { background: #0A66C2; color: #fff; border-color: #0A66C2; }
+.share-btn-linkedin:hover { opacity: 0.88; }
+
+/* Email */
+.share-btn-email {
+  background: transparent;
+  color: var(--charcoal);
+  border-color: var(--border);
+}
+.share-btn-email:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Copiar link */
+.share-btn-copy {
+  background: transparent;
+  color: var(--mid-gray);
+  border-color: var(--border);
+}
+.share-btn-copy:hover { border-color: var(--blue-mid); color: var(--blue-dark); }
+.share-btn-copy.copied {
+  border-color: #2d6a4f;
+  color: #2d6a4f;
+  background: #e8f4ed;
+}
+
+/* Ícone SVG dentro dos botões */
+.share-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+/* Toast de "link copiado" */
+.share-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: var(--charcoal);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 3rem;
+  z-index: 9999;
+  pointer-events: none;
+  animation: share-toast-in 0.3s ease both;
+  white-space: nowrap;
+}
+.share-toast.hiding {
+  animation: share-toast-out 0.3s ease forwards;
+}
+@keyframes share-toast-in {
+  from { opacity:0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes share-toast-out {
+  from { opacity:1; transform: translateX(-50%) translateY(0); }
+  to   { opacity:0; transform: translateX(-50%) translateY(8px); }
+}
+
+
+/* ---------------------------------------------------------
+   RESPONSIVO
+   --------------------------------------------------------- */
+@media (max-width: 900px) {
+  .artigo-hero { padding: 7rem 2rem 2rem; }
+  .artigo-body { padding: 1.5rem 1.5rem 4rem; }
+  .artigo-cta { padding: 2rem 1.5rem; }
+  .artigo-share { padding: 1.25rem; gap: 1rem; }
+  .artigo-share-label { width: 100%; }
+}

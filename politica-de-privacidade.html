@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- =====================================================
+       POLÍTICA DE PRIVACIDADE
+       Localização: /politica-de-privacidade.html
+       Atualizar: [DATA_ATUALIZACAO] e [GTM_ID] conforme necessário
+       ===================================================== -->
+
+  <title>Política de Privacidade — Dra. Patrícia Gouveia · Psicóloga</title>
+  <meta name="description" content="Política de Privacidade do site da Dra. Patrícia Gouveia, Psicóloga Clínica em Lisboa. Tratamento de dados pessoais conforme o RGPD."/>
+  <meta name="robots" content="noindex, follow"/><!-- páginas legais geralmente não indexadas -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+
+  <style>
+    /* -------------------------------------------------------
+       ESTILOS DA PÁGINA LEGAL
+       Partilhados entre privacidade e cookies
+       ------------------------------------------------------- */
+
+    /* Hero simples, sem imagem */
+    .legal-hero {
+      padding: 9rem 6rem 4rem;
+      background: var(--blue-pale);
+      border-bottom: 1px solid var(--border);
+    }
+    .legal-hero .section-eyebrow { display: block; margin-bottom: 1rem; }
+    .legal-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
+    }
+    .legal-hero h1 em { font-style: italic; color: var(--blue-dark); }
+    .legal-meta {
+      font-size: 0.78rem;
+      color: var(--mid-gray);
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .legal-meta span { display: flex; align-items: center; gap: 0.35rem; }
+
+    /* Corpo do documento legal */
+    .legal-body {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 5rem 2rem 7rem;
+    }
+
+    /* Índice de navegação interna */
+    .legal-toc {
+      background: var(--blue-pale);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 1.75rem 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .legal-toc strong {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .legal-toc ol {
+      list-style: decimal;
+      padding-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .legal-toc ol li a {
+      font-size: 0.88rem;
+      color: var(--blue-dark);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .legal-toc ol li a:hover { color: var(--gold); }
+
+    /* Secções do documento */
+    .legal-section {
+      margin-bottom: 0.5rem;
+      scroll-margin-top: 100px; /* offset para o nav fixo */
+    }
+    .legal-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .legal-section h2 .num {
+      font-size: 0.75rem;
+      background: var(--blue-dark);
+      color: #fff;
+      padding: 0.15rem 0.55rem;
+      border-radius: 9rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+    }
+    .legal-section p {
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 1.1rem;
+    }
+    .legal-section ul, .legal-section ol {
+      padding-left: 1.5rem;
+      margin: 0.75rem 0 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .legal-section li {
+      font-size: 0.93rem;
+      color: var(--charcoal);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    .legal-section strong { font-weight: 500; color: var(--charcoal); }
+    .legal-section a { color: var(--blue-dark); }
+    .legal-section a:hover { color: var(--gold); }
+
+    /* Caixa de contacto do DPO / responsável */
+    .legal-contact-box {
+      background: var(--blue-pale);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 1rem 1rem 0;
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .legal-contact-box p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .legal-contact-box p:last-child { margin-bottom: 0; }
+
+    /* Tabela de dados */
+    .legal-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+      font-size: 0.87rem;
+    }
+    .legal-table th {
+      background: var(--blue-dark);
+      color: #fff;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+    .legal-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--charcoal);
+      font-weight: 300;
+      line-height: 1.5;
+      vertical-align: top;
+    }
+    .legal-table tr:last-child td { border-bottom: none; }
+    .legal-table tr:nth-child(even) td { background: var(--blue-pale); }
+
+    /* Linha divisória */
+    .legal-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+      margin-top: -2rem;
+      margin-bottom: -2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .legal-hero { padding: 7rem 2rem 3rem; }
+      .legal-body { padding: 3rem 1.5rem 5rem; }
+      .legal-table { font-size: 0.78rem; }
+      .legal-table th, .legal-table td { padding: 0.6rem 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="index.html">Dra. Patrícia <span>Gouveia</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#sobre">Sobre mim</a></li>
+      <li><a href="index.html#servicos">Serviços</a></li>
+      <li><a href="ansiedade/index.html">Ansiedade</a></li>
+      <li><a href="index.html#agendar">Contacto</a></li>
+    </ul>
+    <div class="nav-right">
+      <a class="nav-cta" href="index.html#agendar">Marcar Consulta</a>
+      <button class="nav-burger" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Drawer -->
+  <div class="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu-inner">
+      <nav class="mobile-nav">
+        <a href="index.html#sobre" class="mobile-nav-link">Sobre mim</a>
+        <a href="index.html#servicos" class="mobile-nav-link">Serviços</a>
+        <a href="ansiedade/index.html" class="mobile-nav-link">Ansiedade</a>
+        <a href="index.html#agendar" class="mobile-nav-link">Contacto</a>
+      </nav>
+      <a class="mobile-nav-cta" href="index.html#agendar">Marcar Consulta</a>
+    </div>
+  </div>
+  <div class="mobile-menu-overlay"></div>
+
+
+  <!-- HERO -->
+  <header class="legal-hero">
+    <span class="section-eyebrow">Informação Legal</span>
+    <h1>Política de <em>Privacidade</em></h1>
+    <div class="legal-meta">
+      <span>📅 Última atualização: Janeiro de 2025</span>
+      <span>🇪🇺 Conforme o RGPD (UE) 2016/679</span>
+      <span>🇵🇹 Lei n.º 58/2019</span>
+    </div>
+  </header>
+
+
+  <!-- CORPO -->
+  <main class="legal-body">
+
+    <!-- Índice -->
+    <div class="legal-toc" aria-label="Índice da Política de Privacidade">
+      <strong>Índice</strong>
+      <ol>
+        <li><a href="#responsavel">Responsável pelo Tratamento</a></li>
+        <li><a href="#dados-recolhidos">Dados Pessoais Recolhidos</a></li>
+        <li><a href="#finalidades">Finalidades e Base Legal do Tratamento</a></li>
+        <li><a href="#retencao">Prazos de Conservação</a></li>
+        <li><a href="#partilha">Partilha de Dados com Terceiros</a></li>
+        <li><a href="#transferencias">Transferências Internacionais</a></li>
+        <li><a href="#direitos">Os Seus Direitos</a></li>
+        <li><a href="#seguranca">Segurança dos Dados</a></li>
+        <li><a href="#cookies">Cookies</a></li>
+        <li><a href="#alteracoes">Alterações a esta Política</a></li>
+        <li><a href="#contacto-legal">Contacto e Reclamações</a></li>
+      </ol>
+    </div>
+
+
+    <!-- 1. Responsável -->
+    <section class="legal-section" id="responsavel">
+      <h2><span class="num">1</span> Responsável pelo Tratamento</h2>
+      <p>
+        O responsável pelo tratamento dos seus dados pessoais é:
+      </p>
+      <div class="legal-contact-box">
+        <p><strong>Dra. Patrícia Gouveia — Psicóloga Clínica</strong></p>
+        <p>📍 Av. da Liberdade, 200, Piso 3 · Lisboa, Portugal</p>
+        <p>✉️ patriciagouveia.psicologa@hotmail.com</p>
+        <p>📞 +351 968 378 816</p>
+        <p>🏛️ Cédula Profissional OPP n.º XXXX</p>
+        <p>🇵🇹 NIF: [SEU NIF]</p>
+      </div>
+      <p>
+        Enquanto profissional de saúde, o tratamento de dados clínicos está sujeito, adicionalmente,
+        às obrigações de sigilo profissional previstas no Código Deontológico da Ordem dos Psicólogos
+        Portugueses e na legislação aplicável ao setor da saúde.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 2. Dados recolhidos -->
+    <section class="legal-section" id="dados-recolhidos">
+      <h2><span class="num">2</span> Dados Pessoais Recolhidos</h2>
+      <p>
+        Recolhemos apenas os dados estritamente necessários para as finalidades descritas nesta política.
+        Os dados tratados incluem:
+      </p>
+
+      <table class="legal-table">
+        <thead>
+          <tr>
+            <th>Categoria</th>
+            <th>Dados</th>
+            <th>Origem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Identificação</strong></td>
+            <td>Nome, email, número de telefone</td>
+            <td>Formulário de contacto</td>
+          </tr>
+          <tr>
+            <td><strong>Comunicação</strong></td>
+            <td>Mensagens trocadas por email ou formulário</td>
+            <td>Contacto direto</td>
+          </tr>
+          <tr>
+            <td><strong>Clínicos</strong></td>
+            <td>Informação de saúde partilhada em contexto de consulta</td>
+            <td>Relação terapêutica</td>
+          </tr>
+          <tr>
+            <td><strong>Navegação</strong></td>
+            <td>Endereço IP, tipo de browser, páginas visitadas, duração da visita</td>
+            <td>Google Analytics (com consentimento)</td>
+          </tr>
+          <tr>
+            <td><strong>Agendamento</strong></td>
+            <td>Data e hora de consultas, histórico de marcações</td>
+            <td>Calendly / contacto direto</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Dados sensíveis:</strong> os dados de saúde são uma categoria especial nos termos do
+        artigo 9.º do RGPD. O seu tratamento assenta no consentimento explícito do titular e/ou
+        na necessidade de prestação de cuidados de saúde (art. 9.º, n.º 2, al. a) e h)).
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 3. Finalidades -->
+    <section class="legal-section" id="finalidades">
+      <h2><span class="num">3</span> Finalidades e Base Legal do Tratamento</h2>
+
+      <table class="legal-table">
+        <thead>
+          <tr>
+            <th>Finalidade</th>
+            <th>Base Legal (RGPD)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Responder a pedidos de consulta e comunicações</td>
+            <td>Art. 6.º, n.º 1, al. b) — execução de contrato / pré-contratual</td>
+          </tr>
+          <tr>
+            <td>Prestação de serviços psicológicos e manutenção de processo clínico</td>
+            <td>Art. 6.º, n.º 1, al. b) + Art. 9.º, n.º 2, al. h)</td>
+          </tr>
+          <tr>
+            <td>Cumprimento de obrigações legais (faturação, arquivo clínico)</td>
+            <td>Art. 6.º, n.º 1, al. c) — obrigação legal</td>
+          </tr>
+          <tr>
+            <td>Análise de tráfego do website via Google Analytics</td>
+            <td>Art. 6.º, n.º 1, al. a) — <strong>consentimento</strong></td>
+          </tr>
+          <tr>
+            <td>Marketing por email (newsletter, se aplicável)</td>
+            <td>Art. 6.º, n.º 1, al. a) — <strong>consentimento</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        As finalidades baseadas em consentimento podem ser retiradas a qualquer momento, sem
+        prejuízo da licitude do tratamento efetuado até essa data.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 4. Retenção -->
+    <section class="legal-section" id="retencao">
+      <h2><span class="num">4</span> Prazos de Conservação</h2>
+      <ul>
+        <li><strong>Dados de contacto e comunicações:</strong> conservados durante a relação e até 3 anos após o último contacto, salvo obrigação legal diferente.</li>
+        <li><strong>Processo clínico (dados de saúde):</strong> mínimo de 5 anos após a última consulta, conforme a Lei de Bases da Saúde e legislação setorial aplicável. Em menores, o prazo conta a partir da maioridade.</li>
+        <li><strong>Dados de faturação:</strong> 10 anos, nos termos do Código Comercial e legislação fiscal.</li>
+        <li><strong>Dados de navegação (Google Analytics):</strong> conforme a política de retenção configurada no Google Analytics (por defeito, 14 meses). Eliminados automaticamente pelo sistema.</li>
+        <li><strong>Cookies de consentimento:</strong> 12 meses, após os quais o consentimento é pedido novamente.</li>
+      </ul>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 5. Partilha -->
+    <section class="legal-section" id="partilha">
+      <h2><span class="num">5</span> Partilha de Dados com Terceiros</h2>
+      <p>
+        Os seus dados pessoais <strong>não são vendidos, alugados nem cedidos</strong> a terceiros
+        para fins comerciais. Podem, no entanto, ser partilhados com os seguintes subcontratantes,
+        estritamente para as finalidades descritas:
+      </p>
+      <ul>
+        <li><strong>Formspree (EUA)</strong> — processamento do formulário de contacto. Sujeito a cláusulas contratuais tipo (SCCs) para transferências UE-EUA.</li>
+        <li><strong>Google LLC (EUA)</strong> — Google Analytics (análise de tráfego) e Google Tag Manager. Sujeito ao DPA do Google e SCCs. Ativado apenas com consentimento.</li>
+        <li><strong>Calendly (EUA)</strong> — agendamento de consultas. Sujeito a DPA próprio e SCCs.</li>
+        <li><strong>Profissional de contabilidade</strong> — dados de faturação, sob obrigação legal.</li>
+      </ul>
+      <p>
+        Em caso de obrigação legal (e.g., ordem judicial, autoridade reguladora), os dados podem
+        ser divulgados às entidades competentes.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 6. Transferências -->
+    <section class="legal-section" id="transferencias">
+      <h2><span class="num">6</span> Transferências Internacionais de Dados</h2>
+      <p>
+        Alguns subcontratantes (Google, Formspree, Calendly) operam nos Estados Unidos da América.
+        Estas transferências são salvaguardadas por:
+      </p>
+      <ul>
+        <li>Cláusulas Contratuais Tipo (SCCs) aprovadas pela Comissão Europeia (Decisão 2021/914/UE)</li>
+        <li>Data Processing Agreements (DPA) celebrados com cada subcontratante</li>
+        <li>Medidas técnicas complementares (encriptação em trânsito e em repouso)</li>
+      </ul>
+      <p>
+        Pode consultar as políticas de privacidade de cada subcontratante nos respetivos websites.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 7. Direitos -->
+    <section class="legal-section" id="direitos">
+      <h2><span class="num">7</span> Os Seus Direitos</h2>
+      <p>Ao abrigo do RGPD, tem os seguintes direitos:</p>
+      <ul>
+        <li><strong>Acesso (art. 15.º)</strong> — obter confirmação de que os seus dados são tratados e aceder a uma cópia.</li>
+        <li><strong>Retificação (art. 16.º)</strong> — corrigir dados inexatos ou incompletos.</li>
+        <li><strong>Apagamento (art. 17.º)</strong> — solicitar a eliminação dos dados ("direito a ser esquecido"), salvo quando existam obrigações legais de conservação.</li>
+        <li><strong>Limitação do tratamento (art. 18.º)</strong> — restringir temporariamente o tratamento em determinadas circunstâncias.</li>
+        <li><strong>Portabilidade (art. 20.º)</strong> — receber os seus dados num formato estruturado e de leitura automática.</li>
+        <li><strong>Oposição (art. 21.º)</strong> — opor-se ao tratamento baseado em interesse legítimo ou para fins de marketing direto.</li>
+        <li><strong>Retirada de consentimento</strong> — a qualquer momento, sem afetar a licitude do tratamento anterior.</li>
+        <li><strong>Não sujeição a decisões automatizadas (art. 22.º)</strong> — não tomamos decisões baseadas exclusivamente em tratamento automatizado que produzam efeitos jurídicos significativos.</li>
+      </ul>
+
+      <p>Para exercer qualquer direito, contacte:</p>
+      <div class="legal-contact-box">
+        <p>✉️ <a href="mailto:patriciagouveia.psicologa@hotmail.com">patriciagouveia.psicologa@hotmail.com</a></p>
+        <p>📞 +351 968 378 816</p>
+        <p>Responderemos no prazo de <strong>30 dias</strong> (prazo prorrogável por mais 60 dias em casos complexos).</p>
+      </div>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 8. Segurança -->
+    <section class="legal-section" id="seguranca">
+      <h2><span class="num">8</span> Segurança dos Dados</h2>
+      <p>
+        Adotamos medidas técnicas e organizativas adequadas para proteger os seus dados pessoais
+        contra acesso não autorizado, perda, destruição ou divulgação indevida:
+      </p>
+      <ul>
+        <li>Transmissão de dados cifrada via HTTPS/TLS</li>
+        <li>Acesso restrito aos dados clínicos — apenas a Dra. Patrícia Gouveia</li>
+        <li>Utilização de serviços de terceiros com certificações de segurança adequadas</li>
+        <li>Política de retenção mínima de dados</li>
+      </ul>
+      <p>
+        Em caso de violação de dados pessoais com risco para os seus direitos e liberdades,
+        será notificado nos termos do artigo 34.º do RGPD.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 9. Cookies -->
+    <section class="legal-section" id="cookies">
+      <h2><span class="num">9</span> Cookies</h2>
+      <p>
+        Este website utiliza cookies. Para informação detalhada sobre os cookies utilizados,
+        finalidades e como gerir as suas preferências, consulte a nossa
+        <a href="politica-de-cookies.html">Política de Cookies</a>.
+      </p>
+      <p>
+        Pode também rever e alterar as suas preferências de cookies a qualquer momento clicando em
+        <button onclick="window.CookieConsent && window.CookieConsent.show()"
+          style="background:none;border:none;color:var(--blue-dark);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:inherit;padding:0;text-decoration:underline;">
+          Gerir Preferências de Cookies
+        </button>.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 10. Alterações -->
+    <section class="legal-section" id="alteracoes">
+      <h2><span class="num">10</span> Alterações a Esta Política</h2>
+      <p>
+        Esta Política de Privacidade pode ser atualizada periodicamente para refletir alterações
+        legislativas, novas práticas de tratamento ou mudanças nos serviços prestados.
+      </p>
+      <p>
+        A data de "última atualização" no topo do documento indica quando ocorreram as últimas
+        alterações. Em caso de alterações significativas, os utilizadores registados (quando
+        aplicável) serão notificados por email.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 11. Contacto e reclamações -->
+    <section class="legal-section" id="contacto-legal">
+      <h2><span class="num">11</span> Contacto e Reclamações</h2>
+      <p>
+        Para qualquer questão relacionada com esta Política ou com o tratamento dos seus dados pessoais:
+      </p>
+      <div class="legal-contact-box">
+        <p>✉️ <a href="mailto:patriciagouveia.psicologa@hotmail.com">patriciagouveia.psicologa@hotmail.com</a></p>
+        <p>📞 +351 968 378 816 · Seg–Sex, 9h–19h</p>
+      </div>
+      <p>
+        Se considerar que o tratamento dos seus dados viola o RGPD, tem o direito de apresentar
+        uma reclamação à autoridade de controlo competente em Portugal:
+      </p>
+      <div class="legal-contact-box">
+        <p><strong>CNPD — Comissão Nacional de Proteção de Dados</strong></p>
+        <p>🌐 <a href="https://www.cnpd.pt" target="_blank" rel="noopener">www.cnpd.pt</a></p>
+        <p>✉️ geral@cnpd.pt</p>
+        <p>📞 +351 213 928 400</p>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-left">
+        <div class="footer-logo">Dra. Patrícia <span>Gouveia</span> — Psicóloga</div>
+        <div class="footer-copy">© 2026 · Cédula OPP nº 026373</div>
+      </div>
+      <div class="footer-nav">
+        <span class="footer-links">
+          <a href="index.html#inicio">Início</a>
+          <a href="index.html#sobre">Sobre mim</a>
+          <a href="index.html#servicos">Serviços</a>
+          <a href="ansiedade/index.html">Ansiedade</a>
+          <a href="index.html#agendar">Contacto</a>
+        </span>
+        <span class="footer-links footer-legal">
+          <a href="politica-de-privacidade.html">Política de Privacidade</a>
+          <a href="politica-de-cookies.html">Política de Cookies</a>
+          <a href="INSERIR URL AQUI">Livro de Reclamações</a>
+        </span>
+      </div>
+    </div>
+    <div class="footer-credits">Website feito com ❤️ por David Cardoso</div>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <a class="whatsapp-float" href="https://wa.me/351968378816" target="_blank" rel="noopener" aria-label="Enviar mensagem via WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="28" height="28">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+  </a>
+
+  <script src="js/script.js"></script>
+  <script src="js/cookies.js"></script>
+</body>
+</html>

@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pintar as Emoções no Corpo – Cantinho da Calma</title>
+
+  <!-- Fontes Google (mesmas que o resto do projeto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =====================================================
+       VARIÁVEIS GLOBAIS
+       Edita aqui para personalizar cores e estilos.
+       ===================================================== */
+    :root {
+      /* Paleta principal */
+      --cor-fundo:        #f5f0ff;   /* lilás muito suave (fundo)          */
+      --cor-titulo:       #3b1a6e;   /* roxo escuro (títulos)              */
+      --cor-texto:        #3a2d5e;   /* roxo médio (texto geral)           */
+      --cor-destaque:     #7c3fc4;   /* roxo vibrante (botões principais)  */
+      --cor-destaque-2:   #b07de8;   /* lilás claro (acentos)              */
+      --cor-painel:       #ffffffdd; /* branco semi-transparente (painéis) */
+
+      /* Fontes */
+      --fonte-titulo: 'Baloo 2', cursive;
+      --fonte-texto:  'Nunito', sans-serif;
+
+      /* Formas */
+      --raio:   18px;
+      --sombra: 0 6px 24px rgba(60,20,120,0.12);
+    }
+
+    /* ─────────────────────────────────────────────────────
+       RESET E BASE
+    ───────────────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--fonte-texto);
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      min-height: 100vh;
+
+      /* Fundo com bolinhas subtis (padrão do projeto) */
+      background-image: radial-gradient(circle, #d8c8f8 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ─────────────────────────────────────────────────────
+       BOTÃO VOLTAR
+    ───────────────────────────────────────────────────── */
+    .btn-voltar {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      background: #fff;
+      border: 2px solid var(--cor-destaque-2);
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-family: var(--fonte-titulo);
+      font-size: 0.9rem;
+      color: var(--cor-titulo);
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--sombra);
+      transition: transform 0.2s, background 0.2s;
+      z-index: 200;
+    }
+    .btn-voltar:hover {
+      background: #ede0ff;
+      transform: translateX(-3px);
+    }
+
+    /* ─────────────────────────────────────────────────────
+       CABEÇALHO
+    ───────────────────────────────────────────────────── */
+    header {
+      text-align: center;
+      padding: 72px 20px 16px;
+    }
+    header h1 {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      color: var(--cor-titulo);
+      margin-bottom: 6px;
+    }
+    header p {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      color: var(--cor-texto);
+      opacity: 0.8;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    /* ─────────────────────────────────────────────────────
+       LAYOUT PRINCIPAL
+       Dois painéis lado a lado em desktop,
+       empilhados em mobile.
+    ───────────────────────────────────────────────────── */
+    .layout-principal {
+      display: flex;
+      gap: 20px;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 16px 16px 80px;
+      align-items: flex-start;
+    }
+
+    /* ─────────────────────────────────────────────────────
+       PAINEL ESQUERDO – Paleta de emoções + legenda
+    ───────────────────────────────────────────────────── */
+    .painel-esquerdo {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 220px;
+      flex-shrink: 0;
+    }
+
+    /* Título de secção pequeno */
+    .painel-titulo {
+      font-family: var(--fonte-titulo);
+      font-size: 1rem;
+      color: var(--cor-titulo);
+      margin-bottom: 2px;
+    }
+
+    /* ─────────────────────────────────────────────────────
+       BOTÕES DE EMOÇÃO (paleta)
+    ───────────────────────────────────────────────────── */
+    .paleta {
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 14px;
+      box-shadow: var(--sombra);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /*
+      Cada botão de emoção tem:
+      - um emoji
+      - o nome da emoção
+      - um círculo com a cor associada
+      Quando está ativo, fica com borda e fundo destacado.
+    */
+    .emocao-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 12px;
+      border: 2.5px solid transparent;
+      background: #f8f4ff;
+      cursor: pointer;
+      font-family: var(--fonte-texto);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--cor-titulo);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      width: 100%;
+      text-align: left;
+    }
+    .emocao-btn:hover {
+      background: #ede0ff;
+      transform: translateX(3px);
+    }
+    .emocao-btn.ativo {
+      border-color: currentColor;   /* usa a cor do botão */
+      background: #fff;
+      transform: translateX(4px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.10);
+    }
+
+    /* Quadradinho de cor da emoção */
+    .emocao-cor {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      border: 2px solid rgba(0,0,0,0.1);
+    }
+
+    /* ─────────────────────────────────────────────────────
+       PAINEL DE LEGENDA (lista de partes pintadas)
+    ───────────────────────────────────────────────────── */
+    .legenda-painel {
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 14px;
+      box-shadow: var(--sombra);
+      min-height: 80px;
+    }
+
+    .legenda-lista {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 8px;
+    }
+
+    .legenda-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      animation: entrar-legenda 0.3s ease forwards;
+    }
+
+    @keyframes entrar-legenda {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0);     }
+    }
+
+    .legenda-cor {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Texto vazio quando ainda não pintou nada */
+    .legenda-vazio {
+      font-size: 0.85rem;
+      opacity: 0.55;
+      font-style: italic;
+    }
+
+    /* ─────────────────────────────────────────────────────
+       BOTÕES DE AÇÃO (Limpar, Guardar)
+    ───────────────────────────────────────────────────── */
+    .acoes-painel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 11px 20px;
+      border: none;
+      border-radius: 50px;
+      font-family: var(--fonte-titulo);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.2s, filter 0.2s;
+      box-shadow: var(--sombra);
+      width: 100%;
+    }
+    .btn:hover {
+      transform: scale(1.04);
+      filter: brightness(1.07);
+    }
+    .btn-principal {
+      background: var(--cor-destaque);
+      color: #fff;
+    }
+    .btn-cinza {
+      background: #e0d8f0;
+      color: var(--cor-titulo);
+    }
+    .btn-verde {
+      background: #3a9e6a;
+      color: #fff;
+    }
+
+    /* ─────────────────────────────────────────────────────
+       PAINEL CENTRAL – O Corpo humano (canvas)
+    ───────────────────────────────────────────────────── */
+    .painel-central {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Mensagem de instrução acima do corpo */
+    .instrucao {
+      background: var(--cor-painel);
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 0.92rem;
+      color: var(--cor-titulo);
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      text-align: center;
+      width: 100%;
+    }
+
+    /* Caixa que contém o canvas + SVG do corpo */
+    .corpo-wrapper {
+      position: relative;
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      box-shadow: var(--sombra);
+      overflow: hidden;
+      /* tamanho fixo para alinhar canvas e SVG */
+      width: 320px;
+      height: 520px;
+    }
+
+    /*
+      O SVG do corpo fica por cima do canvas.
+      É apenas para mostrar o contorno — não recebe cliques
+      (pointer-events: none), para que os cliques passem
+      para o canvas por baixo.
+    */
+    .corpo-svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* deixa os cliques passarem para o canvas */
+      z-index: 2;
+    }
+
+    /*
+      O canvas recebe os cliques e é onde pintamos.
+      Fica por baixo do SVG.
+    */
+    #canvas-corpo {
+      position: absolute;
+      top: 0; left: 0;
+      width: 320px;
+      height: 520px;
+      z-index: 1;
+      cursor: crosshair;
+      touch-action: none; /* evita scroll ao pintar em mobile */
+    }
+
+    /* ─────────────────────────────────────────────────────
+       ECRÃ DE RESULTADO (aparece depois de "Guardar")
+    ───────────────────────────────────────────────────── */
+    .ecrã-resultado {
+      display: none; /* escondido por defeito */
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 18px;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 20px 16px 80px;
+      animation: aparecer 0.5s ease forwards;
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    .resultado-titulo {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: var(--cor-titulo);
+    }
+
+    .resultado-texto {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--cor-texto);
+      background: var(--cor-painel);
+      border-radius: var(--raio);
+      padding: 20px 24px;
+      box-shadow: var(--sombra);
+      width: 100%;
+    }
+
+    /* Imagem do corpo pintado no resultado */
+    #imagem-resultado {
+      border-radius: var(--raio);
+      box-shadow: var(--sombra);
+      max-width: 280px;
+      width: 100%;
+    }
+
+    /* Lista de emoções encontradas no resultado */
+    .resultado-emocoes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .resultado-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+
+    /* ─────────────────────────────────────────────────────
+       MOBILE – empilha painéis verticalmente
+    ───────────────────────────────────────────────────── */
+    @media (max-width: 680px) {
+      .layout-principal {
+        flex-direction: column;
+        align-items: center;
+      }
+      .painel-esquerdo {
+        width: 100%;
+        max-width: 400px;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .paleta {
+        flex: 1 1 180px;
+      }
+      .legenda-painel, .acoes-painel {
+        flex: 1 1 140px;
+      }
+      .acoes-painel {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .btn { width: auto; flex: 1; }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Botão voltar ao menu -->
+  <a href="index.html" class="btn-voltar">← Voltar</a>
+
+  <!-- =====================================================
+       CABEÇALHO
+       ===================================================== -->
+  <header>
+    <h1>🌈 Pintar as Emoções no Corpo</h1>
+    <p>Onde é que sentes as tuas emoções? Escolhe uma emoção e pinta no corpo onde a sentes!</p>
+  </header>
+
+  <!-- =====================================================
+       ECRÃ DE JOGO PRINCIPAL
+       ===================================================== -->
+  <div class="layout-principal" id="ecrã-jogo">
+
+    <!-- ── PAINEL ESQUERDO ── -->
+    <aside class="painel-esquerdo">
+
+      <!-- Paleta de emoções -->
+      <div class="paleta">
+        <p class="painel-titulo">🎨 Escolhe uma emoção:</p>
+
+        <!--
+          Cada botão tem:
+          - data-emocao: identificador interno
+          - data-cor:    cor HEX usada para pintar no canvas
+          - style="color:": cor do texto e borda quando ativo
+
+          Para adicionar uma emoção nova:
+          copia um <button> e edita estes três atributos.
+        -->
+        <button class="emocao-btn ativo"
+          data-emocao="alegria"   data-cor="#FFD700"
+          style="color:#b08a00"   onclick="selecionarEmocao(this)">
+          <span class="emocao-cor" style="background:#FFD700"></span>
+          😄 Alegria
+        </button>
+
+        <button class="emocao-btn"
+          data-emocao="tristeza"  data-cor="#5B9BD5"
+          style="color:#2c5a8a"   onclick="selecionarEmocao(this)">
+          <span class="emocao-cor" style="background:#5B9BD5"></span>
+          😢 Tristeza
+        </button>
+
+        <button class="emocao-btn"
+          data-emocao="raiva"     data-cor="#E74C3C"
+          style="color:#8b1a1a"   onclick="selecionarEmocao(this)">
+          <span class="emocao-cor" style="background:#E74C3C"></span>
+          😠 Raiva
+        </button>
+
+        <button class="emocao-btn"
+          data-emocao="medo"      data-cor="#8E44AD"
+          style="color:#5a1f80"   onclick="selecionarEmocao(this)">
+          <span class="emocao-cor" style="background:#8E44AD"></span>
+          😨 Medo
+        </button>
+
+        <button class="emocao-btn"
+          data-emocao="ansiedade" data-cor="#E67E22"
+          style="color:#8a4200"   onclick="selecionarEmocao(this)">
+          <span class="emocao-cor" style="background:#E67E22"></span>
+          😰 Ansiedade
+        </button>
+
+        <button class="emocao-btn"
+          data-emocao="calma"     data-cor="#27AE60"
+          style="color:#145a32"   onclick="selecionarEmocao(this)">
+          <span class="emocao-cor" style="background:#27AE60"></span>
+          😌 Calma
+        </button>
+
+        <button class="emocao-btn"
+          data-emocao="vergonha"  data-cor="#F1948A"
+          style="color:#8b2e2e"   onclick="selecionarEmocao(this)">
+          <span class="emocao-cor" style="background:#F1948A"></span>
+          😳 Vergonha
+        </button>
+
+        <button class="emocao-btn"
+          data-emocao="orgulho"   data-cor="#F39C12"
+          style="color:#6e4300"   onclick="selecionarEmocao(this)">
+          <span class="emocao-cor" style="background:#F39C12"></span>
+          🤩 Orgulho
+        </button>
+
+      </div><!-- /paleta -->
+
+      <!-- Legenda do que foi pintado -->
+      <div class="legenda-painel">
+        <p class="painel-titulo">📋 O que pintaste:</p>
+        <ul class="legenda-lista" id="legenda-lista">
+          <li class="legenda-vazio" id="legenda-vazio">Ainda não pintaste nada...</li>
+        </ul>
+      </div>
+
+      <!-- Botões de ação -->
+      <div class="acoes-painel">
+        <button class="btn btn-cinza" onclick="limparCanvas()">🗑️ Limpar tudo</button>
+        <button class="btn btn-verde" onclick="guardarMapa()">✅ Ver o meu mapa!</button>
+      </div>
+
+    </aside><!-- /painel-esquerdo -->
+
+    <!-- ── PAINEL CENTRAL – Corpo + Canvas ── -->
+    <div class="painel-central">
+
+      <!-- Instrução dinâmica (muda com a emoção selecionada) -->
+      <div class="instrucao" id="instrucao-texto">
+        Selecionado: 😄 Alegria — Clica ou arrasta no corpo onde a sentes!
+      </div>
+
+      <!-- Wrapper com canvas + SVG do corpo -->
+      <div class="corpo-wrapper">
+
+        <!-- Canvas de pintura (por baixo) -->
+        <canvas id="canvas-corpo" width="320" height="520"
+          aria-label="Corpo humano para pintar emoções"></canvas>
+
+        <!-- SVG do contorno do corpo (por cima, sem interação) -->
+        <svg class="corpo-svg" viewBox="0 0 320 520"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
+
+          <!--
+            CONTORNO DO CORPO HUMANO
+            Desenhado com paths e formas simples.
+            Podes ajustar os valores para mudar a forma.
+            Stroke = linha de contorno | fill = transparente
+          -->
+
+          <!-- Cabeça -->
+          <ellipse cx="160" cy="60" rx="38" ry="44"
+            fill="none" stroke="#3b1a6e" stroke-width="2.5" />
+
+          <!-- Pescoço -->
+          <rect x="148" y="100" width="24" height="22" rx="8"
+            fill="none" stroke="#3b1a6e" stroke-width="2" />
+
+          <!-- Tronco (torso) -->
+          <path d="M 110 122 Q 100 128 98 160 L 96 240 Q 98 252 110 256
+                   L 210 256 Q 222 252 224 240 L 222 160 Q 220 128 210 122 Z"
+            fill="none" stroke="#3b1a6e" stroke-width="2.5" />
+
+          <!-- Ombro esquerdo (da perspetiva do observador = lado direito do ecrã) -->
+          <path d="M 110 122 Q 90 120 76 132 L 66 170"
+            fill="none" stroke="#3b1a6e" stroke-width="2.5" stroke-linecap="round" />
+
+          <!-- Ombro direito -->
+          <path d="M 210 122 Q 230 120 244 132 L 254 170"
+            fill="none" stroke="#3b1a6e" stroke-width="2.5" stroke-linecap="round" />
+
+          <!-- Braço esquerdo -->
+          <path d="M 66 170 Q 60 200 62 240 Q 63 256 66 264"
+            fill="none" stroke="#3b1a6e" stroke-width="2.5" stroke-linecap="round" />
+
+          <!-- Braço direito -->
+          <path d="M 254 170 Q 260 200 258 240 Q 257 256 254 264"
+            fill="none" stroke="#3b1a6e" stroke-width="2.5" stroke-linecap="round" />
+
+          <!-- Mão esquerda -->
+          <ellipse cx="66" cy="276" rx="14" ry="16"
+            fill="none" stroke="#3b1a6e" stroke-width="2" />
+
+          <!-- Mão direita -->
+          <ellipse cx="254" cy="276" rx="14" ry="16"
+            fill="none" stroke="#3b1a6e" stroke-width="2" />
+
+          <!-- Anca / cintura -->
+          <path d="M 98 250 Q 96 268 100 280 L 106 290 L 214 290 L 220 280 Q 224 268 222 250"
+            fill="none" stroke="#3b1a6e" stroke-width="2" />
+
+          <!-- Perna esquerda -->
+          <path d="M 108 290 Q 104 340 106 390 L 108 430"
+            fill="none" stroke="#3b1a6e" stroke-width="2.5" stroke-linecap="round" />
+
+          <!-- Perna direita -->
+          <path d="M 212 290 Q 216 340 214 390 L 212 430"
+            fill="none" stroke="#3b1a6e" stroke-width="2.5" stroke-linecap="round" />
+
+          <!-- Pé esquerdo -->
+          <ellipse cx="110" cy="442" rx="20" ry="12"
+            fill="none" stroke="#3b1a6e" stroke-width="2" />
+
+          <!-- Pé direito -->
+          <ellipse cx="210" cy="442" rx="20" ry="12"
+            fill="none" stroke="#3b1a6e" stroke-width="2" />
+
+          <!-- Rosto: olhos -->
+          <circle cx="148" cy="55" r="4" fill="#3b1a6e" />
+          <circle cx="172" cy="55" r="4" fill="#3b1a6e" />
+
+          <!-- Rosto: nariz -->
+          <path d="M 160 58 L 156 68 Q 160 71 164 68 Z"
+            fill="#3b1a6e" opacity="0.5" />
+
+          <!-- Rosto: boca -->
+          <path d="M 150 76 Q 160 82 170 76"
+            stroke="#3b1a6e" stroke-width="2" fill="none" stroke-linecap="round" />
+
+          <!-- Divisória do tronco (linha do umbigo) -->
+          <line x1="160" y1="185" x2="160" y2="255"
+            stroke="#3b1a6e" stroke-width="1" stroke-dasharray="4,4" opacity="0.4" />
+
+          <!-- Linhas sutis do peito (costelas) -->
+          <path d="M 118 145 Q 140 150 160 148 Q 180 150 202 145"
+            stroke="#3b1a6e" stroke-width="1" fill="none" opacity="0.3" />
+          <path d="M 116 165 Q 138 170 160 168 Q 182 170 204 165"
+            stroke="#3b1a6e" stroke-width="1" fill="none" opacity="0.3" />
+
+        </svg><!-- /corpo-svg -->
+
+      </div><!-- /corpo-wrapper -->
+
+      <!-- Dica em baixo do corpo -->
+      <p style="font-size:0.82rem; color:var(--cor-texto); opacity:0.6; text-align:center;">
+        💡 Podes usar várias emoções no mesmo corpo!
+      </p>
+
+    </div><!-- /painel-central -->
+
+  </div><!-- /layout-principal (ecrã de jogo) -->
+
+  <!-- =====================================================
+       ECRÃ DE RESULTADO
+       Aparece quando a criança clica em "Ver o meu mapa!"
+       ===================================================== -->
+  <div class="ecrã-resultado" id="ecrã-resultado">
+
+    <div style="font-size:3.5rem; animation: saltitar 0.7s ease infinite alternate;">🌈</div>
+
+    <h2 class="resultado-titulo">O teu Mapa de Emoções!</h2>
+
+    <!-- Imagem do canvas convertida para PNG -->
+    <img id="imagem-resultado" src="" alt="O teu mapa de emoções" />
+
+    <!-- Texto explicativo personalizado (gerado pelo JS) -->
+    <div class="resultado-texto" id="resultado-texto">
+      <!-- Preenchido pelo JavaScript -->
+    </div>
+
+    <!-- Tags das emoções usadas -->
+    <div class="resultado-emocoes" id="resultado-tags">
+      <!-- Preenchido pelo JavaScript -->
+    </div>
+
+    <!-- Botões -->
+    <button class="btn btn-principal" onclick="descarregarImagem()">
+      💾 Guardar a imagem
+    </button>
+    <button class="btn btn-cinza" onclick="voltarAoPintar()">
+      🎨 Continuar a pintar
+    </button>
+    <a href="index.html">
+      <button class="btn btn-cinza">🏠 Voltar ao Menu</button>
+    </a>
+
+  </div><!-- /ecrã-resultado -->
+
+  @keyframes saltitar {
+  from { transform: translateY(0);    }
+  to   { transform: translateY(-12px); }
+  }
+
+  <!-- =====================================================
+       JAVASCRIPT – LÓGICA DO JOGO
+       Tudo comentado para ser fácil de perceber e editar.
+       ===================================================== -->
+  <script>
+
+    // ─────────────────────────────────────────────────────
+    // CONFIGURAÇÃO DAS EMOÇÕES
+    // Dicionário com informação de cada emoção.
+    // ─────────────────────────────────────────────────────
+
+    /*
+      Para adicionar uma nova emoção:
+      1. Adiciona um botão no HTML (painel esquerdo)
+      2. Adiciona uma entrada aqui com o mesmo 'data-emocao'
+
+      Campos:
+      - nome:    nome para mostrar ao utilizador
+      - emoji:   emoji representativo
+      - cor:     cor HEX de pintura
+      - corRGB:  mesma cor em formato [R, G, B] para comparar pixels
+      - texto:   frase de reflexão para o ecrã de resultado
+    */
+    const EMOCOES = {
+      alegria: {
+        nome: 'Alegria',
+        emoji: '😄',
+        cor: '#FFD700',
+        corRGB: [255, 215, 0],
+        texto: 'A alegria costuma sentir-se no peito e na barriga — aquela sensação de leveza e quentura!'
+      },
+      tristeza: {
+        nome: 'Tristeza',
+        emoji: '😢',
+        cor: '#5B9BD5',
+        corRGB: [91, 155, 213],
+        texto: 'A tristeza muitas vezes pesa no peito e nos olhos. Sentir tristeza é completamente normal.'
+      },
+      raiva: {
+        nome: 'Raiva',
+        emoji: '😠',
+        cor: '#E74C3C',
+        corRGB: [231, 76, 60],
+        texto: 'A raiva pode ser uma chama quente — às vezes sente-se na cabeça, nas mãos ou no peito.'
+      },
+      medo: {
+        nome: 'Medo',
+        emoji: '😨',
+        cor: '#8E44AD',
+        corRGB: [142, 68, 173],
+        texto: 'O medo pode dar aquela sensação de frio na barriga ou de pernas a tremer. O corpo está a avisar-te!'
+      },
+      ansiedade: {
+        nome: 'Ansiedade',
+        emoji: '😰',
+        cor: '#E67E22',
+        corRGB: [230, 126, 34],
+        texto: 'A ansiedade muitas vezes dá um aperto na garganta e na barriga. Reconhecê-la é o primeiro passo.'
+      },
+      calma: {
+        nome: 'Calma',
+        emoji: '😌',
+        cor: '#27AE60',
+        corRGB: [39, 174, 96],
+        texto: 'A calma espalha-se pelo corpo todo — como uma brisa suave. Que bom que consegues sentir isso!'
+      },
+      vergonha: {
+        nome: 'Vergonha',
+        emoji: '😳',
+        cor: '#F1948A',
+        corRGB: [241, 148, 138],
+        texto: 'A vergonha costuma fazer o rosto ficar quente e vermelho. É uma emoção difícil mas muito humana.'
+      },
+      orgulho: {
+        nome: 'Orgulho',
+        emoji: '🤩',
+        cor: '#F39C12',
+        corRGB: [243, 156, 18],
+        texto: 'O orgulho levanta o peito e faz andar de cabeça erguida! É bom sentirmo-nos orgulhosos do que fazemos.'
+      }
+    };
+
+    // ─────────────────────────────────────────────────────
+    // ESTADO DO JOGO
+    // ─────────────────────────────────────────────────────
+
+    /** Emoção atualmente selecionada (começa com alegria) */
+    let emocaoAtiva = 'alegria';
+
+    /**
+     * Registo das emoções que já foram pintadas.
+     * Formato: { 'alegria': true, 'raiva': true, ... }
+     */
+    const emocoesPintadas = {};
+
+    /** Se está a desenhar (botão do rato/toque pressionado) */
+    let aDesEnhar = false;
+
+    // ─────────────────────────────────────────────────────
+    // CONFIGURAÇÃO DO CANVAS
+    // ─────────────────────────────────────────────────────
+
+    const canvas = document.getElementById('canvas-corpo');
+    const ctx    = canvas.getContext('2d');
+
+    /** Raio do pincel em pixels */
+    const RAIO_PINCEL = 18;
+
+    /** Opacidade da pintura (0 a 1). Mais baixo = mais transparente */
+    const OPACIDADE   = 0.45;
+
+    // ─────────────────────────────────────────────────────
+    // FUNÇÕES DE PINTURA
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Converte um código HEX (#RRGGBB) em objeto {r, g, b}.
+     * @param {string} hex - Cor em formato HEX
+     * @returns {{r:number, g:number, b:number}}
+     */
+    function hexParaRGB(hex) {
+      const resultado = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return resultado
+        ? {
+            r: parseInt(resultado[1], 16),
+            g: parseInt(resultado[2], 16),
+            b: parseInt(resultado[3], 16)
+          }
+        : { r: 0, g: 0, b: 0 };
+    }
+
+    /**
+     * Obtém a posição do clique/toque relativa ao canvas,
+     * compensando escala CSS vs tamanho real do canvas.
+     * @param {MouseEvent|TouchEvent} evento
+     * @returns {{x:number, y:number}}
+     */
+    function obterPosicao(evento) {
+      const rect   = canvas.getBoundingClientRect();
+
+      /* Escala: o canvas pode estar redimensionado via CSS */
+      const escalaX = canvas.width  / rect.width;
+      const escalaY = canvas.height / rect.height;
+
+      /* Suporte a toque (mobile) e rato (desktop) */
+      const clientX = evento.touches
+        ? evento.touches[0].clientX
+        : evento.clientX;
+      const clientY = evento.touches
+        ? evento.touches[0].clientY
+        : evento.clientY;
+
+      return {
+        x: (clientX - rect.left) * escalaX,
+        y: (clientY - rect.top)  * escalaY
+      };
+    }
+
+    /**
+     * Pinta um círculo suave no canvas na posição indicada.
+     * Usa um gradiente radial para efeito de "mancha" suave.
+     * @param {number} x
+     * @param {number} y
+     */
+    function pintar(x, y) {
+      const emocao = EMOCOES[emocaoAtiva];
+      const rgb    = hexParaRGB(emocao.cor);
+
+      /* Gradiente radial: opaco no centro, transparente na borda */
+      const gradiente = ctx.createRadialGradient(x, y, 0, x, y, RAIO_PINCEL);
+      gradiente.addColorStop(0,   `rgba(${rgb.r},${rgb.g},${rgb.b}, ${OPACIDADE})`);
+      gradiente.addColorStop(0.6, `rgba(${rgb.r},${rgb.g},${rgb.b}, ${OPACIDADE * 0.5})`);
+      gradiente.addColorStop(1,   `rgba(${rgb.r},${rgb.g},${rgb.b}, 0)`);
+
+      ctx.fillStyle = gradiente;
+      ctx.beginPath();
+      ctx.arc(x, y, RAIO_PINCEL, 0, Math.PI * 2);
+      ctx.fill();
+
+      /* Regista que esta emoção foi usada */
+      if (!emocoesPintadas[emocaoAtiva]) {
+        emocoesPintadas[emocaoAtiva] = true;
+        adicionarLegenda(emocaoAtiva);
+      }
+    }
+
+    // ─────────────────────────────────────────────────────
+    // EVENTOS DO CANVAS (rato e toque)
+    // ─────────────────────────────────────────────────────
+
+    /* Início do desenho (clique ou toque) */
+    canvas.addEventListener('mousedown', (e) => {
+      aDesEnhar = true;
+      const pos = obterPosicao(e);
+      pintar(pos.x, pos.y);
+    });
+
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // evita scroll ao pintar
+      aDesEnhar = true;
+      const pos = obterPosicao(e);
+      pintar(pos.x, pos.y);
+    }, { passive: false });
+
+    /* Mover enquanto desenha */
+    canvas.addEventListener('mousemove', (e) => {
+      if (!aDesEnhar) return;
+      const pos = obterPosicao(e);
+      pintar(pos.x, pos.y);
+    });
+
+    canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (!aDesEnhar) return;
+      const pos = obterPosicao(e);
+      pintar(pos.x, pos.y);
+    }, { passive: false });
+
+    /* Fim do desenho */
+    canvas.addEventListener('mouseup',    () => { aDesEnhar = false; });
+    canvas.addEventListener('mouseleave', () => { aDesEnhar = false; });
+    canvas.addEventListener('touchend',   () => { aDesEnhar = false; });
+
+    // ─────────────────────────────────────────────────────
+    // SELEÇÃO DE EMOÇÃO
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Muda a emoção ativa quando a criança clica num botão.
+     * @param {HTMLElement} botao - O botão clicado
+     */
+    function selecionarEmocao(botao) {
+      /* Remove a classe 'ativo' de todos os botões */
+      document.querySelectorAll('.emocao-btn').forEach(b => {
+        b.classList.remove('ativo');
+      });
+
+      /* Ativa o botão clicado */
+      botao.classList.add('ativo');
+
+      /* Guarda a emoção ativa */
+      emocaoAtiva = botao.dataset.emocao;
+
+      /* Atualiza a instrução acima do corpo */
+      const emocao = EMOCOES[emocaoAtiva];
+      document.getElementById('instrucao-texto').textContent =
+        `Selecionado: ${emocao.emoji} ${emocao.nome} — Clica ou arrasta no corpo onde a sentes!`;
+    }
+
+    // ─────────────────────────────────────────────────────
+    // LEGENDA
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Adiciona um item à lista de legenda quando
+     * uma nova emoção é pintada pela primeira vez.
+     * @param {string} chaveEmocao - ex: 'raiva'
+     */
+    function adicionarLegenda(chaveEmocao) {
+      const emocao = EMOCOES[chaveEmocao];
+      const lista  = document.getElementById('legenda-lista');
+
+      /* Esconde a mensagem "ainda não pintaste nada" */
+      const vazio = document.getElementById('legenda-vazio');
+      if (vazio) vazio.style.display = 'none';
+
+      /* Cria o item de legenda */
+      const item = document.createElement('li');
+      item.classList.add('legenda-item');
+      item.dataset.emocao = chaveEmocao;
+      item.innerHTML = `
+        <span class="legenda-cor" style="background:${emocao.cor}"></span>
+        <span>${emocao.emoji} ${emocao.nome}</span>
+      `;
+      lista.appendChild(item);
+    }
+
+    // ─────────────────────────────────────────────────────
+    // LIMPAR CANVAS
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Apaga tudo o que foi pintado e reseta o estado.
+     */
+    function limparCanvas() {
+      /* Apaga o canvas inteiro */
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      /* Limpa o registo de emoções pintadas */
+      for (const chave in emocoesPintadas) {
+        delete emocoesPintadas[chave];
+      }
+
+      /* Reseta a legenda */
+      const lista = document.getElementById('legenda-lista');
+      lista.innerHTML = '<li class="legenda-vazio" id="legenda-vazio">Ainda não pintaste nada...</li>';
+    }
+
+    // ─────────────────────────────────────────────────────
+    // GUARDAR E VER O RESULTADO
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Gera o ecrã de resultado com a imagem do corpo pintado
+     * e os textos personalizados pelas emoções usadas.
+     */
+    function guardarMapa() {
+      /* Verifica se pintou alguma coisa */
+      const emocoesUsadas = Object.keys(emocoesPintadas);
+      if (emocoesUsadas.length === 0) {
+        alert('Ainda não pintaste nada! Escolhe uma emoção e pinta no corpo. 🎨');
+        return;
+      }
+
+      /* Cria uma imagem combinada: canvas (pintura) + SVG (contorno)
+         Para isso, desenhamos o SVG por cima do canvas numa cópia temporária */
+      const canvasTemp  = document.createElement('canvas');
+      canvasTemp.width  = 320;
+      canvasTemp.height = 520;
+      const ctxTemp     = canvasTemp.getContext('2d');
+
+      /* Fundo branco para a imagem exportada */
+      ctxTemp.fillStyle = '#ffffff';
+      ctxTemp.fillRect(0, 0, 320, 520);
+
+      /* Copia a pintura do canvas original */
+      ctxTemp.drawImage(canvas, 0, 0);
+
+      /* Converte o SVG para imagem e desenha por cima */
+      const svgEl   = document.querySelector('.corpo-svg');
+      const svgData = new XMLSerializer().serializeToString(svgEl);
+      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const url     = URL.createObjectURL(svgBlob);
+
+      const imgSVG  = new Image();
+      imgSVG.onload = () => {
+        ctxTemp.drawImage(imgSVG, 0, 0, 320, 520);
+        URL.revokeObjectURL(url);
+
+        /* Mostra a imagem no ecrã de resultado */
+        const imgResultado = document.getElementById('imagem-resultado');
+        imgResultado.src   = canvasTemp.toDataURL('image/png');
+
+        /* Guarda referência ao canvas temporário para download */
+        canvas._exportTemp = canvasTemp;
+
+        /* Gera os textos das emoções usadas */
+        gerarTextoResultado(emocoesUsadas);
+
+        /* Muda para o ecrã de resultado */
+        document.getElementById('ecrã-jogo').style.display      = 'none';
+        document.getElementById('ecrã-resultado').style.display = 'flex';
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+      imgSVG.src = url;
+    }
+
+    /**
+     * Preenche o texto e as tags do ecrã de resultado.
+     * @param {string[]} emocoesUsadas - Lista de chaves de emoções
+     */
+    function gerarTextoResultado(emocoesUsadas) {
+      /* Tags de emoções */
+      const contentor = document.getElementById('resultado-tags');
+      contentor.innerHTML = '';
+      emocoesUsadas.forEach(chave => {
+        const emocao = EMOCOES[chave];
+        const tag    = document.createElement('div');
+        tag.classList.add('resultado-tag');
+        tag.style.borderLeft = `5px solid ${emocao.cor}`;
+        tag.innerHTML = `<span>${emocao.emoji}</span><span>${emocao.nome}</span>`;
+        contentor.appendChild(tag);
+      });
+
+      /* Texto de reflexão (combina textos das emoções usadas) */
+      const textosEmocoes = emocoesUsadas
+        .map(chave => `<strong>${EMOCOES[chave].emoji} ${EMOCOES[chave].nome}:</strong> ${EMOCOES[chave].texto}`)
+        .join('<br><br>');
+
+      document.getElementById('resultado-texto').innerHTML = `
+        <p style="margin-bottom:14px;">
+          Pintaste <strong>${emocoesUsadas.length}</strong> emoção${emocoesUsadas.length > 1 ? 'ões' : ''} 
+          no teu corpo. Isso é muito importante! Saber onde as sentimos ajuda-nos a entendê-las melhor. 💜
+        </p>
+        ${textosEmocoes}
+      `;
+    }
+
+    /**
+     * Descarrega a imagem do mapa de emoções.
+     */
+    function descarregarImagem() {
+      const canvasTemp = canvas._exportTemp;
+      if (!canvasTemp) return;
+
+      const link    = document.createElement('a');
+      link.download = 'meu-mapa-de-emocoes.png';
+      link.href     = canvasTemp.toDataURL('image/png');
+      link.click();
+    }
+
+    /**
+     * Volta ao ecrã de pintura sem apagar o que foi feito.
+     */
+    function voltarAoPintar() {
+      document.getElementById('ecrã-resultado').style.display = 'none';
+      document.getElementById('ecrã-jogo').style.display      = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+  </script>
+
+</body>
+</html>

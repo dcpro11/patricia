@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- =====================================================
+       POLÍTICA DE COOKIES
+       Localização: /politica-de-cookies.html
+       Atualizar: [GTM_ID] e [GA_ID] com os valores reais
+       ===================================================== -->
+
+  <title>Política de Cookies — Dra. Patrícia Gouveia · Psicóloga</title>
+  <meta name="description" content="Política de Cookies do site da Dra. Patrícia Gouveia. Informação sobre os cookies utilizados e como gerir as suas preferências."/>
+  <meta name="robots" content="noindex, follow"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+
+  <style>
+    /* -------------------------------------------------------
+       Reutiliza os mesmos estilos da política de privacidade
+       ------------------------------------------------------- */
+    .legal-hero {
+      padding: 9rem 6rem 4rem;
+      background: var(--blue-pale);
+      border-bottom: 1px solid var(--border);
+    }
+    .legal-hero .section-eyebrow { display: block; margin-bottom: 1rem; }
+    .legal-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+    .legal-hero h1 em { font-style: italic; color: var(--blue-dark); }
+    .legal-meta {
+      font-size: 0.78rem;
+      color: var(--mid-gray);
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .legal-body {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 5rem 2rem 7rem;
+    }
+    .legal-toc {
+      background: var(--blue-pale);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 1.75rem 2rem;
+      margin-bottom: 3rem;
+    }
+    .legal-toc strong {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .legal-toc ol {
+      list-style: decimal;
+      padding-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .legal-toc ol li a {
+      font-size: 0.88rem;
+      color: var(--blue-dark);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .legal-toc ol li a:hover { color: var(--gold); }
+
+    .legal-section {
+      margin-bottom: 3rem;
+      scroll-margin-top: 100px;
+    }
+    .legal-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .legal-section h2 .num {
+      font-size: 0.75rem;
+      background: var(--blue-dark);
+      color: #fff;
+      padding: 0.15rem 0.55rem;
+      border-radius: 2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+    }
+    .legal-section p {
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 1.1rem;
+    }
+    .legal-section ul, .legal-section ol {
+      padding-left: 1.5rem;
+      margin: 0.75rem 0 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .legal-section li {
+      font-size: 0.93rem;
+      color: var(--charcoal);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    .legal-section strong { font-weight: 500; }
+    .legal-section a { color: var(--blue-dark); }
+    .legal-section a:hover { color: var(--gold); }
+
+    .legal-contact-box {
+      background: var(--blue-pale);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 1rem 1rem 0;
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .legal-contact-box p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .legal-contact-box p:last-child { margin-bottom: 0; }
+
+    .legal-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+      margin-top: -7rem;
+      margin-bottom: -2rem;
+    }
+
+    /* Tabela de cookies — mais detalhada */
+    .cookie-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+      font-size: 0.83rem;
+    }
+    .cookie-table th {
+      background: var(--blue-dark);
+      color: #fff;
+      padding: 0.75rem 0.875rem;
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .cookie-table td {
+      padding: 0.75rem 0.875rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--charcoal);
+      font-weight: 300;
+      line-height: 1.5;
+      vertical-align: top;
+    }
+    .cookie-table tr:last-child td { border-bottom: none; }
+    .cookie-table tr:nth-child(even) td { background: var(--blue-pale); }
+    .cookie-table td code {
+      background: var(--blue-pale);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.1rem 0.35rem;
+      font-size: 0.78rem;
+      font-family: monospace;
+    }
+
+    /* Badge de categoria de cookie */
+    .cookie-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .badge-essencial { background: #d1fae5; color: #065f46; }
+    .badge-analytics { background: #dbeafe; color: #1e40af; }
+    .badge-marketing { background: #fef3c7; color: #92400e; }
+    .badge-funcional { background: #ede9fe; color: #5b21b6; }
+
+    /* Caixa de preferências rápidas de cookies */
+    .cookie-prefs-box {
+      background: var(--gold-pale);
+      border: 1px solid var(--gold-light);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+    .cookie-prefs-box p {
+      margin-bottom: 1.25rem;
+      font-size: 0.93rem;
+      color: var(--charcoal);
+    }
+    .cookie-prefs-btn {
+      background: var(--blue-dark);
+      color: #fff;
+      border: none;
+      border-radius: 3rem;
+      padding: 0.75rem 1.75rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      letter-spacing: 0.04em;
+    }
+    .cookie-prefs-btn:hover { background: var(--gold); color: var(--charcoal); }
+
+    @media (max-width: 900px) {
+      .legal-hero { padding: 7rem 2rem 3rem; }
+      .legal-body { padding: 3rem 1.5rem 5rem; }
+      .cookie-table { font-size: 0.75rem; }
+      .cookie-table th, .cookie-table td { padding: 0.55rem 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="index.html">Dra. Patrícia <span>Gouveia</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#sobre">Sobre mim</a></li>
+      <li><a href="index.html#servicos">Serviços</a></li>
+      <li><a href="ansiedade/index.html">Ansiedade</a></li>
+      <li><a href="index.html#agendar">Contacto</a></li>
+    </ul>
+    <div class="nav-right">
+      <a class="nav-cta" href="index.html#agendar">Marcar Consulta</a>
+      <button class="nav-burger" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Drawer -->
+  <div class="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu-inner">
+      <nav class="mobile-nav">
+        <a href="index.html#sobre" class="mobile-nav-link">Sobre mim</a>
+        <a href="index.html#servicos" class="mobile-nav-link">Serviços</a>
+        <a href="ansiedade/index.html" class="mobile-nav-link">Ansiedade</a>
+        <a href="index.html#agendar" class="mobile-nav-link">Contacto</a>
+      </nav>
+      <a class="mobile-nav-cta" href="index.html#agendar">Marcar Consulta</a>
+    </div>
+  </div>
+  <div class="mobile-menu-overlay"></div>
+
+
+  <!-- HERO -->
+  <header class="legal-hero">
+    <span class="section-eyebrow">Informação Legal</span>
+    <h1>Política de <em>Cookies</em></h1>
+    <div class="legal-meta">
+      <span>📅 Última atualização: Janeiro de 2025</span>
+      <span>🇪🇺 Conforme a Diretiva ePrivacy e RGPD</span>
+    </div>
+  </header>
+
+
+  <!-- CORPO -->
+  <main class="legal-body">
+
+    <!-- Índice -->
+    <div class="legal-toc" aria-label="Índice da Política de Cookies">
+      <strong>Índice</strong>
+      <ol>
+        <li><a href="#o-que-sao">O que são Cookies?</a></li>
+        <li><a href="#cookies-essenciais">Cookies Estritamente Necessários</a></li>
+        <li><a href="#cookies-analytics">Cookies Analíticos (Google Analytics)</a></li>
+        <li><a href="#cookies-gtm">Google Tag Manager</a></li>
+        <li><a href="#cookies-terceiros">Cookies de Terceiros</a></li>
+        <li><a href="#gerir">Como Gerir as suas Preferências</a></li>
+        <li><a href="#consentimento">Consentimento e Retirada</a></li>
+        <li><a href="#atualizacoes">Atualizações a esta Política</a></li>
+        <li><a href="#contacto-cookies">Contacto</a></li>
+      </ol>
+    </div>
+
+
+    <!-- 1. O que são -->
+    <section class="legal-section" id="o-que-sao">
+      <h2><span class="num">1</span> O que são Cookies?</h2>
+      <p>
+        Cookies são pequenos ficheiros de texto que um website coloca no seu dispositivo (computador,
+        tablet ou telemóvel) quando o visita. Permitem que o website reconheça o seu dispositivo em
+        visitas futuras e recordem as suas preferências.
+      </p>
+      <p>
+        Existem também tecnologias semelhantes como <em>web beacons</em>, <em>pixels</em> e
+        <em>local storage</em> — quando nos referimos a "cookies" nesta política, abrangemos
+        igualmente estas tecnologias.
+      </p>
+      <p>
+        Os cookies podem ser <strong>de sessão</strong> (eliminados quando fecha o browser) ou
+        <strong>persistentes</strong> (permanecem no dispositivo por um período definido).
+        Podem ser definidos pelo próprio website (<em>first-party</em>) ou por terceiros
+        (<em>third-party</em>).
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 2. Essenciais -->
+    <section class="legal-section" id="cookies-essenciais">
+      <h2><span class="num">2</span> Cookies Estritamente Necessários</h2>
+      <p>
+        Estes cookies são <strong>indispensáveis para o funcionamento do website</strong> e não
+        podem ser desativados. Não requerem consentimento (art. 5.º, n.º 3 da Diretiva ePrivacy).
+      </p>
+
+      <table class="cookie-table">
+        <thead>
+          <tr>
+            <th>Cookie</th>
+            <th>Finalidade</th>
+            <th>Duração</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>cookie_consent</code></td>
+            <td>Guarda as preferências de cookies do utilizador para não voltar a pedir consentimento</td>
+            <td>12 meses</td>
+            <td><span class="cookie-badge badge-essencial">Essencial</span></td>
+          </tr>
+          <tr>
+            <td><code>cookie_consent_version</code></td>
+            <td>Versão do aviso de cookies aceite, para detetar atualizações à política</td>
+            <td>12 meses</td>
+            <td><span class="cookie-badge badge-essencial">Essencial</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 3. Analytics -->
+    <section class="legal-section" id="cookies-analytics">
+      <h2><span class="num">3</span> Cookies Analíticos — Google Analytics</h2>
+      <p>
+        Utilizamos o Google Analytics (Google LLC) para compreender como os visitantes interagem
+        com o website — páginas mais visitadas, origem do tráfego, duração das visitas, etc.
+        Esta informação ajuda a melhorar o conteúdo e a experiência do utilizador.
+      </p>
+      <p>
+        <strong>Estes cookies só são ativados após o seu consentimento explícito.</strong>
+        Se não consentir, o Google Analytics não é carregado e nenhum dado de navegação é recolhido.
+      </p>
+      <p>
+        Os dados são anonimizados (IP anonimizado) e tratados de acordo com a
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de Privacidade da Google</a>.
+      </p>
+
+      <table class="cookie-table">
+        <thead>
+          <tr>
+            <th>Cookie</th>
+            <th>Finalidade</th>
+            <th>Duração</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>_ga</code></td>
+            <td>Distingue utilizadores únicos. ID gerado aleatoriamente.</td>
+            <td>2 anos</td>
+            <td><span class="cookie-badge badge-analytics">Analítico</span></td>
+          </tr>
+          <tr>
+            <td><code>_ga_[ID]</code></td>
+            <td>Mantém o estado da sessão para o Google Analytics 4.</td>
+            <td>2 anos</td>
+            <td><span class="cookie-badge badge-analytics">Analítico</span></td>
+          </tr>
+          <tr>
+            <td><code>_gid</code></td>
+            <td>Distingue utilizadores. Renovado a cada sessão.</td>
+            <td>24 horas</td>
+            <td><span class="cookie-badge badge-analytics">Analítico</span></td>
+          </tr>
+          <tr>
+            <td><code>_gat</code></td>
+            <td>Limita a taxa de pedidos ao servidor do Google Analytics.</td>
+            <td>1 minuto</td>
+            <td><span class="cookie-badge badge-analytics">Analítico</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Pode optar por sair do rastreamento do Google Analytics em todos os websites através do
+        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">
+          add-on de exclusão do Google Analytics
+        </a>.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 4. GTM -->
+    <section class="legal-section" id="cookies-gtm">
+      <h2><span class="num">4</span> Google Tag Manager</h2>
+      <p>
+        O Google Tag Manager (GTM) é uma plataforma de gestão de tags que permite adicionar e
+        atualizar scripts no website sem alterar o código diretamente. O GTM <strong>por si só
+        não recolhe dados pessoais</strong> nem coloca cookies — é apenas um contentor que
+        controla quando e como outras tags são disparadas.
+      </p>
+      <p>
+        As tags geridas pelo GTM (como o Google Analytics) só são ativadas conforme o consentimento
+        do utilizador. Implementamos o <strong>Google Consent Mode v2</strong>, que garante que:
+      </p>
+      <ul>
+        <li>Sem consentimento: as tags de analytics e marketing <strong>não carregam</strong>.</li>
+        <li>Com consentimento parcial: apenas as tags autorizadas são ativadas.</li>
+        <li>Com consentimento total: todas as tags configuradas são ativadas.</li>
+      </ul>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 5. Terceiros -->
+    <section class="legal-section" id="cookies-terceiros">
+      <h2><span class="num">5</span> Cookies de Terceiros</h2>
+      <p>
+        Alguns serviços integrados no website podem definir os seus próprios cookies. Não temos
+        controlo direto sobre estes cookies — consulte as políticas de privacidade de cada serviço:
+      </p>
+
+      <table class="cookie-table">
+        <thead>
+          <tr>
+            <th>Serviço</th>
+            <th>Finalidade</th>
+            <th>Política de Privacidade</th>
+            <th>Ativado com consentimento?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Google Analytics</strong></td>
+            <td>Análise de tráfego</td>
+            <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Ver política</a></td>
+            <td>✅ Sim</td>
+          </tr>
+          <tr>
+            <td><strong>Google Tag Manager</strong></td>
+            <td>Gestão de tags</td>
+            <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Ver política</a></td>
+            <td>⚠️ Contentor sempre carregado; tags controladas por consentimento</td>
+          </tr>
+          <tr>
+            <td><strong>Formspree</strong></td>
+            <td>Processamento do formulário de contacto</td>
+            <td><a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Ver política</a></td>
+            <td>✅ Apenas quando o formulário é submetido</td>
+          </tr>
+          <tr>
+            <td><strong>Google Fonts</strong></td>
+            <td>Carregamento de tipografia (Cormorant, DM Sans)</td>
+            <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Ver política</a></td>
+            <td>⚠️ Técnico — pedido ao servidor Google ao carregar a página</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 6. Gerir -->
+    <section class="legal-section" id="gerir">
+      <h2><span class="num">6</span> Como Gerir as suas Preferências</h2>
+
+      <div class="cookie-prefs-box">
+        <p>Pode rever e alterar as suas preferências de cookies a qualquer momento.</p>
+        <button class="cookie-prefs-btn"
+          onclick="window.CookieConsent && window.CookieConsent.show()">
+          ⚙️ Gerir Preferências de Cookies
+        </button>
+      </div>
+
+      <p>Adicionalmente, pode controlar os cookies diretamente no seu browser:</p>
+      <ul>
+        <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
+        <li><a href="https://support.mozilla.org/pt-PT/kb/ativar-desativar-cookies" target="_blank" rel="noopener">Mozilla Firefox</a></li>
+        <li><a href="https://support.apple.com/pt-pt/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Apple Safari</a></li>
+        <li><a href="https://support.microsoft.com/pt-pt/windows/eliminar-e-gerir-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank" rel="noopener">Microsoft Edge</a></li>
+      </ul>
+      <p>
+        Atenção: desativar todos os cookies no browser pode afetar o funcionamento deste e de outros
+        websites.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 7. Consentimento -->
+    <section class="legal-section" id="consentimento">
+      <h2><span class="num">7</span> Consentimento e Retirada</h2>
+      <p>
+        Na primeira visita ao website, é apresentado um aviso de cookies onde pode aceitar ou
+        recusar os cookies não essenciais. O seu consentimento é:
+      </p>
+      <ul>
+        <li><strong>Livre</strong> — pode recusar cookies analíticos sem perder acesso ao website.</li>
+        <li><strong>Informado</strong> — esta política descreve exatamente o que cada cookie faz.</li>
+        <li><strong>Específico</strong> — pode aceitar apenas os cookies que autoriza.</li>
+        <li><strong>Revogável</strong> — pode retirar o consentimento a qualquer momento através do botão "Gerir Preferências de Cookies".</li>
+      </ul>
+      <p>
+        O consentimento é guardado localmente no seu dispositivo por 12 meses. Após este período,
+        o aviso de cookies é apresentado novamente.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 8. Atualizações -->
+    <section class="legal-section" id="atualizacoes">
+      <h2><span class="num">8</span> Atualizações a Esta Política</h2>
+      <p>
+        Esta Política de Cookies pode ser atualizada para refletir alterações nos cookies utilizados,
+        mudanças legislativas ou novos serviços integrados. A data de "última atualização" no topo
+        do documento reflete a versão mais recente.
+      </p>
+      <p>
+        Em caso de alterações significativas que requeiram novo consentimento, o aviso de cookies
+        será apresentado novamente a todos os utilizadores.
+      </p>
+    </section>
+
+    <hr class="legal-divider"/>
+
+    <!-- 9. Contacto -->
+    <section class="legal-section" id="contacto-cookies">
+      <h2><span class="num">9</span> Contacto</h2>
+      <p>Para questões sobre esta política ou sobre os cookies utilizados:</p>
+      <div class="legal-contact-box">
+        <p>✉️ <a href="mailto:patriciagouveia.psicologa@hotmail.com">patriciagouveia.psicologa@hotmail.com</a></p>
+        <p>📞 +351 968 378 816 · Seg–Sex, 9h–19h</p>
+      </div>
+      <p>
+        Consulte também a nossa <a href="politica-de-privacidade.html">Política de Privacidade</a>
+        para informação completa sobre o tratamento de dados pessoais.
+      </p>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-left">
+        <div class="footer-logo">Dra. Patrícia <span>Gouveia</span> — Psicóloga</div>
+        <div class="footer-copy">© 2026 · Cédula OPP nº 026373</div>
+      </div>
+      <div class="footer-nav">
+        <span class="footer-links">
+          <a href="index.html#inicio">Início</a>
+          <a href="index.html#sobre">Sobre mim</a>
+          <a href="index.html#servicos">Serviços</a>
+          <a href="ansiedade/index.html">Ansiedade</a>
+          <a href="index.html#agendar">Contacto</a>
+        </span>
+        <span class="footer-links footer-legal">
+          <a href="politica-de-privacidade.html">Política de Privacidade</a>
+          <a href="politica-de-cookies.html">Política de Cookies</a>
+          <a href="INSERIR URL AQUI">Livro de Reclamações</a>
+        </span>
+      </div>
+    </div>
+    <div class="footer-credits">Website feito com ❤️ por David Cardoso</div>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <a class="whatsapp-float" href="https://wa.me/351968378816" target="_blank" rel="noopener" aria-label="Enviar mensagem via WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="28" height="28">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+  </a>
+
+  <script src="js/script.js"></script>
+  <script src="js/cookies.js"></script>
+</body>
+</html>
