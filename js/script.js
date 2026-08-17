@@ -349,6 +349,21 @@ function showSuccessPopup(formWrap) {
 /* ----------------------------------------------------------
    5. ENVIO DO FORMULÁRIO COM GTM
    ---------------------------------------------------------- */
+const RECAPTCHA_SITE_KEY = '6LdYQYstAAAAAE1WhCghbqqXYEgm3X8d0nPRADDw';
+
+/** Obtém um token reCAPTCHA v3 para a ação 'submit'. */
+function getRecaptchaToken() {
+  return new Promise((resolve, reject) => {
+    if (typeof grecaptcha === 'undefined') {
+      reject(new Error('reCAPTCHA indisponível'));
+      return;
+    }
+    grecaptcha.ready(() => {
+      grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' }).then(resolve, reject);
+    });
+  });
+}
+
 async function handleSubmit(e) {
   e.preventDefault();
 
@@ -365,6 +380,16 @@ async function handleSubmit(e) {
   const servico  = document.getElementById('servico').value;
   const mensagem = document.getElementById('mensagem').value.trim();
   const btn      = document.getElementById('submitBtn');
+
+  /* --- Honeypot anti-spam ---
+     Campo oculto que só bots preenchem. Se vier preenchido, finge
+     sucesso sem enviar nada, para não dar pistas ao bot. */
+  const gotcha = document.getElementById('_gotcha');
+  if (gotcha && gotcha.value.trim() !== '') {
+    const formWrap = btn.closest('.booking-form-wrap');
+    if (formWrap) showSuccessPopup(formWrap);
+    return;
+  }
 
   /* --- Validação --- */
   const errors = validateForm();
@@ -390,11 +415,24 @@ async function handleSubmit(e) {
   btn.textContent = 'A enviar...';
   btn.disabled = true;
 
+  // Token reCAPTCHA v3 — se falhar (ex: bloqueador de anúncios), envia
+  // na mesma e deixa o filtro de spam próprio do Formspree atuar.
+  let recaptchaToken = '';
+  try {
+    recaptchaToken = await getRecaptchaToken();
+  } catch (err) {
+    recaptchaToken = '';
+  }
+
   try {
     const res = await fetch('https://formspree.io/f/mdawjjoa', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ nome, email, telefone, servico, mensagem }),
+      body: JSON.stringify({
+        nome, email, telefone, servico, mensagem,
+        _subject: `${servico} — ${nome}`,
+        'g-recaptcha-response': recaptchaToken,
+      }),
     });
 
     if (res.ok) {
