@@ -70,13 +70,13 @@
        mais adequado para páginas de conteúdo/artigos
        ------------------------------------------------------- */
     #hero-ansiedade {
-      min-height: 52vh;
+      min-height: 38vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 9rem 4rem 5rem;
+      padding: 9rem 4rem 3rem;
       background: linear-gradient(160deg, var(--blue-pale) 0%, #fff 60%);
       position: relative;
       overflow: hidden;
@@ -164,12 +164,45 @@
     }
 
     /* -------------------------------------------------------
+       BOTÃO — Teste de Ansiedade
+       CTA de destaque entre a intro do hero e o guia de tópicos
+       ------------------------------------------------------- */
+    .btn-teste {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+      background: var(--blue-dark);
+      color: #fff;
+      padding: 0.95rem 1.85rem;
+      border-radius: 3rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      border: 2px solid var(--blue-dark);
+      box-shadow: 0 8px 24px rgba(58, 101, 145, 0.28);
+      transition: transform 0.25s, box-shadow 0.25s, background 0.2s, color 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    .btn-teste:hover {
+      transform: translateY(-3px);
+      background: transparent;
+      color: var(--blue-dark);
+      box-shadow: 0 14px 32px rgba(58, 101, 145, 0.22);
+    }
+    .btn-teste-icon { font-size: 1.05rem; }
+    .btn-teste-arrow { transition: transform 0.25s; }
+    .btn-teste:hover .btn-teste-arrow { transform: translateX(4px); }
+
+    /* -------------------------------------------------------
        GRID DE TÓPICOS
        Reutiliza o padrão visual dos .service-card do site,
        mas com link completo no card e badge de leitura
        ------------------------------------------------------- */
     #topicos {
-      padding: 5rem 6rem;
+      padding: 2.5rem 6rem 5rem;
       background: var(--white);
     }
 
@@ -380,6 +413,12 @@
       A ansiedade afeta milhões de pessoas. Conhecer os seus mecanismos é o primeiro passo para recuperar
       o controlo. Escolha um tópico para começar.
     </p>
+
+    <a class="btn-teste" href="teste-ansiedade.html">
+      <span class="btn-teste-icon">📋</span>
+      Descubra se tem Ansiedade — Teste Rápido e Gratuito
+      <span class="btn-teste-arrow">→</span>
+    </a>
   </section>
 
 
