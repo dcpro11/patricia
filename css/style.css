@@ -399,7 +399,7 @@
     .footer-legal a:hover { color: var(--gold-light); }
     .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
     /* WhatsApp Float */
-    .whatsapp-float { position: fixed; bottom: 28px; right: 28px; z-index: 999; background: #25D366; border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(37,211,102,0.45); transition: transform 0.2s, box-shadow 0.2s; }
+    .whatsapp-float { position: fixed; top: 100px; right: 28px; z-index: 999; background: #25D366; border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(37,211,102,0.45); transition: transform 0.2s, box-shadow 0.2s; }
     .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 22px rgba(37,211,102,0.6); }
     .footer-credits {
       display: flex; gap: 1rem; font-size: 0.78rem; color: rgba(255,255,255,0.4);
@@ -429,7 +429,7 @@
       .footer-top { flex-direction: column; gap: 1.5rem; }
       .footer-nav { align-items: flex-start; }
       .footer-links { justify-content: flex-start; }
-      .whatsapp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+      .whatsapp-float { top: 76px; right: 16px; width: 50px; height: 50px; }
       .hero-badge { display: none; }
       .form-row { flex-direction: column; }
     }
