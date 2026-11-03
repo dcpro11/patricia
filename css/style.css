@@ -404,7 +404,24 @@
     .footer-credits {
       display: flex; gap: 1rem; font-size: 0.78rem; color: rgba(255,255,255,0.4);
       margin-top: 1rem; flex-wrap: wrap; text-align: left; width: 100%; justify-content: left;
+      display: block; /* texto corrido: frase + emoji + link na mesma linha */
     }
+    /* Link da DD Digital: discreto, ganha cor e sublinhado animado ao passar */
+    .footer-credits a {
+      color: rgba(255,255,255,0.6); text-decoration: none; font-weight: 500;
+      background: linear-gradient(var(--gold-light), var(--gold-light)) 0 100% / 0 1px no-repeat;
+      transition: color 0.2s, background-size 0.3s ease;
+    }
+    .footer-credits a:hover, .footer-credits a:focus-visible { color: var(--gold-light); background-size: 100% 1px; }
+    /* Emoji: pisca o olho de vez em quando (uma abanadela suave a cada 6s) */
+    .footer-emoji { display: inline-block; transform-origin: 70% 70%; animation: footerWink 6s ease-in-out infinite; }
+    @keyframes footerWink {
+      0%, 86%, 100% { transform: rotate(0) scale(1); }
+      90% { transform: rotate(-14deg) scale(1.2); }
+      94% { transform: rotate(10deg) scale(1.2); }
+      97% { transform: rotate(0) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) { .footer-emoji { animation: none; } }
 
     /* ANIMATIONS */
     @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
